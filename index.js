@@ -34,7 +34,7 @@ app.get('/thumb', async (req, res) => {
 });
 
 app.get('/photos', async (req, res) => {
-    const photos = await data.fetchAll()
+    const photos = await data.getAll()
     res.json(photos);
 });
 

@@ -16,7 +16,7 @@ function make(photo_id, path) {
         if (err) throw err;
         console.log(stderr)
     }
-    data.saveThumbnail(photo_id, thumb_name)
+    data.addThumbnail(photo_id, thumb_name)
 }
 
 exports.thumbnails = {
