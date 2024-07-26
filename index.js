@@ -43,7 +43,10 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
     const photo = await tasks.addPhoto(req.file.filename)
     tasks.saveExif(photo.photo_id, path)
     tasks.makeThumbnail(photo.photo_id, path)
-    res.status(201).json({message: "success"})
+    res.status(201).json({
+        photo_id: photo.photo_id,
+        message: "success"
+    })
 })
 
 app.listen(port, () => {
