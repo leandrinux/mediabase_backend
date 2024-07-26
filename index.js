@@ -17,7 +17,7 @@ const upload = multer({ storage });
 
 app.use(express.json());
 
-app.get('/items', async (req, res) => {
+app.get('/photos', async (req, res) => {
     const photos = await data.fetchAll()
     res.json(photos);
 });
