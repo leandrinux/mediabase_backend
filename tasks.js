@@ -1,6 +1,7 @@
 const { data } = require('./data.js');
-var Orchestrator = require('orchestrator');
 
+/*
+var Orchestrator = require('orchestrator');
 var orchestrator = new Orchestrator();
 
 orchestrator.add('save_to_database', function(){
@@ -8,10 +9,13 @@ orchestrator.add('save_to_database', function(){
     data.push()
 });
 
+orchestrator.start('save_to_database', function (err) {
+    // all done
+});
+*/
+
 exports.tasks = {
-    addPhoto: (photo) => {
-        orchestrator.start('save_to_database', function (err) {
-            // all done
-        });
+    addPhoto: (filename) => {
+        data.registerNewPhoto(filename)
     }
 }

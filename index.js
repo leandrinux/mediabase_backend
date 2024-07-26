@@ -24,24 +24,15 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Middleware to parse JSON requests
 app.use(express.json());
 
-// Create (POST) a new item
-app.post('/items', (req, res) => {
-  const newItem = req.body;
-  data.push(newItem);
-  res.status(201).json(newItem);
-});
-
-// Read (GET) all items
 app.get('/items', (req, res) => {
   res.json(data);
 });
 
 app.post('/upload', upload.single('photo'), (req, res) => {
+    tasks.addPhoto(req.file.filename)
     res.status(201).json({message: "successfully uploaded"})
-    tasks.addPhoto('hola')
 })
 
 app.listen(port, () => {
