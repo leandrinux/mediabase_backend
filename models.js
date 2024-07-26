@@ -20,21 +20,6 @@ const Photo = sequelize.define('photo', {
     thumb: {
         type: DataTypes.STRING(100),
         allowNull: true
-    }
-}, {
-    timestamps: false
-})
-
-const Exif = sequelize.define('exif', {
-    exif_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
-    },
-    photo_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false
     },
     latitude: {
         type: DataTypes.DOUBLE,
@@ -45,9 +30,7 @@ const Exif = sequelize.define('exif', {
         allowNull: true
     }
 }, {
-    timestamps: false,
-    freezeTableName: true
+    timestamps: false
 })
 
 exports.Photo = Photo
-exports.Exif = Exif

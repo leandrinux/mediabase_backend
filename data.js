@@ -1,5 +1,5 @@
 const util = require("util");
-const { Photo, Exif } = require("./models.js");
+const { Photo } = require("./models.js");
 
 async function addPhoto(filename) {
     return await Photo.create({
@@ -8,10 +8,11 @@ async function addPhoto(filename) {
 }
 
 async function addExifData(photo_id, data) {
-    return await Exif.create({
-        photo_id: photo_id,
+    Photo.update({ 
         latitude: data.latitude,
         longitude: data.latitude
+    },{ 
+        where: { photo_id: photo_id }
     })
 }
 
@@ -24,7 +25,11 @@ async function addThumbnail(photo_id, thumb_name) {
 
 async function getAll() {
     return await Photo.findAll({
-        attributes: ['photo_id'],
+        attributes: [
+            'photo_id', 
+            'latitude', 
+            'longitude'
+        ],
     })
 }
 
