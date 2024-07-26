@@ -17,6 +17,10 @@ const Photo = sequelize.define('photo', {
     file_name: {
         type: DataTypes.STRING(100),
         allowNull: false
+    },
+    thumb: {
+        type: DataTypes.STRING(100),
+        allowNull: true
     }
 }, {
     timestamps: false
@@ -60,7 +64,15 @@ async function saveExifData(photo_id, data) {
     })
 }
 
+async function saveThumbnail(photo_id, thumb_name) {
+    Photo.update(
+        { thumb: thumb_name },
+        { where: { photo_id: photo_id }}
+    )
+}
+
 exports.data = {
     registerNewPhoto: registerNewPhoto,
-    saveExifData: saveExifData
+    saveExifData: saveExifData,
+    saveThumbnail: saveThumbnail
 }

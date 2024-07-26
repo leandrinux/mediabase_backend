@@ -27,6 +27,7 @@ function getMetadata(path, cb) {
 }
 
 function saveExif (photo_id, path) {
+    console.log(`Extracting exif data for photo ${photo_id} at ${path}`)
     getMetadata(path, function(err, metadata) {
         data.saveExifData(photo_id, {
             latitude: fixCoordinate(metadata.gpsLatitude),
