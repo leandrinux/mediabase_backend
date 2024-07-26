@@ -71,8 +71,13 @@ async function saveThumbnail(photo_id, thumb_name) {
     )
 }
 
+async function fetchAll() {
+    return await Photo.findAll()
+}
+
 exports.data = {
     registerNewPhoto: registerNewPhoto,
     saveExifData: saveExifData,
-    saveThumbnail: saveThumbnail
+    saveThumbnail: saveThumbnail,
+    fetchAll: fetchAll
 }

@@ -17,16 +17,16 @@ const upload = multer({ storage });
 
 app.use(express.json());
 
-app.get('/items', (req, res) => {
-  res.json(data);
+app.get('/items', async (req, res) => {
+    const photos = await data.fetchAll()
+    res.json(photos);
 });
 
-app.post('/upload', upload.single('photo'), (req, res) => {
+app.post('/upload', upload.single('photo'), async (req, res) => {
     let path = req.file.path
-    tasks.addPhoto(req.file.filename).then(photo => {
-        tasks.saveExif(photo.photo_id, path)
-        tasks.makeThumbnail(photo.photo_id, path)
-    })
+    const photo = await tasks.addPhoto(req.file.filename)
+    tasks.saveExif(photo.photo_id, path)
+    tasks.makeThumbnail(photo.photo_id, path)
     res.status(201).json({message: "successfully uploaded"})
 })
 
