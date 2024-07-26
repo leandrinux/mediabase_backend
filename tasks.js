@@ -1,3 +1,4 @@
+const { exif } = require('./exif.js');
 const { data } = require('./data.js');
 
 /*
@@ -16,6 +17,9 @@ orchestrator.start('save_to_database', function (err) {
 
 exports.tasks = {
     addPhoto: (filename) => {
-        data.registerNewPhoto(filename)
-    }
+        return data.registerNewPhoto(filename)
+    },
+
+    saveExif: exif.saveExif
+    
 }
