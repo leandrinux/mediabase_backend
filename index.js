@@ -17,6 +17,16 @@ const upload = multer({ storage });
 
 app.use(express.json());
 
+app.get('/photo', async (req, res) => {
+    const file_name = await data.getFileName(req.query.id)
+    res.download(`originals/${file_name}`);
+});
+
+app.get('/thumb', async (req, res) => {
+    const thumb = await data.getThumb(req.query.id)
+    res.download(`thumbnails/${thumb}`);
+});
+
 app.get('/photos', async (req, res) => {
     const photos = await data.fetchAll()
     res.json(photos);

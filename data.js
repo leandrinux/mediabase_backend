@@ -75,9 +75,21 @@ async function fetchAll() {
     return await Photo.findAll()
 }
 
+async function getFileName(photo_id) {
+    const photo = await Photo.findByPk(photo_id)
+    return photo.file_name
+}
+
+async function getThumb(photo_id) {
+    const photo = await Photo.findByPk(photo_id)
+    return photo.thumb
+}
+
 exports.data = {
     registerNewPhoto: registerNewPhoto,
     saveExifData: saveExifData,
     saveThumbnail: saveThumbnail,
-    fetchAll: fetchAll
+    fetchAll: fetchAll,
+    getFileName: getFileName,
+    getThumb: getThumb
 }
