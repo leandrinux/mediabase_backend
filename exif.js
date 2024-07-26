@@ -26,9 +26,9 @@ function getMetadata(path, cb) {
       });
 }
 
-function saveExif (path) {
+function saveExif (photo_id, path) {
     getMetadata(path, function(err, metadata) {
-        data.saveExifData({
+        data.saveExifData(photo_id, {
             latitude: fixCoordinate(metadata.gpsLatitude),
             longitude: fixCoordinate(metadata.gpsLongitude)
         })

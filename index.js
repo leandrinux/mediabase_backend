@@ -31,8 +31,9 @@ app.get('/items', (req, res) => {
 });
 
 app.post('/upload', upload.single('photo'), (req, res) => {
-    let photoid = tasks.addPhoto(req.file.filename)
-    tasks.saveExif(photoid, req.file.path)
+    tasks.addPhoto(req.file.filename).then(photo => {
+        tasks.saveExif(photo.photo_id, req.file.path)
+    })
     res.status(201).json({message: "successfully uploaded"})
 })
 

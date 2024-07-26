@@ -1,54 +1,63 @@
 const util = require("util");
-const sqlite3 = require('sqlite3').verbose()
+const { Sequelize, DataTypes } = require('@sequelize/core')
+const { SqliteDialect } = require('@sequelize/sqlite3')
 
-function connect() {
-    return new sqlite3.Database('./data.sqlite', sqlite3.OPEN_READWRITE, (err) => {
-        if (err) {
-          return console.error(err.message);
-        }
-        console.log('Connected to the SQlite database.');
-    });
-}
+const sequelize = new Sequelize({
+    dialect: SqliteDialect,
+    storage: 'data.sqlite'
+})
 
-function disconnect(db) {
-    db.close((err) => {
-        if (err) {
-            return console.error(err.message);
-        }
-        console.log('Close the database connection.');
-    });
-}
+const Photo = sequelize.define('photo', {
+    photo_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+    },
+    file_name: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+    }
+}, {
+    timestamps: false
+})
 
-function registerNewPhoto(filename) {
-    let db = connect()
-    db.serialize(() => {
-        db.run(
-            `INSERT INTO photos(filename) VALUES(?)`,
-            [ filename ]
-        ), (err, row) => {
-            if (err){
-              throw err;
-            }
-            console.log(row.message)
-        }
+async function registerNewPhoto(filename) {
+    return await Photo.create({
+        file_name: filename
     })
-    disconnect(db)
 }
 
-function saveExifData(photoid, data) {
-    let db = connect()
-    db.serialize(() => {
-        db.run(
-            `INSERT INTO exif(photoid, latitude, longitude) VALUES(?)`,
-            [ photoid, latitude, longitude ]
-        ), (err, row) => {
-            if (err){
-              throw err;
-            }
-            console.log(row.message)
-        }
+const Exif = sequelize.define('exif', {
+    exif_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+    },
+    photo_id: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
+    },
+    latitude: {
+        type: DataTypes.DOUBLE,
+        allowNull: true
+      },
+    longitude: {
+        type: DataTypes.DOUBLE,
+        allowNull: true
+    }
+}, {
+    timestamps: false,
+    freezeTableName: true
+})
+
+async function saveExifData(photo_id, data) {
+    return await Exif.create({
+        photo_id: photo_id,
+        latitude: data.latitude,
+        longitude: data.latitude
     })
-    disconnect(db)
 }
 
 exports.data = {

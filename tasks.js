@@ -16,8 +16,8 @@ orchestrator.start('save_to_database', function (err) {
 */
 
 exports.tasks = {
-    addPhoto: (filename) => {
-        return data.registerNewPhoto(filename)
+    addPhoto: async (filename) => {
+        return await data.registerNewPhoto(filename)
     },
 
     saveExif: exif.saveExif
