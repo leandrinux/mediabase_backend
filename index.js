@@ -1,8 +1,8 @@
 const express = require('express');
 const { data } = require('./data.js');
+const { tasks } = require('./tasks.js');
 const multer = require('multer');
 const path = require('path');
-
 const port = process.env.PORT || 3000; // Use the port provided by the host or default to 3000
 const app = express();
 const storage = multer.diskStorage({
@@ -41,13 +41,9 @@ app.get('/items', (req, res) => {
 
 app.post('/upload', upload.single('photo'), (req, res) => {
     res.status(201).json({message: "successfully uploaded"})
+    tasks.addPhoto('hola')
 })
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
-
- // Define a route to handle incoming requests
- app.get('/', (req, res) => {
-    res.send('Hello, Express!');
-  });
