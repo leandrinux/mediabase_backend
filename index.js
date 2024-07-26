@@ -19,12 +19,18 @@ app.use(express.json());
 
 app.get('/photo', async (req, res) => {
     const file_name = await data.getFileName(req.query.id)
-    res.download(`originals/${file_name}`);
+    if (file_name)
+      res.download(`originals/${file_name}`);
+    else
+      res.status(404).json({message: "not found"})
 });
 
 app.get('/thumb', async (req, res) => {
     const thumb = await data.getThumb(req.query.id)
-    res.download(`thumbnails/${thumb}`);
+    if (thumb)
+        res.download(`thumbnails/${thumb}`);
+    else
+        res.status(404).json({message: "not found"})
 });
 
 app.get('/photos', async (req, res) => {
@@ -37,7 +43,7 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
     const photo = await tasks.addPhoto(req.file.filename)
     tasks.saveExif(photo.photo_id, path)
     tasks.makeThumbnail(photo.photo_id, path)
-    res.status(201).json({message: "successfully uploaded"})
+    res.status(201).json({message: "success"})
 })
 
 app.listen(port, () => {

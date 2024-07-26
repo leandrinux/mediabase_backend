@@ -72,17 +72,19 @@ async function saveThumbnail(photo_id, thumb_name) {
 }
 
 async function fetchAll() {
-    return await Photo.findAll()
+    return await Photo.findAll({
+        attributes: ['photo_id'],
+    })
 }
 
 async function getFileName(photo_id) {
     const photo = await Photo.findByPk(photo_id)
-    return photo.file_name
+    return photo?.file_name
 }
 
 async function getThumb(photo_id) {
     const photo = await Photo.findByPk(photo_id)
-    return photo.thumb
+    return photo?.thumb
 }
 
 exports.data = {
