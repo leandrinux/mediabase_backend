@@ -17,7 +17,12 @@ const upload = multer({ storage });
 
 app.use(express.json());
 
-app.get('/photo', async (req, res) => {
+app.get('/media', async (req, res) => {
+    const photos = await data.getAll()
+    res.json(photos);
+});
+
+app.get('/file', async (req, res) => {
     const file_name = await data.getFileName(req.query.id)
     if (file_name)
       res.download(`originals/${file_name}`);
@@ -33,18 +38,13 @@ app.get('/thumb', async (req, res) => {
         res.status(404).json({message: "not found"})
 });
 
-app.get('/photos', async (req, res) => {
-    const photos = await data.getAll()
-    res.json(photos);
-});
-
-app.post('/upload', upload.single('photo'), async (req, res) => {
+app.post('/media', upload.single('media'), async (req, res) => {
     let path = req.file.path
-    const photo = await tasks.addPhoto(req.file.filename)
-    tasks.saveExif(photo.photo_id, path)
-    tasks.makeThumbnail(photo.photo_id, path)
+    const photo = await tasks.addMedia(req.file.filename)
+    tasks.saveExif(photo.media_id, path)
+    tasks.makeThumbnail(photo.media_id, path)
     res.status(201).json({
-        photo_id: photo.photo_id,
+        media_id: photo.media_id,
         message: "success"
     })
 })

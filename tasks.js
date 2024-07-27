@@ -17,9 +17,9 @@ orchestrator.start('save_to_database', function (err) {
 */
 
 exports.tasks = {
-    addPhoto: async (path) => {
-        console.log(`Adding photo at ${path}`)
-        return await data.addPhoto(path)
+    addMedia: async (path) => {
+        console.log(`Adding media at ${path}`)
+        return await data.addMedia(path)
     },
 
     saveExif: exif.saveExif,

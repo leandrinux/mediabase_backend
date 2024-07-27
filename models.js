@@ -6,8 +6,8 @@ const sequelize = new Sequelize({
     storage: 'data.sqlite'
 })
 
-const Photo = sequelize.define('photo', {
-    photo_id: {
+const Media = sequelize.define('media', {
+    media_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
@@ -24,13 +24,13 @@ const Photo = sequelize.define('photo', {
     latitude: {
         type: DataTypes.DOUBLE,
         allowNull: true
-      },
+    },
     longitude: {
         type: DataTypes.DOUBLE,
         allowNull: true
     }
 }, {
-    timestamps: false
+    // timestamps: false
 })
 
-exports.Photo = Photo
+exports.Media = Media

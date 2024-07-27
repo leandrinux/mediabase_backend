@@ -1,50 +1,50 @@
 const util = require("util");
-const { Photo } = require("./models.js");
+const { Media } = require("./models.js");
 
-async function addPhoto(filename) {
-    return await Photo.create({
+async function addMedia(filename) {
+    return await Media.create({
         file_name: filename
     })
 }
 
-async function addExifData(photo_id, data) {
-    Photo.update({ 
+async function addExifData(media_id, data) {
+    Media.update({ 
         latitude: data.latitude,
         longitude: data.latitude
     },{ 
-        where: { photo_id: photo_id }
+        where: { media_id: media_id }
     })
 }
 
-async function addThumbnail(photo_id, thumb_name) {
-    Photo.update(
+async function addThumbnail(media_id, thumb_name) {
+    Media.update(
         { thumb: thumb_name },
-        { where: { photo_id: photo_id }}
+        { where: { media_id: media_id }}
     )
 }
 
 async function getAll() {
-    return await Photo.findAll({
+    return await Media.findAll({
         attributes: [
-            'photo_id', 
+            'media_id', 
             'latitude', 
             'longitude'
         ],
     })
 }
 
-async function getFileName(photo_id) {
-    const photo = await Photo.findByPk(photo_id)
-    return photo?.file_name
+async function getFileName(media_id) {
+    const media = await Media.findByPk(media_id)
+    return media?.file_name
 }
 
-async function getThumb(photo_id) {
-    const photo = await Photo.findByPk(photo_id)
-    return photo?.thumb
+async function getThumb(media_id) {
+    const media = await Media.findByPk(media_id)
+    return media?.thumb
 }
 
 exports.data = {
-    addPhoto: addPhoto,
+    addMedia: addMedia,
     addExifData: addExifData,
     addThumbnail: addThumbnail,
     getAll: getAll,
