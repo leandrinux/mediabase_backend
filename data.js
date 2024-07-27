@@ -8,7 +8,7 @@ async function addMedia(filename) {
 }
 
 async function addExifData(media_id, data) {
-    Media.update({ 
+    await Media.update({ 
         latitude: data.latitude,
         longitude: data.latitude
     },{ 
@@ -17,10 +17,18 @@ async function addExifData(media_id, data) {
 }
 
 async function addThumbnail(media_id, thumb_name) {
-    Media.update(
+    await Media.update(
         { thumb: thumb_name },
         { where: { media_id: media_id }}
     )
+}
+
+async function addOCRText(media_id, OCR) {
+    await Media.update({ 
+        OCR: OCR
+    },{ 
+        where: { media_id: media_id }
+    })
 }
 
 async function getAll() {
@@ -47,6 +55,7 @@ exports.data = {
     addMedia: addMedia,
     addExifData: addExifData,
     addThumbnail: addThumbnail,
+    addOCRText: addOCRText,
     getAll: getAll,
     getFileName: getFileName,
     getThumb: getThumb

@@ -11,7 +11,7 @@ function make(photo_id, path) {
         srcFormat: "heic",
         dstPath: thumb_path,
         format: 'jpg',
-        width: 200
+        width: 300
     }), (err, stdout, stderr) => {
         if (err) throw err;
         console.log(stderr)

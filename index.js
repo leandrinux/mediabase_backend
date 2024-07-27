@@ -40,9 +40,12 @@ app.get('/thumb', async (req, res) => {
 
 app.post('/media', upload.single('media'), async (req, res) => {
     let path = req.file.path
+
     const photo = await tasks.addMedia(req.file.filename)
     tasks.saveExif(photo.media_id, path)
     tasks.makeThumbnail(photo.media_id, path)
+    tasks.runOCR(photo.media_id, path)
+
     res.status(201).json({
         media_id: photo.media_id,
         message: "success"

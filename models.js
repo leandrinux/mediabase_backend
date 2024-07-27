@@ -28,6 +28,10 @@ const Media = sequelize.define('media', {
     longitude: {
         type: DataTypes.DOUBLE,
         allowNull: true
+    },
+    OCR: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     // timestamps: false

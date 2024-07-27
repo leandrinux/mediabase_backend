@@ -1,6 +1,7 @@
 const { exif } = require('./exif.js');
 const { data } = require('./data.js');
 const { thumbnails } = require('./thumbnails.js');
+const { ocr } = require('./ocr.js');
 
 /*
 var Orchestrator = require('orchestrator');
@@ -24,5 +25,7 @@ exports.tasks = {
 
     saveExif: exif.saveExif,
     
-    makeThumbnail: thumbnails.make
+    makeThumbnail: thumbnails.make,
+
+    runOCR: ocr.run
 }
