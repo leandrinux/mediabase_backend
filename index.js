@@ -1,10 +1,10 @@
-const express = require('express');
-const { data } = require('./data.js');
-const { tasks } = require('./tasks.js');
-const multer = require('multer');
-const path = require('path');
+const express = require('express')
+const { data } = require('./data.js')
+const { tasks } = require('./tasks.js')
+const multer = require('multer')
+const path = require('path')
 const port = process.env.PORT || 3000; 
-const app = express();
+const app = express()
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'originals/');
@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
     }
-});
+})
 const upload = multer({ storage });
 
 app.use(express.json());

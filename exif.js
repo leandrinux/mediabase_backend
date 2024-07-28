@@ -1,6 +1,6 @@
-const exif = require('exiftool');
-const fs   = require('fs');
-const { data } = require('./data.js');
+const exif = require('exiftool')
+const fs   = require('fs')
+const { data } = require('./data.js')
 
 function fixCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
@@ -15,6 +15,12 @@ function fixCoordinate(coordinate) {
     throw new Error(`Coordinate format error (${err})`)
   }
 }
+
+function parseDate(dateStr) {
+    const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+)/gm
+    const {year, month, day, hour, minutes} = regex.exec(dateStr).groups
+    return {year, month, day, hour, minutes}
+}
   
 function getMetadata(path, cb) {
   fs.readFile(path, function (err, data) {
@@ -26,13 +32,20 @@ function getMetadata(path, cb) {
   });
 }
 
-function saveExif (photo_id, path) {
-  console.log(`Extracting exif data for photo ${photo_id} at ${path}`)
+function saveExif (media_id, path) {
+  console.log(`Extracting exif data for photo ${media_id} at ${path}`)
   getMetadata(path, function(err, metadata) {
-    data.addExifData(photo_id, {
+    const {year, month, day, hour, minutes} = parseDate(metadata.createDate)
+    const data = {
+      year: year,
+      month: month,
+      day: day,
+      hour: hour,
+      minutes: minutes,
       latitude: fixCoordinate(metadata.gpsLatitude),
       longitude: fixCoordinate(metadata.gpsLongitude)
-    })
+    }
+    data.addExifData(media_id, data)
   })
 }
 
