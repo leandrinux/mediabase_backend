@@ -3,14 +3,15 @@ const { Models } = require("./models.js");
 const { Sequelize } = require("sequelize");
 
 async function addMedia(filename) {
-    console.log(`filename: ${filename}`)
     return await Models.Media.create({
-        file_path: filename
+        file_name: filename,
+        file_path: 'temp/'
     })
 }
 
 async function addExifData(media_id, data) {
     await Models.Media.update({
+        file_path: data.filePath,
         media_creation_date: data.createDate,
         latitude: data.latitude,
         longitude: data.latitude
@@ -56,6 +57,14 @@ async function getFileName(media_id) {
     }
 }
 
+async function getFileFullPath(media_id) {
+    try {
+        const media = await Models.Media.findByPk(media_id)
+        return `${media?.file_path}${media?.file_name}`
+    } catch (error) {
+    }
+}
+
 async function getThumb(media_id) {
     try {
         const media = await Models.Media.findByPk(media_id)
@@ -76,5 +85,6 @@ exports.data = {
     addOCRText: addOCRText,
     getAll: getAll,
     getFileName: getFileName,
+    getFileFullPath: getFileFullPath,
     getThumb: getThumb
 }

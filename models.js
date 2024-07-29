@@ -10,6 +10,9 @@ const Media = sequelize.define('media', {
     media_id: {
         type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
     },
+    file_name: {
+        type: DataTypes.STRING(100), allowNull: false
+    },
     file_path: {
         type: DataTypes.STRING(100), allowNull: false
     },

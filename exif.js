@@ -1,5 +1,4 @@
 const exif = require('exiftool')
-const fs   = require('fs')
 const { data } = require('./data.js')
 
 function fixCoordinate(coordinate) {
@@ -20,35 +19,33 @@ function parseDate(dateStr) {
     const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+\.\d+(?<tz>(\-|\+)\d{2}:\d{2})/gm
     const {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
     return [
-      `${year}/${month}/${day}/media${year}${month}${day}-${hour}${minutes}`,
+      `media/${year}/${month}/${day}/`,
       `${year}-${month}-${day}T${hour}:${minutes}${tz}`
     ]
 }
- 
-function getMetadata(path, cb) {
-  fs.readFile(path, function (err, data) {
-    if (err) return cb(err)
+
+async function getMetadata(path) {
+  const fs = require('fs').promises
+  const data = await fs.readFile(path)
+  return new Promise((resolve, reject) => {
     exif.metadata(data, function (err, metadata) {
-      if (err) return cb(err)
-      cb(null, metadata)
+      if (err) reject(err) 
+      else resolve(metadata)
     });
-  });
+  })
 }
 
-function saveExif (media_id, path) {
+async function saveExif (media_id, path) {
   console.log(`Extracting exif data for photo ${media_id} at ${path}`)
-  getMetadata(path, function(err, metadata) {
-    const [ filePath, createDate ] = parseDate(metadata.createDate)
-    console.log(`filePath: ${filePath}`)
-    console.log(`createDate: ${createDate}`)
-    const values = {
-      createDate: createDate,
-      file_path: filePath,
-      latitude: fixCoordinate(metadata.gpsLatitude),
-      longitude: fixCoordinate(metadata.gpsLongitude)
-    }
-    data.addExifData(media_id, values)
-  })
+  const metadata = await getMetadata(path)
+  const [ filePath, createDate ] = parseDate(metadata.createDate)
+  const values = {
+    createDate: createDate,
+    filePath: filePath,
+    latitude: fixCoordinate(metadata.gpsLatitude),
+    longitude: fixCoordinate(metadata.gpsLongitude)
+  }  
+  await data.addExifData(media_id, values)
 }
 
 exports.exif = {

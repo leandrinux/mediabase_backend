@@ -9,9 +9,15 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'temp/');
     },
+    filename: (req, file, callback) => {
+        callback(null, file.originalname);
+    }
+/*
+    ,
     filename: (req, file, cb) => {
         cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
     }
+*/
 })
 const upload = multer({ storage });
 
@@ -39,10 +45,10 @@ app.get('/thumb', async (req, res) => {
 });
 
 app.post('/media', upload.single('media'), async (req, res) => {
-    let path = req.file.path
-
-    const photo = await tasks.addMedia(req.file.filename)
-    tasks.saveExif(photo.media_id, path)
+    
+    const photo = await tasks.addMedia(req.file.filename, req.file.originalname)
+    await tasks.saveExif(photo.media_id, req.file.path)
+    const filePath = await tasks.relocateMedia(photo.media_id, req.file.path)
     //tasks.makeThumbnail(photo.media_id, path)
     //tasks.runOCR(photo.media_id, path)
 
