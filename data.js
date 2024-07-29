@@ -1,5 +1,5 @@
 const util = require("util");
-const { Models } = require("./models.js");
+const { Models } = require("./data_models.js");
 const { Sequelize } = require("sequelize");
 
 async function addMedia(filename) {
@@ -18,13 +18,6 @@ async function addExifData(media_id, data) {
     },{ 
         where: { media_id: media_id }
     })
-}
-
-async function addThumbnail(media_id, thumb_name) {
-    await Models.Media.update(
-        { thumb: thumb_name },
-        { where: { media_id: media_id }}
-    )
 }
 
 async function addOCRText(media_id, OCR) {
@@ -73,14 +66,6 @@ async function getFileFullPath(media_id) {
     }
 }
 
-async function getThumb(media_id) {
-    try {
-        const media = await Models.Media.findByPk(media_id)
-        return media?.thumb
-    } catch (error) {
-    }
-}
-
 async function initDatabase() {
     await Models.init()
 }
@@ -89,11 +74,9 @@ exports.data = {
     initDatabase: initDatabase,
     addMedia: addMedia,
     addExifData: addExifData,
-    addThumbnail: addThumbnail,
     addOCRText: addOCRText,
     getAll: getAll,
     getFileName: getFileName,
     setFileName: setFileName,
-    getFileFullPath: getFileFullPath,
-    getThumb: getThumb
+    getFileFullPath: getFileFullPath
 }

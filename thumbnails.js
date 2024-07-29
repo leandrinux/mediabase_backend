@@ -26,7 +26,6 @@ function makePhotoThumbnail(mediaId, mediaPath) {
         if (err) throw err;
         console.log(stderr)
     }
-    data.addThumbnail(mediaId, thumbnailFileName)
 }
 
 exports.thumbnails = {

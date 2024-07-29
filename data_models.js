@@ -11,13 +11,10 @@ const Media = sequelize.define('media', {
         type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
     },
     file_name: {
-        type: DataTypes.STRING(100), allowNull: false
+        type: DataTypes.STRING, allowNull: false
     },
     file_path: {
-        type: DataTypes.STRING(100), allowNull: false
-    },
-    thumb: {
-        type: DataTypes.STRING(100), allowNull: true
+        type: DataTypes.STRING, allowNull: false
     },
     latitude: {
         type: DataTypes.DOUBLE, allowNull: true
@@ -26,7 +23,7 @@ const Media = sequelize.define('media', {
         type: DataTypes.DOUBLE, allowNull: true
     },
     media_creation_date: {
-        type: DataTypes.STRING(100), allowNull: true
+        type: DataTypes.STRING, allowNull: true
     },
     OCR: {
         type: DataTypes.STRING, allowNull: true
