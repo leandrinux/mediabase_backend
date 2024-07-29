@@ -3,7 +3,7 @@ const { data } = require('./data.js')
 const { fileops } = require('./fileops.js')
 const path = require('path')
 
-function fixCoordinate(coordinate) {
+function parseCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
   try {
     const regex = /^(?<deg>\d{1,3}) deg (?<min>\d{1,2})' (?<sec>\d{1,2}(.\d{1,3})?)" (?<dir>N|S|W|E)$/gm
@@ -37,22 +37,22 @@ async function getMetadata(path) {
   })
 }
 
-async function saveMetadata (mediaId, path) {
-  console.log(`[ ] Extracting metadata from ${mediaId} at ${path}`)
-  const metadata = await getMetadata(path)
-  const [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
-  const values = {
-    createDate: createDate,
-    filePath: mediaTreeLocation,
-    mimeType: metadata.mimeType,
-    width: metadata.imageWidth,
-    height: metadata.imageHeight,
-    latitude: fixCoordinate(metadata.gpsLatitude),
-    longitude: fixCoordinate(metadata.gpsLongitude)
-  }  
-  await data.addExifData(mediaId, values)
-}
-
 exports.exif = {
-  saveMetadata: saveMetadata
+
+  saveMetadata: async (mediaId, path) => {
+    console.log(`[ ] Extracting metadata from ${mediaId} at ${path}`)
+    const metadata = await getMetadata(path)
+    const [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
+    const values = {
+      createDate: createDate,
+      filePath: mediaTreeLocation,
+      mimeType: metadata.mimeType,
+      width: metadata.imageWidth,
+      height: metadata.imageHeight,
+      latitude: parseCoordinate(metadata.gpsLatitude),
+      longitude: parseCoordinate(metadata.gpsLongitude)
+    }  
+    await data.addExifData(mediaId, values)
+  }
+
 }
