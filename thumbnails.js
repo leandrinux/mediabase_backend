@@ -1,24 +1,34 @@
 const im = require('imagemagick')
-const PATH = require("path")
+const fs = require('fs')
+const path = require("path")
 const { data } = require('./data.js');
 
-function make(photo_id, path) {
-    console.log(`Making thumbnail for photo ${photo_id} at ${path}`)
-    let thumb_name = `${PATH.parse(path).name}.jpg`
-    let thumb_path = `thumbnails/${thumb_name}`
+/*
+  Uses imagemagick to create a photo thumbnail from original photo
+  and saves it in the thumbs directory, which is also created if it doesn't exist.
+  This won't work for other media like videos!
+*/
+function makePhotoThumbnail(mediaId, mediaPath) {
+    console.log(`Making thumbnail for media #${mediaId} at ${mediaPath}`)
+    const thumbnailFileName = `${path.basename(mediaPath)}`
+    const thumbnailDirectory = `${path.dirname(mediaPath)}/thumbs`
+    const thumbnailFinalPath = `${thumbnailDirectory}/${thumbnailFileName}`
+    if (!fs.existsSync(thumbnailDirectory)) {
+        fs.mkdirSync(thumbnailDirectory)
+    }
     im.resize({
-        srcPath: path,
-        srcFormat: "heic",
-        dstPath: thumb_path,
+        srcPath: mediaPath,
+        // srcFormat: "heic",
+        dstPath: thumbnailFinalPath,
         format: 'jpg',
-        width: 300
+        width: 350
     }), (err, stdout, stderr) => {
         if (err) throw err;
         console.log(stderr)
     }
-    data.addThumbnail(photo_id, thumb_name)
+    data.addThumbnail(mediaId, thumbnailFileName)
 }
 
 exports.thumbnails = {
-    make: make
+    makePhotoThumbnail: makePhotoThumbnail
 }

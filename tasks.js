@@ -38,7 +38,8 @@ exports.tasks = {
     // relocates media from the temp folder to its final place
     relocateMedia: fileops.relocateMedia,
     
-    makeThumbnail: thumbnails.make,
+    // creates a thumbnail for the specified media
+    makeThumbnail: thumbnails.makePhotoThumbnail,
 
     runOCR: ocr.run
 }

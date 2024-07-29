@@ -49,12 +49,20 @@ async function getAll() {
     }
 }
 
-async function getFileName(media_id) {
+async function getFileName(mediaId) {
     try {
-        const media = await Models.Media.findByPk(media_id)
+        const media = await Models.Media.findByPk(mediaId)
         return media?.file_name
     } catch (error) {
     }
+}
+
+async function setFileName(mediaId, fileName) {
+    await Models.Media.update({ 
+        file_name: fileName
+    },{ 
+        where: { media_id: mediaId }
+    })
 }
 
 async function getFileFullPath(media_id) {
@@ -85,6 +93,7 @@ exports.data = {
     addOCRText: addOCRText,
     getAll: getAll,
     getFileName: getFileName,
+    setFileName: setFileName,
     getFileFullPath: getFileFullPath,
     getThumb: getThumb
 }

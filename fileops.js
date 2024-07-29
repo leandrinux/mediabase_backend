@@ -15,6 +15,9 @@ async function relocateMedia(mediaId, originalPath) {
   } 
   console.log(`moving ${originalPath} to ${finalFullPath}`)
   await fs.promises.rename(originalPath, finalFullPath)
+  if (currentFullPath != finalFullPath) {
+    await data.setFileName(mediaId, path.basename(finalFullPath))
+  }
   return finalFullPath
 }
 
