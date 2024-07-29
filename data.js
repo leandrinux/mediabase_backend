@@ -1,14 +1,16 @@
 const util = require("util");
-const { Media } = require("./models.js");
+const { Models } = require("./models.js");
+const { Sequelize } = require("sequelize");
 
 async function addMedia(filename) {
-    return await Media.create({
+    return await Models.Media.create({
         file_name: filename
     })
 }
 
 async function addExifData(media_id, data) {
-    await Media.update({ 
+    await Models.Media.update({
+        createDate: data.createDate,
         latitude: data.latitude,
         longitude: data.latitude
     },{ 
@@ -17,14 +19,14 @@ async function addExifData(media_id, data) {
 }
 
 async function addThumbnail(media_id, thumb_name) {
-    await Media.update(
+    await Models.Media.update(
         { thumb: thumb_name },
         { where: { media_id: media_id }}
     )
 }
 
 async function addOCRText(media_id, OCR) {
-    await Media.update({ 
+    await Models.Media.update({ 
         OCR: OCR
     },{ 
         where: { media_id: media_id }
@@ -32,26 +34,41 @@ async function addOCRText(media_id, OCR) {
 }
 
 async function getAll() {
-    return await Media.findAll({
-        attributes: [
-            'media_id', 
-            'latitude', 
-            'longitude'
-        ],
-    })
+    try {
+        return await Models.Media.findAll({
+            attributes: [
+                'media_id', 
+                'latitude', 
+                'longitude'
+            ]
+        })
+    } catch (error) {
+        return []
+    }
 }
 
 async function getFileName(media_id) {
-    const media = await Media.findByPk(media_id)
-    return media?.file_name
+    try {
+        const media = await Models.Media.findByPk(media_id)
+        return media?.file_name
+    } catch (error) {
+    }
 }
 
 async function getThumb(media_id) {
-    const media = await Media.findByPk(media_id)
-    return media?.thumb
+    try {
+        const media = await Models.Media.findByPk(media_id)
+        return media?.thumb
+    } catch (error) {
+    }
+}
+
+async function initDatabase() {
+    await Models.init()
 }
 
 exports.data = {
+    initDatabase: initDatabase,
     addMedia: addMedia,
     addExifData: addExifData,
     addThumbnail: addThumbnail,

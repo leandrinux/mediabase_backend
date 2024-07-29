@@ -29,6 +29,10 @@ const Media = sequelize.define('media', {
         type: DataTypes.DOUBLE,
         allowNull: true
     },
+    createDate: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     OCR: {
         type: DataTypes.STRING,
         allowNull: true
@@ -37,4 +41,10 @@ const Media = sequelize.define('media', {
     // timestamps: false
 })
 
-exports.Media = Media
+exports.Models = {
+    init: function () {
+        console.log("Initializing database");
+        sequelize.sync();
+    },
+    Media: Media
+}

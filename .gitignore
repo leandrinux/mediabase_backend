@@ -1,6 +1,7 @@
 #
 originals/*
 thumbnails/*
+data.sqlite
 
 # Logs
 logs

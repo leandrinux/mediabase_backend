@@ -52,6 +52,7 @@ app.post('/media', upload.single('media'), async (req, res) => {
     })
 })
 
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`Server listening on port ${port}`);
+  await tasks.initDatabase()
 });

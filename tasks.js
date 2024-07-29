@@ -18,6 +18,11 @@ orchestrator.start('save_to_database', function (err) {
 */
 
 exports.tasks = {
+
+    initDatabase: async (path) => {
+        await data.initDatabase()
+    },
+
     addMedia: async (path) => {
         console.log(`Adding media at ${path}`)
         return await data.addMedia(path)

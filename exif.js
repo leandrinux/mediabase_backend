@@ -17,9 +17,9 @@ function fixCoordinate(coordinate) {
 }
 
 function parseDate(dateStr) {
-    const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+)/gm
-    const {year, month, day, hour, minutes} = regex.exec(dateStr).groups
-    return {year, month, day, hour, minutes}
+    const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+\.\d+(?<tz>(\-|\+)\d{2}:\d{2})/gm
+    const {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
+    return `${year}-${month}-${day}T${hour}:${minutes}${tz}`
 }
   
 function getMetadata(path, cb) {
@@ -35,17 +35,13 @@ function getMetadata(path, cb) {
 function saveExif (media_id, path) {
   console.log(`Extracting exif data for photo ${media_id} at ${path}`)
   getMetadata(path, function(err, metadata) {
-    const {year, month, day, hour, minutes} = parseDate(metadata.createDate)
-    const data = {
-      year: year,
-      month: month,
-      day: day,
-      hour: hour,
-      minutes: minutes,
+    const createDate = parseDate(metadata.createDate)
+    const values = {
+      createDate: createDate,
       latitude: fixCoordinate(metadata.gpsLatitude),
       longitude: fixCoordinate(metadata.gpsLongitude)
     }
-    data.addExifData(media_id, data)
+    data.addExifData(media_id, values)
   })
 }
 
