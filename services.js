@@ -32,15 +32,18 @@ exports.services = {
     },
 
     postMedia: async (req, res) => {
-        const photo = await tasks.addMedia(req.file.filename, req.file.originalname)
-        await tasks.saveMetadata(photo.media_id, req.file.path)
-        const filePath = await tasks.relocateMedia(photo.media_id, req.file.path)
-        tasks.makeThumbnail(photo.media_id, filePath)
-        tasks.runOCR(photo.media_id, filePath)
-        res.status(201).json({
-            media_id: photo.media_id,
-            message: "success"
-        })    
+        if (!req.file) res.status(400).json({message: "bad request"})
+        else {
+            const photo = await tasks.addMedia(req.file.filename, req.file.originalname)
+            await tasks.saveMetadata(photo.media_id, req.file.path)
+            const filePath = await tasks.relocateMedia(photo.media_id, req.file.path)
+            tasks.makeThumbnail(photo.media_id, filePath)
+            tasks.runOCR(photo.media_id, filePath)
+            res.status(201).json({
+                media_id: photo.media_id,
+                message: "success"
+            })    
+        }
     }
 
 }
