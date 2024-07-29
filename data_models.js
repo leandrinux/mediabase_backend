@@ -40,8 +40,10 @@ const Media = sequelize.define('media', {
 }, { })
 
 exports.Models = {
-    init: function () {
-        sequelize.sync();
+
+    initDatabase: async () => {
+        await sequelize.sync();
     },
+
     Media: Media
 }

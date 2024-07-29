@@ -77,12 +77,8 @@ async function getMimeType(mediaId) {
     }
 }
 
-async function initDatabase() {
-    await Models.init()
-}
-
 exports.data = {
-    initDatabase: initDatabase,
+    initDatabase: Models.initDatabase,
     addMedia: addMedia,
     addExifData: addExifData,
     addOCRText: addOCRText,
