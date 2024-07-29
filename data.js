@@ -3,14 +3,15 @@ const { Models } = require("./models.js");
 const { Sequelize } = require("sequelize");
 
 async function addMedia(filename) {
+    console.log(`filename: ${filename}`)
     return await Models.Media.create({
-        file_name: filename
+        file_path: filename
     })
 }
 
 async function addExifData(media_id, data) {
     await Models.Media.update({
-        createDate: data.createDate,
+        media_creation_date: data.createDate,
         latitude: data.latitude,
         longitude: data.latitude
     },{ 

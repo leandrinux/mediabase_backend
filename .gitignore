@@ -1,7 +1,7 @@
 #
-originals/*
-thumbnails/*
-data.sqlite
+media/*
+temp/*
+mediabase.sqlite
 
 # Logs
 logs

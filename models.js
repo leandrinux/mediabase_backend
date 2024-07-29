@@ -3,43 +3,32 @@ const { SqliteDialect } = require('@sequelize/sqlite3')
 
 const sequelize = new Sequelize({
     dialect: SqliteDialect,
-    storage: 'data.sqlite'
+    storage: 'mediabase.sqlite'
 })
 
 const Media = sequelize.define('media', {
     media_id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
-        primaryKey: true,
-        allowNull: false
+        type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
     },
-    file_name: {
-        type: DataTypes.STRING(100),
-        allowNull: false
+    file_path: {
+        type: DataTypes.STRING(100), allowNull: false
     },
     thumb: {
-        type: DataTypes.STRING(100),
-        allowNull: true
+        type: DataTypes.STRING(100), allowNull: true
     },
     latitude: {
-        type: DataTypes.DOUBLE,
-        allowNull: true
+        type: DataTypes.DOUBLE, allowNull: true
     },
     longitude: {
-        type: DataTypes.DOUBLE,
-        allowNull: true
+        type: DataTypes.DOUBLE, allowNull: true
     },
-    createDate: {
-        type: DataTypes.STRING,
-        allowNull: true
+    media_creation_date: {
+        type: DataTypes.STRING(100), allowNull: true
     },
     OCR: {
-        type: DataTypes.STRING,
-        allowNull: true
+        type: DataTypes.STRING, allowNull: true
     }
-}, {
-    // timestamps: false
-})
+}, { })
 
 exports.Models = {
     init: function () {
