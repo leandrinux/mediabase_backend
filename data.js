@@ -61,7 +61,7 @@ async function setFileName(mediaId, fileName) {
 async function getFileFullPath(media_id) {
     try {
         const media = await Models.Media.findByPk(media_id)
-        return `${media?.file_path}${media?.file_name}`
+        if (media) return `${media.file_path}${media.file_name}`
     } catch (error) {
     }
 }

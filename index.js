@@ -3,6 +3,7 @@ const { data } = require('./data.js')
 const { tasks } = require('./tasks.js')
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs')
 
 const port = process.env.PORT || 3000; 
 
@@ -10,7 +11,6 @@ const app = express()
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const fs = require('fs')
         const tempDirectory = 'temp/'
         if (!fs.existsSync(tempDirectory)) {
             fs.mkdirSync(tempDirectory)
@@ -32,18 +32,20 @@ app.get('/media', async (req, res) => {
 });
 
 app.get('/file', async (req, res) => {
-    const file_name = await data.getFileName(req.query.id)
-    if (file_name)
-      res.download(`originals/${file_name}`);
+    const fullPath = await data.getFileFullPath(req.query.id)
+    if (fullPath)
+      res.download(fullPath);
     else
       res.status(404).json({message: "not found"})
 });
 
 app.get('/thumb', async (req, res) => {
-    const thumb = await data.getThumb(req.query.id)
-    if (thumb)
-        res.download(`thumbnails/${thumb}`);
-    else
+    const fullPath = await data.getFileFullPath(req.query.id)
+    if (fullPath) {
+        const file = path.parse(fullPath)
+        const thumb = `${file.dir}/thumbs/${file.name}.jpg`
+        res.download(thumb);
+    } else
         res.status(404).json({message: "not found"})
 });
 
