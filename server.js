@@ -7,7 +7,7 @@ const C_TEMP_DIRECTORY = 'temp/'
 
 class Server {
 
-    #app = express()
+    #app
     #upload    
     
     constructor() {
@@ -19,14 +19,15 @@ class Server {
                 this.#getFilename(req, file, cb)
             }
         })
+        this.#app = express()
         this.#upload = multer({ storage });
         this.#setRoutes()
     }
 
     start(port) {
         this.#app.listen(port, async () => {
-            console.log(`Server listening on port ${port}`);
-            // await tasks.initDatabase()
+            console.log(`[ ] Server listening on port ${port}`);
+            services.initDatabase()
         });
     }
 

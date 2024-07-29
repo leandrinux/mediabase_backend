@@ -28,12 +28,12 @@ exports.tasks = {
     // adds new media to the database by copying it to the temp
     // directory and creating the initial record in the media table
     addMedia: async (path) => {
-        console.log(`Adding media at ${path}`)
+        console.log(`[ ] Adding media ${path}`)
         return await data.addMedia(path)
     },
 
     // extracts and saves exif data for the specified media
-    saveExif: exif.saveExif,
+    saveMetadata: exif.saveMetadata,
 
     // relocates media from the temp folder to its final place
     relocateMedia: fileops.relocateMedia,

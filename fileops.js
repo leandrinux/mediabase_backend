@@ -13,7 +13,7 @@ async function relocateMedia(mediaId, originalPath) {
   if (!fs.existsSync(mediaPath)) {
     fs.mkdirSync(mediaPath, { recursive: true })
   } 
-  console.log(`moving ${originalPath} to ${finalFullPath}`)
+  console.log(`[ ] Moving ${originalPath} to ${finalFullPath}`)
   await fs.promises.rename(originalPath, finalFullPath)
   if (currentFullPath != finalFullPath) {
     await data.setFileName(mediaId, path.basename(finalFullPath))

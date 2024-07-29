@@ -37,19 +37,22 @@ async function getMetadata(path) {
   })
 }
 
-async function saveExif (media_id, path) {
-  console.log(`Extracting exif data for photo ${media_id} at ${path}`)
+async function saveMetadata (mediaId, path) {
+  console.log(`[ ] Extracting metadata from ${mediaId} at ${path}`)
   const metadata = await getMetadata(path)
   const [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
   const values = {
     createDate: createDate,
     filePath: mediaTreeLocation,
+    mimeType: metadata.mimeType,
+    width: metadata.imageWidth,
+    height: metadata.imageHeight,
     latitude: fixCoordinate(metadata.gpsLatitude),
     longitude: fixCoordinate(metadata.gpsLongitude)
   }  
-  await data.addExifData(media_id, values)
+  await data.addExifData(mediaId, values)
 }
 
 exports.exif = {
-    saveExif: saveExif
+  saveMetadata: saveMetadata
 }

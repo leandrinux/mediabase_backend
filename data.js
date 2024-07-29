@@ -12,7 +12,10 @@ async function addMedia(filename) {
 async function addExifData(media_id, data) {
     await Models.Media.update({
         file_path: data.filePath,
-        media_creation_date: data.createDate,
+        mime_type: data.mimeType,
+        width: data.width,
+        height: data.height,
+        creation_date: data.createDate,
         latitude: data.latitude,
         longitude: data.latitude
     },{ 
@@ -66,6 +69,14 @@ async function getFileFullPath(media_id) {
     }
 }
 
+async function getMimeType(mediaId) {
+    try {
+        const media = await Models.Media.findByPk(mediaId)
+        return media?.mime_type
+    } catch (error) {
+    }
+}
+
 async function initDatabase() {
     await Models.init()
 }
@@ -78,5 +89,6 @@ exports.data = {
     getAll: getAll,
     getFileName: getFileName,
     setFileName: setFileName,
+    getMimeType: getMimeType,
     getFileFullPath: getFileFullPath
 }

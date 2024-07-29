@@ -16,13 +16,22 @@ const Media = sequelize.define('media', {
     file_path: {
         type: DataTypes.STRING, allowNull: false
     },
+    mime_type: {
+        type: DataTypes.STRING(30), allowNull: true
+    },
+    width: {
+        type: DataTypes.INTEGER, allowNull: true
+    },
+    height: {
+        type: DataTypes.INTEGER, allowNull: true
+    },
     latitude: {
         type: DataTypes.DOUBLE, allowNull: true
     },
     longitude: {
         type: DataTypes.DOUBLE, allowNull: true
     },
-    media_creation_date: {
+    creation_date: {
         type: DataTypes.STRING, allowNull: true
     },
     OCR: {
@@ -32,7 +41,6 @@ const Media = sequelize.define('media', {
 
 exports.Models = {
     init: function () {
-        console.log("Initializing database");
         sequelize.sync();
     },
     Media: Media

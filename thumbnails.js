@@ -9,7 +9,7 @@ const { data } = require('./data.js');
   This won't work for other media like videos!
 */
 function makePhotoThumbnail(mediaId, mediaPath) {
-    console.log(`Making thumbnail for media #${mediaId} at ${mediaPath}`)
+    console.log(`[ ] Making thumbnail for media #${mediaId} at ${mediaPath}`)
     const thumbnailFileName = `${path.basename(mediaPath)}`
     const thumbnailDirectory = `${path.dirname(mediaPath)}/thumbs`
     const thumbnailFinalPath = `${thumbnailDirectory}/${thumbnailFileName}`

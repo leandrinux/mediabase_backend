@@ -5,6 +5,11 @@ const { tasks } = require('./tasks.js')
 
 exports.services = {
 
+    initDatabase: async () => {
+        console.log("[ ] Initializing database");
+        await tasks.initDatabase()
+    },
+
     getMedia: async (req, res) => {
         const photos = await data.getAll()
         res.json(photos);
@@ -28,7 +33,7 @@ exports.services = {
 
     postMedia: async (req, res) => {
         const photo = await tasks.addMedia(req.file.filename, req.file.originalname)
-        await tasks.saveExif(photo.media_id, req.file.path)
+        await tasks.saveMetadata(photo.media_id, req.file.path)
         const filePath = await tasks.relocateMedia(photo.media_id, req.file.path)
         tasks.makeThumbnail(photo.media_id, filePath)
         tasks.runOCR(photo.media_id, filePath)
