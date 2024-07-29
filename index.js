@@ -49,8 +49,8 @@ app.post('/media', upload.single('media'), async (req, res) => {
     const photo = await tasks.addMedia(req.file.filename, req.file.originalname)
     await tasks.saveExif(photo.media_id, req.file.path)
     const filePath = await tasks.relocateMedia(photo.media_id, req.file.path)
-    //tasks.makeThumbnail(photo.media_id, path)
-    //tasks.runOCR(photo.media_id, path)
+    tasks.makeThumbnail(photo.media_id, filePath)
+    tasks.runOCR(photo.media_id, filePath)
 
     res.status(201).json({
         media_id: photo.media_id,

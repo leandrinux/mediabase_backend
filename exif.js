@@ -1,5 +1,7 @@
 const exif = require('exiftool')
 const { data } = require('./data.js')
+const { fileops } = require('./fileops.js')
+const path = require('path')
 
 function fixCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
@@ -38,10 +40,10 @@ async function getMetadata(path) {
 async function saveExif (media_id, path) {
   console.log(`Extracting exif data for photo ${media_id} at ${path}`)
   const metadata = await getMetadata(path)
-  const [ filePath, createDate ] = parseDate(metadata.createDate)
+  const [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
   const values = {
     createDate: createDate,
-    filePath: filePath,
+    filePath: mediaTreeLocation,
     latitude: fixCoordinate(metadata.gpsLatitude),
     longitude: fixCoordinate(metadata.gpsLongitude)
   }  
