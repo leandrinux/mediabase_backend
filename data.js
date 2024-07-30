@@ -37,7 +37,8 @@ exports.data = {
     getAll: async () => {
         try {
             return await Models.Media.findAll({
-                attributes: ['media_id', 'latitude', 'longitude']
+                attributes: ['media_id', 'latitude', 'longitude'],
+                order: [ ['creation_date', 'DESC'] ]
             })
         } catch (error) {
             return []
