@@ -58,6 +58,10 @@ class Server {
             services.postMedia(req, res)
         })
 
+        this.#app.delete('/media', async (req, res) => {
+            services.deleteMedia(req, res)
+        })
+
     }
 
 }

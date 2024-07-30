@@ -44,6 +44,13 @@ exports.data = {
         }
     },
 
+    getMedia: async (mediaId) => {
+        try {
+            return await Models.Media.findByPk(mediaId)
+        } catch (error) {
+        }
+    },
+
     getFileName: async (mediaId) => {
         try {
             const media = await Models.Media.findByPk(mediaId)
@@ -74,6 +81,12 @@ exports.data = {
             if (media) return `${media.file_path}${media.file_name}`
         } catch (error) {
         }
-    }
+    },
+
+    deleteMedia: async (mediaId) => {
+        await Models.Media.destroy({
+            where: { media_id: mediaId }
+        })
+    },
 
 }

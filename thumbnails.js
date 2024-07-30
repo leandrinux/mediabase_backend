@@ -12,17 +12,19 @@ exports.thumbnails = {
     */
     makePhotoThumbnail: (mediaId, mediaPath) => {
         console.log(`[ ] Making thumbnail for media #${mediaId} at ${mediaPath}`)
-        const thumbnailFileName = `${path.basename(mediaPath)}`
-        const thumbnailDirectory = `${path.dirname(mediaPath)}/thumbs`
-        const thumbnailFinalPath = `${thumbnailDirectory}/${thumbnailFileName}`
+        const components = path.parse(mediaPath)
+        const thumbnailFileName = `${components.name}`
+        const thumbnailDirectory = `${components.dir}/thumbs`
+        const thumbnailFinalPath = `${thumbnailDirectory}/${thumbnailFileName}.jpg`
         if (!fs.existsSync(thumbnailDirectory)) {
             fs.mkdirSync(thumbnailDirectory)
         }
         im.resize({
             srcPath: mediaPath,
             // srcFormat: "heic",
+            dstFormat: 'jpg',
             dstPath: thumbnailFinalPath,
-            format: 'jpg',
+            //format: 'jpg',
             width: 350
         }), (err, stdout, stderr) => {
             if (err) throw err;
