@@ -21,11 +21,10 @@ exports.services = {
             return
         }
         const fullPath = await data.getFileFullPath(req.query.id)
-        if (!fullPath) {
+        if ((!fullPath) || (!fs.existsSync(fullPath)))
             res.status(404).json({message: "not found"})
-            return
-        }
-        res.download(fullPath);
+        else
+            res.download(fullPath);
     },
 
     getMediaThumbnail: async (req, res) => {
@@ -39,8 +38,11 @@ exports.services = {
             return
         }
         const file = path.parse(fullPath)
-        const thumb = `${file.dir}/thumbs/${file.name}.jpg`
-        res.download(thumb);
+        const thumbnailPath = `${file.dir}/thumbs/${file.name}.jpg`
+        if (!fs.existsSync(thumbnailPath))
+            res.status(404).json({message: "not found"})
+        else
+            res.download(thumbnailPath);
     },
 
     postMedia: async (req, res) => {
