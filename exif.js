@@ -2,6 +2,7 @@ const exif = require('exiftool')
 const { data } = require('./data.js')
 const { fileops } = require('./fileops.js')
 const path = require('path')
+const { create } = require('domain')
 
 function parseCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
@@ -18,12 +19,13 @@ function parseCoordinate(coordinate) {
 }
 
 function parseDate(dateStr) {
-    const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+\.\d+(?<tz>(\-|\+)\d{2}:\d{2})/gm
-    const {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
-    return [
-      `media/${year}/${month}/${day}/`,
-      `${year}-${month}-${day}T${hour}:${minutes}${tz}`
-    ]
+  console.log(`Parsing date ${dateStr}`)
+  const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+\.\d+(?<tz>(\-|\+)\d{2}:\d{2})/gm
+  const {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
+  return [
+    `media/${year}/${month}/${day}/`,
+    `${year}-${month}-${day}T${hour}:${minutes}${tz}`
+  ]
 }
 
 async function getMetadata(path) {
@@ -42,7 +44,16 @@ exports.exif = {
   saveMetadata: async (mediaId, path) => {
     console.log(`[ ] Extracting metadata from ${mediaId} at ${path}`)
     const metadata = await getMetadata(path)
-    const [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
+    
+    var mediaTreeLocation, createDate
+    if (metadata.createDate) {
+      [ mediaTreeLocation, createDate ] = parseDate(createDate)
+    } else {
+      const today = new Date()
+      mediaTreeLocation = `media/${today.getFullYear()}/${today.getMonth()}/${today.getDay()}/`
+      createDate = today.toISOString()
+    }
+
     const values = {
       createDate: createDate,
       filePath: mediaTreeLocation,

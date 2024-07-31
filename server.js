@@ -20,7 +20,10 @@ class Server {
             }
         })
         this.#app = express()
-        this.#upload = multer({ storage });
+        this.#upload = multer({ 
+            storage: storage,
+            limits: { fieldSize: 25 * 1024 * 1024 }
+        });
         this.#setRoutes()
     }
 

@@ -46,8 +46,11 @@ exports.services = {
     postMedia: async (req, res) => {
         if (!req.file) {
             res.status(400).json({message: "bad request"})
+            console.log('bad postmedia request!')
+            console.log(req)
             return
         }
+        console.log('Adding new media')
         const media = await tasks.addMedia(req.file.filename, req.file.originalname)
         await tasks.saveMetadata(media.media_id, req.file.path)
         const filePath = await tasks.relocateMedia(media.media_id, req.file.path)
