@@ -83,6 +83,17 @@ exports.services = {
             media_id: media.media_id,
             message: "success"
         })
-    }
+    },
+
+    postMediaTags: async (req, res) => {
+        if ((!req.query.id) || (!req.query.tags)) {
+            res.status(400).json({message: "bad request"})
+            return
+        }
+        await data.setTags(req.query.id, req.query.tags)
+        res.status(201).json({
+            message: "success"
+        })
+    } 
 
 }

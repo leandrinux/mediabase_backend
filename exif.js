@@ -47,7 +47,7 @@ exports.exif = {
     
     var mediaTreeLocation, createDate
     if (metadata.createDate) {
-      [ mediaTreeLocation, createDate ] = parseDate(createDate)
+      [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
     } else {
       const today = new Date()
       mediaTreeLocation = `media/${today.getFullYear()}/${today.getMonth()}/${today.getDay()}/`

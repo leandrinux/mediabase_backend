@@ -37,7 +37,7 @@ exports.data = {
     getAll: async () => {
         try {
             return await Models.Media.findAll({
-                attributes: ['media_id', 'latitude', 'longitude'],
+                attributes: ['media_id', 'latitude', 'longitude', 'tags'],
                 order: [ ['creation_date', 'DESC'] ]
             })
         } catch (error) {
@@ -89,5 +89,13 @@ exports.data = {
             where: { media_id: mediaId }
         })
     },
+
+    setTags: async (mediaId, tags) => {
+        await Models.Media.update({ 
+            tags: tags
+        },{ 
+            where: { media_id: mediaId }
+        })
+    }
 
 }

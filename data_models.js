@@ -42,6 +42,9 @@ exports.Models = {
         },
         OCR: {
             type: DataTypes.STRING, allowNull: true
+        },
+        tags: {
+            type: DataTypes.STRING, allowNull: true
         }
     }, { })
     
