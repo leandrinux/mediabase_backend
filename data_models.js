@@ -6,46 +6,58 @@ const sequelize = new Sequelize({
     storage: 'mediabase.sqlite'
 })
 
+const Media = sequelize.define('Media', {
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
+    },
+    file_name: {
+        type: DataTypes.STRING, allowNull: false
+    },
+    file_path: {
+        type: DataTypes.STRING, allowNull: false
+    },
+    mime_type: {
+        type: DataTypes.STRING(30), allowNull: true
+    },
+    width: {
+        type: DataTypes.INTEGER, allowNull: true
+    },
+    height: {
+        type: DataTypes.INTEGER, allowNull: true
+    },
+    latitude: {
+        type: DataTypes.DOUBLE, allowNull: true
+    },
+    longitude: {
+        type: DataTypes.DOUBLE, allowNull: true
+    },
+    creation_date: {
+        type: DataTypes.STRING, allowNull: true
+    },
+    OCR: {
+        type: DataTypes.STRING, allowNull: true
+    }
+}, { })
+
+const Tag = sequelize.define('Tag', {
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
+    },
+    name: {
+        type: DataTypes.STRING, allowNull: false
+    }
+}, { })
+
+Media.belongsToMany(Tag, { through: 'TagsPerMedia' })
+Tag.belongsToMany(Media, { through: 'TagsPerMedia' })
+
 exports.Models = {
 
     initDatabase: async () => {
-        await sequelize.sync();
+        await sequelize.sync()
     },
 
-    Media: sequelize.define('media', {
-        media_id: {
-            type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
-        },
-        file_name: {
-            type: DataTypes.STRING, allowNull: false
-        },
-        file_path: {
-            type: DataTypes.STRING, allowNull: false
-        },
-        mime_type: {
-            type: DataTypes.STRING(30), allowNull: true
-        },
-        width: {
-            type: DataTypes.INTEGER, allowNull: true
-        },
-        height: {
-            type: DataTypes.INTEGER, allowNull: true
-        },
-        latitude: {
-            type: DataTypes.DOUBLE, allowNull: true
-        },
-        longitude: {
-            type: DataTypes.DOUBLE, allowNull: true
-        },
-        creation_date: {
-            type: DataTypes.STRING, allowNull: true
-        },
-        OCR: {
-            type: DataTypes.STRING, allowNull: true
-        },
-        tags: {
-            type: DataTypes.STRING, allowNull: true
-        }
-    }, { })
-    
+    Media: Media,
+
+    Tag: Tag
 }

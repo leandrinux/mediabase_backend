@@ -12,7 +12,7 @@ exports.data = {
         })
     },
 
-    addExifData: async (media_id, data) => {
+    addExifData: async (mediaId, data) => {
         await Models.Media.update({
             file_path: data.filePath,
             mime_type: data.mimeType,
@@ -22,22 +22,22 @@ exports.data = {
             latitude: data.latitude,
             longitude: data.latitude
         },{ 
-            where: { media_id: media_id }
+            where: { id: mediaId }
         })
     },
 
-    addOCRText: async (media_id, OCR) => {
+    addOCRText: async (mediaId, OCR) => {
         await Models.Media.update({ 
             OCR: OCR
         },{ 
-            where: { media_id: media_id }
+            where: { id: mediaId }
         })
     },
 
-    getAll: async () => {
+    getAllMedia: async () => {
         try {
             return await Models.Media.findAll({
-                attributes: ['media_id', 'latitude', 'longitude', 'tags'],
+                attributes: ['id', 'latitude', 'longitude'],
                 order: [ ['creation_date', 'DESC'] ]
             })
         } catch (error) {
@@ -64,7 +64,7 @@ exports.data = {
         await Models.Media.update({ 
             file_name: fileName
         },{ 
-            where: { media_id: mediaId }
+            where: { id: mediaId }
         })
     },
 
@@ -76,9 +76,9 @@ exports.data = {
         }
     },
 
-    getFileFullPath: async (media_id) => {
+    getFileFullPath: async (mediaId) => {
         try {
-            const media = await Models.Media.findByPk(media_id)
+            const media = await Models.Media.findByPk(mediaId)
             if (media) return `${media.file_path}${media.file_name}`
         } catch (error) {
         }
@@ -86,16 +86,25 @@ exports.data = {
 
     deleteMedia: async (mediaId) => {
         await Models.Media.destroy({
-            where: { media_id: mediaId }
+            where: { id: mediaId }
         })
     },
 
-    setTags: async (mediaId, tags) => {
-        await Models.Media.update({ 
-            tags: tags
-        },{ 
-            where: { media_id: mediaId }
-        })
+    getTagsForMedia: async (mediaId) => {
+        try {
+            const media = await exports.data.getMedia(mediaId)
+            const tags = await media.getTags()
+            return tags.map(x => {return x.name})
+        } catch (error) {
+        }
+    },
+
+    getTagWithName: async (tagName) => {
+        return await Models.Tag.findOne({ where: { name: tagName } })
+    },
+
+    addTagWithName: async (tagName) => {
+        return await Models.Tag.create({ name: tagName })
     }
 
 }

@@ -3,20 +3,7 @@ const { data } = require('./data.js');
 const { thumbnails } = require('./thumbnails.js');
 const { ocr } = require('./ocr.js');
 const { fileops } = require('./fileops.js')
-
-/*
-var Orchestrator = require('orchestrator');
-var orchestrator = new Orchestrator();
-
-orchestrator.add('save_to_database', function(){
-    console.log(`Saving to database`);
-    data.push()
-});
-
-orchestrator.start('save_to_database', function (err) {
-    // all done
-});
-*/
+const { tags } = require('./tags.js')
 
 exports.tasks = {
 
@@ -39,5 +26,7 @@ exports.tasks = {
     // creates a thumbnail for the specified media
     makeThumbnail: thumbnails.makePhotoThumbnail,
 
-    runOCR: ocr.run
+    runOCR: ocr.run,
+
+    autoTag: tags.autoTag
 }

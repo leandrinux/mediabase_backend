@@ -19,7 +19,6 @@ function parseCoordinate(coordinate) {
 }
 
 function parseDate(dateStr) {
-  console.log(`Parsing date ${dateStr}`)
   const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+\.\d+(?<tz>(\-|\+)\d{2}:\d{2})/gm
   const {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
   return [

@@ -11,7 +11,7 @@ exports.services = {
     },
 
     getMedia: async (req, res) => {
-        const photos = await data.getAll()
+        const photos = await data.getAllMedia()
         res.json(photos);
     },
 
@@ -45,21 +45,32 @@ exports.services = {
             res.download(thumbnailPath);
     },
 
-    postMedia: async (req, res) => {
-        if (!req.file) {
+    getTagsForMedia: async (req, res) => {
+        if (!req.query.mediaId) {
             res.status(400).json({message: "bad request"})
-            console.log('bad postmedia request!')
-            console.log(req)
             return
         }
-        console.log('Adding new media')
+        const tags = await data.getTagsForMedia(req.query.mediaId)
+        if (!tags)
+            res.status(404).json({message: "not found"})
+        else {
+            res.status(201).json(tags)
+        }
+    },
+
+    addMedia: async (req, res) => {
+        if (!req.file) {
+            res.status(400).json({message: "bad request"})
+            return
+        }
         const media = await tasks.addMedia(req.file.filename, req.file.originalname)
-        await tasks.saveMetadata(media.media_id, req.file.path)
-        const filePath = await tasks.relocateMedia(media.media_id, req.file.path)
-        tasks.makeThumbnail(media.media_id, filePath)
-        tasks.runOCR(media.media_id, filePath)
+        await tasks.saveMetadata(media.id, req.file.path)
+        const filePath = await tasks.relocateMedia(media.id, req.file.path)
+        // tasks.makeThumbnail(media.id, filePath)
+        // tasks.runOCR(media.id, filePath)
+        // tasks.autoTag(media.id)
         res.status(201).json({
-            media_id: media.media_id,
+            id: media.id,
             message: "success"
         })    
     },
@@ -80,17 +91,26 @@ exports.services = {
         fs.unlink(fullFilePath, () => {} )
         fs.unlink(fullThumbnailPath, () => {} )
         res.status(201).json({
-            media_id: media.media_id,
+            id: media.id,
             message: "success"
         })
     },
 
-    postMediaTags: async (req, res) => {
-        if ((!req.query.id) || (!req.query.tags)) {
+    addMediaTags: async (req, res) => {
+        const mediaId = req.query.mediaId
+        const tagName = req.query.tagName
+        if (!mediaId || !tagName) {
             res.status(400).json({message: "bad request"})
             return
         }
-        await data.setTags(req.query.id, req.query.tags)
+        const media = await data.getMedia(mediaId)
+        if (!media) {
+            res.status(404).json({message: "not found"})
+            return
+        }
+        var tag = await data.getTagWithName(tagName)
+        if (!tag) tag = await data.addTagWithName(tagName)
+        media.addTag(tag)
         res.status(201).json({
             message: "success"
         })

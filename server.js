@@ -58,11 +58,15 @@ class Server {
         })
 
         this.#app.post('/media', this.#upload.single('media'), async (req, res) => {  
-            services.postMedia(req, res)
+            services.addMedia(req, res)
         })
 
-        this.#app.post('/tags', async (req, res) => {  
-            services.postMediaTags(req, res)
+        this.#app.get('/tag', async (req, res) => {  
+            services.getTagsForMedia(req, res)
+        })
+
+        this.#app.post('/tag', async (req, res) => {  
+            services.addMediaTags(req, res)
         })
 
         this.#app.delete('/media', async (req, res) => {
