@@ -57,12 +57,12 @@ class Server {
             services.getMediaThumbnail(req, res)
         })
 
-        this.#app.post('/media', this.#upload.single('media'), async (req, res) => {  
-            services.addMedia(req, res)
-        })
-
         this.#app.get('/tag', async (req, res) => {  
             services.getTagsForMedia(req, res)
+        })
+
+        this.#app.post('/media', this.#upload.single('media'), async (req, res) => {  
+            services.addMedia(req, res)
         })
 
         this.#app.post('/tag', async (req, res) => {  

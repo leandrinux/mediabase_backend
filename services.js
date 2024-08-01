@@ -11,8 +11,21 @@ exports.services = {
     },
 
     getMedia: async (req, res) => {
-        const photos = await data.getAllMedia()
-        res.json(photos);
+        const mediaId = req.query.id
+        if (!mediaId) {
+            const media = await data.getAllMedia()
+            res.json(media);
+        } else {
+            const media = await data.getMedia(mediaId)
+            if (!media) {
+                res.status(404).json({message: "not found"})
+            } else {
+                const tags = await media.getTags()
+                const plain = media.get({ plain: true })
+                plain.tags = tags.map(x => {return x.name})
+                res.status(200).json(plain)
+            }
+        }
     },
 
     getMediaFile: async (req, res) => {
