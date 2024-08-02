@@ -8,7 +8,7 @@ const C_TEMP_DIRECTORY = 'temp/'
 class Server {
 
     #app
-    #upload    
+    #upload
     
     constructor() {
         const storage = multer.diskStorage({

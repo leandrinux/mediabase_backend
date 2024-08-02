@@ -22,7 +22,7 @@ exports.services = {
             } else {
                 const tags = await media.getTags()
                 const plain = media.get({ plain: true })
-                plain.tags = tags.map(x => {return x.name})
+                plain.tags = tags.map(x => {return x.name}).sort()
                 res.status(200).json(plain)
             }
         }
