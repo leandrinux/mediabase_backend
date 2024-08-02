@@ -7,7 +7,7 @@ exports.services = {
 
     initDatabase: async () => {
         console.log("[ ] Initializing database");
-        await tasks.initDatabase()
+        await data.initDatabase()
     },
 
     getMedia: async (req, res) => {
@@ -58,19 +58,6 @@ exports.services = {
             res.download(thumbnailPath);
     },
 
-    getTagsForMedia: async (req, res) => {
-        if (!req.query.mediaId) {
-            res.status(400).json({message: "bad request"})
-            return
-        }
-        const tags = await data.getTagsForMedia(req.query.mediaId)
-        if (!tags)
-            res.status(404).json({message: "not found"})
-        else {
-            res.status(201).json(tags)
-        }
-    },
-
     addMedia: async (req, res) => {
         if (!req.file) {
             res.status(400).json({message: "bad request"})
@@ -79,9 +66,9 @@ exports.services = {
         const media = await tasks.addMedia(req.file.filename, req.file.originalname)
         await tasks.saveMetadata(media.id, req.file.path)
         const filePath = await tasks.relocateMedia(media.id, req.file.path)
-        // tasks.makeThumbnail(media.id, filePath)
-        // tasks.runOCR(media.id, filePath)
-        // tasks.autoTag(media.id)
+        tasks.makeThumbnail(media.id, filePath)
+        tasks.runOCR(media.id, filePath)
+        //tasks.autoTag(media.id)
         res.status(201).json({
             id: media.id,
             message: "success"

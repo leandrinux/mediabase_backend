@@ -30,7 +30,7 @@ class Server {
     start(port) {
         this.#app.listen(port, async () => {
             console.log(`[ ] Server listening on port ${port}`);
-            services.initDatabase()
+            await services.initDatabase()
         });
     }
 
@@ -55,10 +55,6 @@ class Server {
 
         this.#app.get('/thumb', async (req, res) => {
             services.getMediaThumbnail(req, res)
-        })
-
-        this.#app.get('/tag', async (req, res) => {  
-            services.getTagsForMedia(req, res)
         })
 
         this.#app.post('/media', this.#upload.single('media'), async (req, res) => {  

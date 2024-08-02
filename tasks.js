@@ -7,9 +7,6 @@ const { tags } = require('./tags.js')
 
 exports.tasks = {
 
-    // creates the database if it doesn't exist
-    initDatabase: data.initDatabase,
-
     // adds new media to the database by copying it to the temp
     // directory and creating the initial record in the media table
     addMedia: async (path) => {

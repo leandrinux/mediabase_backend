@@ -90,15 +90,6 @@ exports.data = {
         })
     },
 
-    getTagsForMedia: async (mediaId) => {
-        try {
-            const media = await exports.data.getMedia(mediaId)
-            const tags = await media.getTags()
-            return tags.map(x => {return x.name})
-        } catch (error) {
-        }
-    },
-
     getTagWithName: async (tagName) => {
         return await Models.Tag.findOne({ where: { name: tagName } })
     },
