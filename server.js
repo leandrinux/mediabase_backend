@@ -62,11 +62,15 @@ class Server {
         })
 
         this.#app.post('/tag', async (req, res) => {  
-            services.addMediaTags(req, res)
+            services.addTagToMedia(req, res)
         })
 
         this.#app.delete('/media', async (req, res) => {
             services.deleteMedia(req, res)
+        })
+
+        this.#app.delete('/tag', async (req, res) => {  
+            services.removeTagFromMedia(req, res)
         })
 
     }

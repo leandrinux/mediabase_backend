@@ -68,7 +68,7 @@ exports.services = {
         const filePath = await tasks.relocateMedia(media.id, req.file.path)
         tasks.makeThumbnail(media.id, filePath)
         tasks.runOCR(media.id, filePath)
-        //tasks.autoTag(media.id)
+        tasks.autoTag(media.id)
         res.status(201).json({
             id: media.id,
             message: "success"
@@ -96,7 +96,7 @@ exports.services = {
         })
     },
 
-    addMediaTags: async (req, res) => {
+    addTagToMedia: async (req, res) => {
         const mediaId = req.query.mediaId
         const tagName = req.query.tagName
         if (!mediaId || !tagName) {
@@ -114,6 +114,25 @@ exports.services = {
         res.status(201).json({
             message: "success"
         })
-    } 
+    },
+    
+    removeTagFromMedia: async (req, res) => {
+        const mediaId = req.query.mediaId
+        const tagName = req.query.tagName
+        if (!mediaId || !tagName) {
+            res.status(400).json({message: "bad request"})
+            return
+        }
+        const media = await data.getMedia(mediaId)
+        const tag = await data.getTagWithName(tagName)
+        if (!media || !tag) {
+            res.status(404).json({message: "not found"})
+            return
+        }
+        media.removeTag(tag)
+        res.status(201).json({
+            message: "success"
+        })       
+    }
 
 }

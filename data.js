@@ -18,7 +18,7 @@ exports.data = {
             mime_type: data.mimeType,
             width: data.width,
             height: data.height,
-            creation_date: data.createDate,
+            date: data.createDate,
             latitude: data.latitude,
             longitude: data.latitude
         },{ 
@@ -38,7 +38,7 @@ exports.data = {
         try {
             return await Models.Media.findAll({
                 attributes: ['id', 'latitude', 'longitude'],
-                order: [ ['creation_date', 'DESC'] ]
+                order: [ ['date', 'DESC'] ]
             })
         } catch (error) {
             return []

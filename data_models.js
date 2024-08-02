@@ -8,7 +8,7 @@ const sequelize = new Sequelize({
 
 const Media = sequelize.define('Media', {
     id: {
-        type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
+        type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4, allowNull: false
     },
     file_name: {
         type: DataTypes.STRING, allowNull: false
@@ -31,8 +31,8 @@ const Media = sequelize.define('Media', {
     longitude: {
         type: DataTypes.DOUBLE, allowNull: true
     },
-    creation_date: {
-        type: DataTypes.STRING, allowNull: true
+    date: {
+        type: DataTypes.DATE, allowNull: true
     },
     OCR: {
         type: DataTypes.STRING, allowNull: true

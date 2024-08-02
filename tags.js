@@ -5,14 +5,13 @@ exports.tags = {
 
     autoTag: async (mediaId) => {
         const media = await data.getMedia(mediaId)
-        console.log(media)
-        const creationDate = Date(media.creation_date)
+        const creationDate = Date(media.date)
         console.log(creationDate)
-        console.log(media.creation_date)
+        console.log(media.date)
 
         const formatter = new Intl.DateTimeFormat('en', { })
         try {
-            const date = formatter.format(media.creation_date)
+            const date = formatter.format(media.date)
             console.log(date)    
         } catch (error) {
 
