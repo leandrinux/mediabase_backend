@@ -66,9 +66,10 @@ exports.services = {
         const media = await tasks.addMedia(req.file.filename, req.file.originalname)
         await tasks.saveMetadata(media.id, req.file.path)
         const filePath = await tasks.relocateMedia(media.id, req.file.path)
-        tasks.makeThumbnail(media.id, filePath)
+        await tasks.makeThumbnail(media.id, filePath)
         tasks.runOCR(media.id, filePath)
         tasks.autoTag(media.id)
+        console.log(`Media added successfully - other tasks may still be running`)
         res.status(201).json({
             id: media.id,
             message: "success"
