@@ -10,6 +10,8 @@
   "description": "",
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.41",
+    "@tensorflow-models/coco-ssd": "^2.2.3",
+    "@tensorflow/tfjs-node": "^4.20.0",
     "exiftool": "^0.0.3",
     "express": "^4.19.2",
     "imagemagick": "^0.1.3",
