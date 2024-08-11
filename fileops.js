@@ -16,7 +16,7 @@ function generateFilename(filename) {
   const basename = path.basename(filename)
   const extension = path.extname(filename)
   while (fs.existsSync(generatedFilename)) {
-    generatedFilename = `${global.mediabaseTemp}/${directory}${basename} (${number})${extension}`
+    generatedFilename = `${global.mediabasePath}/${directory}${basename} (${number})${extension}`
     number += 1
   }
   return generatedFilename
