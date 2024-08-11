@@ -1,9 +1,10 @@
 const { Sequelize, DataTypes } = require('@sequelize/core')
 const { SqliteDialect } = require('@sequelize/sqlite3')
+const { config } = require('./config.js')
 
 const sequelize = new Sequelize({
     dialect: SqliteDialect,
-    storage: 'mediabase.sqlite'
+    storage: `${global.mediabasePath}/mediabase.sqlite`
 })
 
 const Media = sequelize.define('Media', {
@@ -54,6 +55,7 @@ Tag.belongsToMany(Media, { through: 'TagsPerMedia' })
 exports.Models = {
 
     initDatabase: async () => {
+        console.log(`[ ] Initializing database at ${sequelize.rawOptions.storage}`);
         await sequelize.sync()
     },
 

@@ -3,8 +3,6 @@ const multer = require('multer')
 const fs = require('fs')
 const { services } = require('./services.js')
 
-const C_TEMP_DIRECTORY = 'temp/'
-
 class Server {
 
     #app
@@ -29,14 +27,16 @@ class Server {
 
     start(port) {
         this.#app.listen(port, async () => {
-            console.log(`[ ] Server listening on port ${port}`);
+            console.log(`[ ] Server listening on port ${port}`)
             await services.initDatabase()
         });
     }
 
     #getDestinationDirectory(req, file, cb) {
-        if (!fs.existsSync(C_TEMP_DIRECTORY)) fs.mkdirSync(C_TEMP_DIRECTORY)
-        cb(null, C_TEMP_DIRECTORY);
+        let tempDirectory = global.mediabaseTemp ?? 'temp/'
+        if (!fs.existsSync(tempDirectory)) fs.mkdirSync(tempDirectory)
+        console.log(`[ ] Temporary photo directory set to ${tempDirectory}`)
+        cb(null, tempDirectory);
     }
 
     #getFilename(req, file, cb) {

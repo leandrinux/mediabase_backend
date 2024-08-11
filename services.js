@@ -6,7 +6,6 @@ const { tasks } = require('./tasks.js')
 exports.services = {
 
     initDatabase: async () => {
-        console.log("[ ] Initializing database");
         await data.initDatabase()
     },
 
@@ -63,9 +62,10 @@ exports.services = {
             res.status(400).json({message: "bad request"})
             return
         }
-        const media = await tasks.addMedia(req.file.filename, req.file.originalname)
-        await tasks.saveMetadata(media.id, req.file.path)
-        const filePath = await tasks.relocateMedia(media.id, req.file.path)
+        const media = await tasks.addMedia(req.file.filename)
+        var filePath = `${global.mediabaseTemp}/${req.file.filename}`
+        await tasks.saveMetadata(media.id, filePath)
+        filePath = await tasks.relocateMedia(media.id, filePath)
         await tasks.makeThumbnail(media.id, filePath)
         tasks.runOCR(media.id, filePath)
         tasks.autoTag(media.id)

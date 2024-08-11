@@ -9,9 +9,9 @@ exports.tasks = {
 
     // adds new media to the database by copying it to the temp
     // directory and creating the initial record in the media table
-    addMedia: async (path) => {
-        console.log(`[ ] Adding media ${path}`)
-        return await data.addMedia(path)
+    addMedia: async (filePath) => {
+        console.log(`[ ] Adding media ${filePath}`)
+        return await data.addMedia(filePath)
     },
 
     // extracts and saves exif data for the specified media

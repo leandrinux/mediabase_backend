@@ -8,7 +8,7 @@ exports.data = {
     addMedia: async (filename) => {
         return await Models.Media.create({
             file_name: filename,
-            file_path: 'temp/'
+            file_path: global.mediabaseTemp
         })
     },
 
@@ -79,7 +79,7 @@ exports.data = {
     getFileFullPath: async (mediaId) => {
         try {
             const media = await Models.Media.findByPk(mediaId)
-            if (media) return `${media.file_path}${media.file_name}`
+            if (media) return `${media.file_path}/${media.file_name}`
         } catch (error) {
         }
     },

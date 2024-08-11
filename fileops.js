@@ -10,13 +10,14 @@ const { data } = require('./data.js')
   but may be different
 */
 function generateFilename(filename) {
-  var generatedFilename = filename
+  var generatedFilename = `${global.mediabasePath}/${filename}`
   var number = 2
   const directory = path.dirname(filename)
+  console.log(`directory: ${directory}`)
   const basename = path.basename(filename)
   const extension = path.extname(filename)
   while (fs.existsSync(generatedFilename)) {
-    generatedFilename = `${directory}/${basename} (${number})${extension}`
+    generatedFilename = `${global.mediabaseTemp}/${directory}${basename} (${number})${extension}`
     number += 1
   }
   return generatedFilename
@@ -30,8 +31,10 @@ exports.fileops = {
   */
   relocateMedia: async (mediaId, originalPath) => {
       const currentFullPath = await data.getFileFullPath(mediaId)
+      console.log(`currentFullPath: ${currentFullPath}`)
       const finalFullPath = generateFilename(currentFullPath)
       const mediaPath = path.dirname(finalFullPath)
+      console.log(`Mediapath: ${mediaPath}`)
       if (!fs.existsSync(mediaPath)) {
         fs.mkdirSync(mediaPath, { recursive: true })
       } 
