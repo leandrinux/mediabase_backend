@@ -79,7 +79,7 @@ exports.data = {
     getFileFullPath: async (mediaId) => {
         try {
             const media = await Models.Media.findByPk(mediaId)
-            if (media) return `${media.file_path}/${media.file_name}`
+            if (media) return `${global.mediabasePath}/${media.file_path}${media.file_name}`
         } catch (error) {
         }
     },
