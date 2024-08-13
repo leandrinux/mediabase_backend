@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('@sequelize/core')
+const { Sequelize, DataTypes, sql } = require('@sequelize/core')
 const { SqliteDialect } = require('@sequelize/sqlite3')
 const { config } = require('./config.js')
 
@@ -9,7 +9,7 @@ const sequelize = new Sequelize({
 
 const Media = sequelize.define('Media', {
     id: {
-        type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4, allowNull: false
+        type: DataTypes.UUID, primaryKey: true, defaultValue: sql.uuidV4, allowNull: false
     },
     file_name: {
         type: DataTypes.STRING, allowNull: false
