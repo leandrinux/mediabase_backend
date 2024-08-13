@@ -10,13 +10,13 @@ const { data } = require('./data.js')
   but may be different
 */
 function generateFilename(filename) {
-  var generatedFilename = `${global.mediabasePath}/${filename}`
+  var generatedFilename = filename
   var number = 2
   const directory = path.dirname(filename)
   const basename = path.basename(filename)
   const extension = path.extname(filename)
   while (fs.existsSync(generatedFilename)) {
-    generatedFilename = `${global.mediabasePath}/${directory}${basename} (${number})${extension}`
+    generatedFilename = `${directory}/${basename} (${number})${extension}`
     number += 1
   }
   return generatedFilename
