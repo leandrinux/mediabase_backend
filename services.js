@@ -69,7 +69,7 @@ exports.services = {
         await tasks.makeThumbnail(media.id, filePath)
         tasks.runOCR(media.id, filePath)
         tasks.generateAITags(media.id)
-        console.log(`Media added successfully - other tasks may still be running`)
+        console.log(`[ ] Media added successfully - other tasks may still be running`)
         res.status(201).json({
             id: media.id,
             message: "success"

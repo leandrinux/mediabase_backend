@@ -20,13 +20,15 @@ exports.AI = {
         
         const allTags = predictions.map(x => x.class)
         const uniqueTags = Array.from(new Set(allTags))
-        
         uniqueTags.forEach(async tagName => { 
             var tagObject = await data.getTagWithName(tagName)
             if (!tagObject) tagObject = await data.addTagWithName(tagName)
             media.addTag(tagObject)
         })
-        console.log(`[ ] Added tags: ${uniqueTags}`)        
+        if (uniqueTags.count) 
+            console.log(`[ ] Added tags: ${uniqueTags}`)
+        else
+            console.log(`[ ] No AI tags were found`)
     }
 
 }
