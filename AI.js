@@ -9,6 +9,12 @@ exports.AI = {
 
     generateTags: async (mediaId) => {
         const media = await data.getMedia(mediaId)
+
+        if (media.mime_type == 'image/heic') {
+            console.log('[ ] HEIC images are not suitable for AI object recognition with tensorflow')
+            return
+        }
+        
         if (!model) {
             model = await coco_ssd.load({ base: "mobilenet_v1" })
         }
