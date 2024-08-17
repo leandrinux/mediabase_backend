@@ -105,10 +105,10 @@ exports.services = {
             res.status(404).json({message: "not found"})
             return
         }
-        const fullFilePath = `${media.file_path}${media.file_name}`
-        const fullThumbnailPath = `${media.file_path}thumbs/${media.file_name}`
+        const fullMediaPath = paths.getFullMediaPath(media)
+        const fullThumbnailPath = paths.getFullThumbnailPath(media)
         await data.deleteMedia(req.query.id)
-        fs.unlink(fullFilePath, () => {} )
+        fs.unlink(fullMediaPath, () => {} )
         fs.unlink(fullThumbnailPath, () => {} )
         res.status(201).json({
             id: media.id,
@@ -132,6 +132,8 @@ exports.services = {
         var tag = await data.getTagWithName(tagName)
         if (!tag) tag = await data.addTagWithName(tagName)
         media.addTag(tag)
+        tag.count = tag.count + 1
+        await tag.save()
         res.status(201).json({
             message: "success"
         })
@@ -152,6 +154,8 @@ exports.services = {
             return
         }
         media.removeTag(tag)
+        tag.count = tag.count - 1
+        tag.save()
         res.status(201).json({
             message: "success"
         })       

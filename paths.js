@@ -1,5 +1,5 @@
 
-const baseDirectory =  '/Users/leandrinux/Desktop'
+const baseDirectory =  '/Users/leandrinux/Desktop/mediabase'
 
 exports.paths = {
 

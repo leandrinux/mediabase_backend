@@ -46,6 +46,9 @@ const Tag = sequelize.define('Tag', {
     },
     name: {
         type: DataTypes.STRING, allowNull: false
+    },
+    count: {
+        type: DataTypes.INTEGER.UNSIGNED, defaultValue: 0
     }
 }, { })
 

@@ -33,7 +33,9 @@ exports.AI = {
             if (!tag) {
                 tag = await data.addTagWithName(tagName)
             }
-            media.addTag(tag)
+            await media.addTag(tag)
+            tag.count = tag.count + 1
+            await tag.save()
         })
         if (uniqueTags) 
             console.log(`[ ] Added tags: ${uniqueTags}`)

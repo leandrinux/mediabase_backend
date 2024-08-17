@@ -55,6 +55,7 @@ exports.data = {
     getTags: async () => {
         try {
             return await Models.Tag.findAll({
+                attributes: ['id', 'name', 'count'],
                 order: [ ['name', 'ASC'] ]
             })
         } catch (error) {
