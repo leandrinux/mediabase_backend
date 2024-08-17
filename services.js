@@ -11,6 +11,7 @@ exports.services = {
     },
 
     getMedia: async (req, res) => {
+        console.log('[ ] Service requested: getMedia')
         const mediaId = req.query.id
         if (!mediaId) {
             const media = await data.getAllMedia()
@@ -29,6 +30,7 @@ exports.services = {
     },
 
     getMediaFile: async (req, res) => {
+        console.log('[ ] Service requested: getMediaFile')
         if (!req.query.id) {
             res.status(400).json({message: "bad request"})
             return
@@ -41,13 +43,18 @@ exports.services = {
     },
 
     getMediaThumbnail: async (req, res) => {
+        console.log('[ ] Service requested: getMediaThumbnail')
         if (!req.query.id) {
             res.status(400).json({message: "bad request"})
             return
         }
         const media = await data.getMedia(req.query.id)
+        if (!media) {
+            res.status(404).json({message: "not found"})
+            return            
+        }
         const thumbnailPath = paths.getFullThumbnailPath(media)
-        if (!thumbnailPath || !fs.existsSync(thumbnailPath)) {
+        if (!fs.existsSync(thumbnailPath)) {
             res.status(404).json({message: "not found"})
             return
         } else
@@ -55,6 +62,7 @@ exports.services = {
     },
 
     addMedia: async (req, res) => {
+        console.log('[ ] Service requested: addMedia')
         if (!req.file) {
             res.status(400).json({message: "bad request"})
             return
@@ -81,6 +89,7 @@ exports.services = {
     },
 
     deleteMedia: async (req, res) => {
+        console.log('[ ] Service requested: deleteMedia')
         if (!req.query.id) {
             res.status(400).json({message: "bad request"})
             return
@@ -102,6 +111,7 @@ exports.services = {
     },
 
     addTagToMedia: async (req, res) => {
+        console.log('[ ] Service requested: addTagToMedia')
         const mediaId = req.query.mediaId
         const tagName = req.query.tagName
         if (!mediaId || !tagName) {
@@ -122,6 +132,7 @@ exports.services = {
     },
     
     removeTagFromMedia: async (req, res) => {
+        console.log('[ ] Service requested: removeTagFromMedia')
         const mediaId = req.query.mediaId
         const tagName = req.query.tagName
         if (!mediaId || !tagName) {
