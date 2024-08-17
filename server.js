@@ -40,38 +40,16 @@ class Server {
 
     #setRoutes() {
 
-        this.#app.get('/media', async (req, res) => {
-            services.getMedia(req, res)
-        })
+        this.#app.get('/media', services.getMedia)
+        this.#app.get('/tags',services.getTags)
+        this.#app.get('/file', services.getMediaFile)
+        this.#app.get('/thumb', services.getMediaThumbnail)
 
-        this.#app.get('/tags', async (req, res) => {
-            services.getTags(req, res)
-        })
-
-        this.#app.get('/file', async (req, res) => {
-            services.getMediaFile(req, res)
-        })
-
-        this.#app.get('/thumb', async (req, res) => {
-            services.getMediaThumbnail(req, res)
-        })
-
-        this.#app.post('/media', this.#upload.single('media'), async (req, res) => {  
-            services.addMedia(req, res)
-        })
-
-        this.#app.post('/tag', async (req, res) => {  
-            services.addTagToMedia(req, res)
-        })
-
-        this.#app.delete('/media', async (req, res) => {
-            services.deleteMedia(req, res)
-        })
-
-        this.#app.delete('/tag', async (req, res) => {  
-            services.removeTagFromMedia(req, res)
-        })
-
+        this.#app.post('/media', this.#upload.single('media'), services.addMedia)
+        this.#app.post('/tag', services.addTagToMedia)
+        
+        this.#app.delete('/media', services.deleteMedia)
+        this.#app.delete('/tag', services.removeTagFromMedia)
     }
 
 }
