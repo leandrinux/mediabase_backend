@@ -29,8 +29,8 @@ exports.thumbnails = {
         const fullMediaPath = paths.getFullMediaPath(media)
         const thumbnailDirectory = `${paths.getThumbnailsPath()}/${media.file_path}`
         console.log(`[ ] Making thumbnail for ${media.id} at ${fullMediaPath}`)
-        const basename = path.basename(media.file_name)
-        const thumbnailPath = `${thumbnailDirectory}/${basename}.jpg`
+        const basename_no_extension = path.basename(media.file_name).replace(/\.[^/.]+$/, "")
+        const thumbnailPath = `${thumbnailDirectory}/${basename_no_extension}.jpg`
         if (!fs.existsSync(thumbnailDirectory)) {
             fs.mkdirSync(thumbnailDirectory, { recursive: true })
         }

@@ -28,7 +28,8 @@ exports.paths = {
     },
 
     getFullThumbnailPath: (media) => {
-        return `${baseDirectory}/thumbs/${media.file_path}/${media.file_name}.jpg`
+        const mediaFilenameNoExtension = media.file_name.replace(/\.[^/.]+$/, "")
+        return `${baseDirectory}/thumbs/${media.file_path}/${mediaFilenameNoExtension}.jpg`
     }
 
 }
