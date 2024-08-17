@@ -44,18 +44,14 @@ exports.services = {
         if (!req.query.id) {
             res.status(400).json({message: "bad request"})
             return
-        }       
-        const fullPath = await data.getFileFullPath(req.query.id)
-        if (!fullPath) {
+        }
+        const media = await data.getMedia(req.query.id)
+        const thumbnailPath = paths.getFullThumbnailPath(media)
+        if (!thumbnailPath || !fs.existsSync(thumbnailPath)) {
             res.status(404).json({message: "not found"})
             return
-        }
-        const file = path.parse(fullPath)
-        const thumbnailPath = `${file.dir}/thumbs/${file.name}.jpg`
-        if (!fs.existsSync(thumbnailPath))
-            res.status(404).json({message: "not found"})
-        else
-            res.download(thumbnailPath);
+        } else
+          res.download(thumbnailPath)
     },
 
     addMedia: async (req, res) => {

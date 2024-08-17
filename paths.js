@@ -28,7 +28,7 @@ exports.paths = {
     },
 
     getFullThumbnailPath: (media) => {
-        return `${baseDirectory}/thumbs/${media.file_path}/${media.file_name}`
+        return `${baseDirectory}/thumbs/${media.file_path}/${media.file_name}.jpg`
     }
 
 }
