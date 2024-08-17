@@ -1,8 +1,9 @@
 const express = require('express')
 const multer = require('multer')
 const fs = require('fs')
-const { services } = require('./services.js')
+const services = require('./services')
 const { paths } = require('./paths.js')
+const { data } = require('./data.js')
 
 class Server {
 
@@ -34,22 +35,22 @@ class Server {
     start(port) {
         this.#app.listen(port, async () => {
             console.log(`[ ] Server listening on port ${port}`)
-            await services.initDatabase()
+            await data.initDatabase()
         });
     }
 
     #setRoutes() {
 
-        this.#app.get('/media', services.getMedia)
-        this.#app.get('/tags',services.getTags)
-        this.#app.get('/file', services.getMediaFile)
-        this.#app.get('/thumb', services.getMediaThumbnail)
+        this.#app.get('/media', services.media.getMedia)
+        this.#app.get('/tags',services.tags.getTags)
+        this.#app.get('/file', services.media.getMediaFile)
+        this.#app.get('/thumb', services.media.getMediaThumbnail)
 
-        this.#app.post('/media', this.#upload.single('media'), services.addMedia)
-        this.#app.post('/tag', services.addTagToMedia)
+        this.#app.post('/media', this.#upload.single('media'), services.media.addMedia)
+        this.#app.post('/tag', services.tags.addTagToMedia)
         
-        this.#app.delete('/media', services.deleteMedia)
-        this.#app.delete('/tag', services.removeTagFromMedia)
+        this.#app.delete('/media', services.media.deleteMedia)
+        this.#app.delete('/tag', services.tags.removeTagFromMedia)
     }
 
 }
