@@ -2,6 +2,7 @@ const express = require('express')
 const multer = require('multer')
 const fs = require('fs')
 const { services } = require('./services.js')
+const { paths } = require('./paths.js')
 
 class Server {
 
@@ -10,11 +11,16 @@ class Server {
     
     constructor() {
         const storage = multer.diskStorage({
+
             destination: (req, file, cb) => {
-                this.#getDestinationDirectory(req, file, cb)
+                let uploadDirectory = paths.getTemporaryPath()
+                if (!fs.existsSync(uploadDirectory)) fs.mkdirSync(uploadDirectory)
+                console.log(`[ ] Uploading media to temp dir at ${uploadDirectory}`)
+                cb(null, uploadDirectory)
             },
+
             filename: (req, file, cb) => {
-                this.#getFilename(req, file, cb)
+                cb(null, file.originalname)
             }
         })
         this.#app = express()
@@ -30,17 +36,6 @@ class Server {
             console.log(`[ ] Server listening on port ${port}`)
             await services.initDatabase()
         });
-    }
-
-    #getDestinationDirectory(req, file, cb) {
-        let tempDirectory = global.mediabaseTemp ?? 'temp/'
-        if (!fs.existsSync(tempDirectory)) fs.mkdirSync(tempDirectory)
-        console.log(`[ ] Temporary photo directory set to ${tempDirectory}`)
-        cb(null, tempDirectory);
-    }
-
-    #getFilename(req, file, cb) {
-        cb(null, file.originalname)
     }
 
     #setRoutes() {

@@ -9,9 +9,9 @@ exports.tasks = {
 
     // adds new media to the database by copying it to the temp
     // directory and creating the initial record in the media table
-    addMedia: async (filePath) => {
-        console.log(`[ ] Adding media ${filePath}`)
-        return await data.addMedia(filePath)
+    addMedia: async (mediaFilename) => {
+        console.log(`[ ] Adding media ${mediaFilename}`)
+        return await data.addMedia(mediaFilename)
     },
 
     // extracts and saves exif data for the specified media
@@ -21,7 +21,7 @@ exports.tasks = {
     relocateMedia: fileops.relocateMedia,
     
     // creates a thumbnail for the specified media
-    makeThumbnail: thumbnails.makePhotoThumbnail,
+    makeThumbnail: thumbnails.makeThumbnail,
 
     // uses tesseract to attempt OCR in the photos being uploaded
     runOCR: ocr.run,

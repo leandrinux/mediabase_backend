@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const { data } = require('./data.js')
 const { tasks } = require('./tasks.js')
+const { paths } = require('./paths.js')
 
 exports.services = {
 
@@ -62,13 +63,20 @@ exports.services = {
             res.status(400).json({message: "bad request"})
             return
         }
-        const media = await tasks.addMedia(req.file.filename)
-        var filePath = `${global.mediabaseTemp}/${req.file.filename}`
-        await tasks.saveMetadata(media.id, filePath)
-        filePath = await tasks.relocateMedia(media.id, filePath)
-        await tasks.makeThumbnail(media.id, filePath)
-        tasks.runOCR(media.id, filePath)
-        tasks.generateAITags(media.id)
+
+        // add the media entity with the original file
+        const originalFilename = req.file.filename
+        var media = await tasks.addMedia(originalFilename)
+        const tempMediaPath = `${paths.getTemporaryPath()}/${originalFilename}`
+
+        // extract and save metadata from media
+        await tasks.saveMetadata(media, tempMediaPath)
+        const finalMediaPath = await tasks.relocateMedia(media, tempMediaPath)
+        media = await data.getMedia(media.id)
+
+        await tasks.makeThumbnail(media)
+        tasks.runOCR(media)
+        tasks.generateAITags(media)
         console.log(`[ ] Media added successfully - other tasks may still be running`)
         res.status(201).json({
             id: media.id,

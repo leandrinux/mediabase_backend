@@ -28,19 +28,19 @@ exports.fileops = {
     Used to move media from the original temp directory to its final
     destination in the media tree
   */
-  relocateMedia: async (mediaId, originalPath) => {
-      const currentFullPath = await data.getFileFullPath(mediaId)
-      const finalFullPath = generateFilename(currentFullPath)
-      const mediaPath = path.dirname(finalFullPath)
+  relocateMedia: async (media, tempMediaPath) => {
+      const fullPath = await data.getFileFullPath(media.id)
+      const finalMediaPath = generateFilename(fullPath)
+      const mediaPath = path.dirname(finalMediaPath)
       if (!fs.existsSync(mediaPath)) {
         fs.mkdirSync(mediaPath, { recursive: true })
       } 
-      console.log(`[ ] Moving ${originalPath} to ${finalFullPath}`)
-      await fs.promises.rename(originalPath, finalFullPath)
-      if (currentFullPath != finalFullPath) {
-        await data.setFileName(mediaId, path.basename(finalFullPath))
+      console.log(`[ ] Moving ${tempMediaPath} to ${finalMediaPath}`)
+      await fs.promises.rename(tempMediaPath, finalMediaPath)
+      if (tempMediaPath != finalMediaPath) {
+        await data.setFileName(media.id, path.basename(finalMediaPath))
       }
-      return finalFullPath
+      return finalMediaPath
     }
 
 }

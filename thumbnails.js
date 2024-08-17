@@ -1,6 +1,7 @@
 const im = require('imagemagick')
 const fs = require('fs')
-const path = require("path")
+const path = require('path')
+const { paths } = require("./paths.js")
 const { data } = require('./data.js')
 
 async function resizeImageAsync(srcPath, dstPath, width) {
@@ -24,16 +25,16 @@ exports.thumbnails = {
     and saves it in the thumbs directory, which is also created if it doesn't exist.
     This won't work for other media like videos!
     */
-    makePhotoThumbnail: async (mediaId, mediaPath) => {
-        console.log(`[ ] Making thumbnail for media #${mediaId} at ${mediaPath}`)
-        const components = path.parse(mediaPath)
-        const thumbnailFileName = `${components.name}`
-        const thumbnailDirectory = `${components.dir}/thumbs`
-        const thumbnailFinalPath = `${thumbnailDirectory}/${thumbnailFileName}.jpg`
+    makeThumbnail: async (media) => {
+        const fullMediaPath = paths.getFullMediaPath(media)
+        const thumbnailDirectory = `${paths.getThumbnailsPath()}/${media.file_path}`
+        console.log(`[ ] Making thumbnail for ${media.id} at ${fullMediaPath}`)
+        const basename = path.basename(media.file_name)
+        const thumbnailPath = `${thumbnailDirectory}/${basename}.jpg`
         if (!fs.existsSync(thumbnailDirectory)) {
-            fs.mkdirSync(thumbnailDirectory)
+            fs.mkdirSync(thumbnailDirectory, { recursive: true })
         }
-        await resizeImageAsync(mediaPath, thumbnailFinalPath, 350)
+        await resizeImageAsync(fullMediaPath, thumbnailPath, 350)
         console.log(`[ ] Thumbnail made successfully`)
     }
 

@@ -1,14 +1,14 @@
-const util = require("util");
-const { Models } = require("./data_models.js");
-const { Sequelize } = require("sequelize");
+const { Models } = require("./data_models.js")
+const { Sequelize } = require("sequelize")
+const { paths } = require('./paths.js')
 
 exports.data = {
     initDatabase: Models.initDatabase,
 
-    addMedia: async (filename) => {
+    addMedia: async (mediaFilename) => {
         return await Models.Media.create({
-            file_name: filename,
-            file_path: global.mediabaseTemp
+            file_name: mediaFilename,
+            file_path: paths.getTemporaryPath()
         })
     },
 
@@ -79,7 +79,7 @@ exports.data = {
     getFileFullPath: async (mediaId) => {
         try {
             const media = await Models.Media.findByPk(mediaId)
-            if (media) return `${global.mediabasePath}/${media.file_path}${media.file_name}`
+            if (media) return paths.getFullMediaPath(media)
         } catch (error) {
         }
     },

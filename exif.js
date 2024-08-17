@@ -1,8 +1,8 @@
 const exif = require('exiftool')
 const { data } = require('./data.js')
 const { fileops } = require('./fileops.js')
-const path = require('path')
 const { create } = require('domain')
+const fs = require('fs').promises
 
 function parseCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
@@ -19,16 +19,17 @@ function parseCoordinate(coordinate) {
 }
 
 function parseDate(dateStr) {
-  const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+\.\d+(?<tz>(\-|\+)\d{2}:\d{2})/gm
-  const {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
+  console.log(`Parsing date ${dateStr}`)
+  const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+(\.\d+)?(?<tz>(\-|\+)\d{2}:\d{2})?/gm
+  var {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
+  if (!tz) tz = ""
   return [
-    `${year}/${month}/${day}/`,
+    `${year}/${month}/${day}`,
     `${year}-${month}-${day}T${hour}:${minutes}${tz}`
   ]
 }
 
 async function getMetadata(path) {
-  const fs = require('fs').promises
   const data = await fs.readFile(path)
   return new Promise((resolve, reject) => {
     exif.metadata(data, function (err, metadata) {
@@ -40,16 +41,16 @@ async function getMetadata(path) {
 
 exports.exif = {
 
-  saveMetadata: async (mediaId, path) => {
-    console.log(`[ ] Extracting metadata from ${mediaId} at ${path}`)
-    const metadata = await getMetadata(path)
+  saveMetadata: async (media, fullMediaPath) => {
+    console.log(`[ ] Extracting metadata from ${fullMediaPath}`)
+    const metadata = await getMetadata(fullMediaPath)
     
     var mediaTreeLocation, createDate
     if (metadata.createDate) {
       [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
     } else {
       const today = new Date()
-      mediaTreeLocation = `media/${today.getFullYear()}/${today.getMonth()}/${today.getDay()}/`
+      mediaTreeLocation = `${today.getFullYear()}/${today.getMonth()}/${today.getDay()}`
       createDate = today.toISOString()
     }
 
@@ -62,7 +63,7 @@ exports.exif = {
       latitude: parseCoordinate(metadata.gpsLatitude),
       longitude: parseCoordinate(metadata.gpsLongitude)
     }  
-    await data.addExifData(mediaId, values)
+    await data.addExifData(media.id, values)
   }
 
 }

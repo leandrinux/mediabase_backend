@@ -1,19 +1,20 @@
 const { createWorker } = require('tesseract.js');
 const { data } = require('./data.js')
+const { paths } = require("./paths.js")
 
 exports.ocr = {
 
-    run: async (mediaId, path) => {
-        const mimeType = await data.getMimeType(mediaId)
+    run: async (media) => {
+        const mimeType = media.mime_type
         if (mimeType == 'image/heic') {
             console.log('[ ] HEIC images are not suitable for OCR with tesseract')
             return
         }
-
-        console.log(`[ ] Running OCR on #${mediaId} at ${path}`)
+        const path = paths.getFullMediaPath(media)
+        console.log(`[ ] Running OCR on ${path}`)
         const worker = await createWorker('eng')
         const ret = await worker.recognize(path)
-        await data.addOCRText(mediaId, ret.data.text)
+        await data.addOCRText(media.id, ret.data.text)
         await worker.terminate()
     }
 

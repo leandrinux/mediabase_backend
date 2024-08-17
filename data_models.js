@@ -1,10 +1,10 @@
 const { Sequelize, DataTypes, sql } = require('@sequelize/core')
 const { SqliteDialect } = require('@sequelize/sqlite3')
-const { config } = require('./config.js')
+const { paths } = require('./paths.js')
 
 const sequelize = new Sequelize({
     dialect: SqliteDialect,
-    storage: `${global.mediabasePath}/mediabase.sqlite`
+    storage: `${paths.getDatabasePath()}/mediabase.sqlite`
 })
 
 const Media = sequelize.define('Media', {
