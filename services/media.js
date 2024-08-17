@@ -1,6 +1,6 @@
-const { data } = require('../data.js')
+const { data } = require('../data')
+const { tasks } = require('../tasks')
 const { paths } = require('../paths.js')
-const { tasks } = require('../tasks.js')
 const fs = require('fs')
 
 exports.media = {

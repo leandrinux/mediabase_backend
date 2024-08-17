@@ -1,8 +1,8 @@
 const exif = require('exiftool')
-const { data } = require('./data.js')
-const { fileops } = require('./fileops.js')
 const { create } = require('domain')
 const fs = require('fs').promises
+const { data } = require('../data')
+const { fileops } = require('./fileops.js')
 
 function parseCoordinate(coordinate) {
   if (coordinate === undefined) return undefined

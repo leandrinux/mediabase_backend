@@ -1,9 +1,9 @@
-const { Models } = require("./data_models.js")
 const { Sequelize } = require("sequelize")
-const { paths } = require('./paths.js')
+const { Models } = require("./models.js")
+const { paths } = require('../paths.js')
 
 exports.data = {
-    initDatabase: Models.initDatabase,
+    models: Models,
 
     addMedia: async (mediaFilename) => {
         return await Models.Media.create({

@@ -1,5 +1,5 @@
+const { data } = require('../data');
 const { exif } = require('./exif.js');
-const { data } = require('./data.js');
 const { thumbnails } = require('./thumbnails.js');
 const { ocr } = require('./ocr.js');
 const { fileops } = require('./fileops.js')

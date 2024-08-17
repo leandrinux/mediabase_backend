@@ -4,3 +4,4 @@
 * WEBP photo support
 * Get photos by tags
 * When removing tag from media make sure that both the media and the tag exists
+* When a tag count reaches zero it should be removed

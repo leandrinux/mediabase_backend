@@ -1,8 +1,8 @@
-const { data } = require('./data.js');
 const tf = require("@tensorflow/tfjs-node")
 const coco_ssd = require("@tensorflow-models/coco-ssd")
 const fs = require('node:fs/promises');
-const { paths } = require("./paths.js")
+const { data } = require('../data');
+const { paths } = require("../paths.js")
 
 const modelName = "mobilenet_v2"
 var model = undefined

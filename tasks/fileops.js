@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { data } = require('./data.js')
+const { data } = require('../data')
 
 /*
   Used to verify if a file exists in a certain path. If it does, then a new

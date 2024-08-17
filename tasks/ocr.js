@@ -1,6 +1,6 @@
 const { createWorker } = require('tesseract.js');
-const { data } = require('./data.js')
-const { paths } = require("./paths.js")
+const { data } = require('../data')
+const { paths } = require("../paths.js")
 
 exports.ocr = {
 

@@ -1,8 +1,8 @@
 const im = require('imagemagick')
 const fs = require('fs')
 const path = require('path')
-const { paths } = require("./paths.js")
-const { data } = require('./data.js')
+const { paths } = require("../paths.js")
+const { data } = require('../data')
 
 async function resizeImageAsync(srcPath, dstPath, width) {
     return new Promise((resolve, reject) => {
