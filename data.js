@@ -52,6 +52,16 @@ exports.data = {
         }
     },
 
+    getTags: async () => {
+        try {
+            return await Models.Tag.findAll({
+                order: [ ['name', 'ASC'] ]
+            })
+        } catch (error) {
+            return []
+        }
+    },
+
     getFileName: async (mediaId) => {
         try {
             const media = await Models.Media.findByPk(mediaId)

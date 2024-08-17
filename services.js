@@ -61,6 +61,12 @@ exports.services = {
           res.download(thumbnailPath)
     },
 
+    getTags: async (req, res) => {
+        console.log('[ ] Service requested: getTags')
+        const tags = await data.getTags()
+        res.status(200).json(tags)
+    },
+
     addMedia: async (req, res) => {
         console.log('[ ] Service requested: addMedia')
         if (!req.file) {

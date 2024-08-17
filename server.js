@@ -44,6 +44,10 @@ class Server {
             services.getMedia(req, res)
         })
 
+        this.#app.get('/tags', async (req, res) => {
+            services.getTags(req, res)
+        })
+
         this.#app.get('/file', async (req, res) => {
             services.getMediaFile(req, res)
         })
