@@ -39,14 +39,16 @@ async function getMetadata(path) {
 }
 
 function getMediaTypeFromMimeType(mimeType) {
-  const supportedImageTypes = ['image/jpeg', 'image/webp', 'image/png', 'image/heic']
-  const supportedVideoTypes = ['video/quicktime']
-  if (mimeType in supportedImageTypes)
+  const supportedImageTypes = new Set(['image/jpeg', 'image/webp', 'image/png', 'image/heic'])
+  const supportedVideoTypes = new Set(['video/quicktime'])
+  if (supportedImageTypes.has(mimeType))
     return 'image'
-  else if (mimeType in supportedVideoTypes)
+  else if (supportedVideoTypes.has(mimeType))
     return 'video'
-  else
+  else {
+    console.log(`[ ] mimeType ${mimeType} not recognized as valid media type`)
     return 'unknown'
+  }
 }
 
 export default async function saveMetadata(media, fullMediaPath) {
