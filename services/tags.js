@@ -46,12 +46,17 @@ exports.tags = {
             res.status(404).json({message: "not found"})
             return
         }
+        const tagPerMedia = await data.models.TagsPerMedia.findOne({
+            where : { tagId: tag.id, mediaId: media.id }
+        })
+        if (!tagPerMedia) {
+            res.status(404).json({message: "media does not have that tag"})
+            return
+        }
         media.removeTag(tag)
         tag.count = tag.count - 1
         tag.save()
-        res.status(201).json({
-            message: "success"
-        })       
+        res.status(201).json({ message: "success" })       
     }
 
 }
