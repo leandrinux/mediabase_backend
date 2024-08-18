@@ -21,21 +21,21 @@ async function resizeImageAsync(srcPath, dstPath, width) {
 export default {
 
     /*
-    Uses imagemagick to create a photo thumbnail from original photo
-    and saves it in the thumbs directory, which is also created if it doesn't exist.
+    Uses imagemagick to create a photo preview from original photo
+    and saves it in the previews directory, which is also created if it doesn't exist.
     This won't work for other media like videos!
     */
-    makeThumbnail: async (media) => {
+    makePreview: async (media) => {
         const fullMediaPath = paths.getFullMediaPath(media)
-        const thumbnailDirectory = `${paths.getThumbnailsPath()}/${media.file_path}`
-        console.log(`[ ] Making thumbnail for ${media.id} at ${fullMediaPath}`)
+        const previewDirectory = `${paths.getPreviewsPath()}/${media.file_path}`
+        console.log(`[ ] Making preview for ${fullMediaPath}`)
         const basename_no_extension = path.basename(media.file_name).replace(/\.[^/.]+$/, "")
-        const thumbnailPath = `${thumbnailDirectory}/${basename_no_extension}.jpg`
-        if (!fs.existsSync(thumbnailDirectory)) {
-            fs.mkdirSync(thumbnailDirectory, { recursive: true })
+        const previewPath = `${previewDirectory}/${basename_no_extension}.jpg`
+        if (!fs.existsSync(previewDirectory)) {
+            fs.mkdirSync(previewDirectory, { recursive: true })
         }
-        await resizeImageAsync(fullMediaPath, thumbnailPath, 350)
-        console.log(`[ ] Thumbnail made successfully`)
+        await resizeImageAsync(fullMediaPath, previewPath, 350)
+        console.log(`[ ] Preview made successfully`)
     }
 
 }

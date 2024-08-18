@@ -59,8 +59,8 @@ export default {
             res.download(fullPath);
     },
 
-    getMediaThumbnail: async (req, res) => {
-        console.log('[ ] Service requested: getMediaThumbnail')
+    getMediaPreview: async (req, res) => {
+        console.log('[ ] Service requested: getMediaPreview')
         if (!req.query.id) {
             res.status(400).json({message: "bad request"})
             return
@@ -70,12 +70,12 @@ export default {
             res.status(404).json({message: "not found"})
             return            
         }
-        const thumbnailPath = paths.getFullThumbnailPath(media)
-        if (!fs.existsSync(thumbnailPath)) {
+        const previewPath = paths.getFullPreviewPath(media)
+        if (!fs.existsSync(previewPath)) {
             res.status(404).json({message: "not found"})
             return
         } else
-          res.download(thumbnailPath)
+          res.download(previewPath)
     },
 
     addMedia: async (req, res) => {
@@ -95,7 +95,7 @@ export default {
         const finalMediaPath = await tasks.relocateMedia(media, tempMediaPath)
         media = await data.getMedia(media.id)
 
-        await tasks.makeThumbnail(media)
+        await tasks.makePreview(media)
         tasks.runOCR(media)
         tasks.generateAITags(media)
         console.log(`[ ] Media added successfully - other tasks may still be running`)
@@ -131,12 +131,12 @@ export default {
 
         // delete the files
         const fullMediaPath = paths.getFullMediaPath(media)
-        const fullThumbnailPath = paths.getFullThumbnailPath(media)
+        const fullPreviewPath = paths.getFullPreviewPath(media)
 
         // delete the media entry from the database
         await data.deleteMedia(req.query.id)
         fs.unlink(fullMediaPath, () => {} )
-        fs.unlink(fullThumbnailPath, () => {} )
+        fs.unlink(fullPreviewPath, () => {} )
 
         res.status(201).json({
             id: media.id,

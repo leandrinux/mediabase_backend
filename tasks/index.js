@@ -1,6 +1,6 @@
 import data from '../data/index.js'
 import exif from './exif.js'
-import thumbnails from './thumbnails.js'
+import previews from './previews.js'
 import ocr from './ocr.js'
 import fileops from './fileops.js'
 import AI from './AI.js'
@@ -20,8 +20,8 @@ export default {
     // relocates media from the temp folder to its final place
     relocateMedia: fileops.relocateMedia,
     
-    // creates a thumbnail for the specified media
-    makeThumbnail: thumbnails.makeThumbnail,
+    // creates a preview for the specified media
+    makePreview: previews.makePreview,
 
     // uses tesseract to attempt OCR in the photos being uploaded
     runOCR: ocr.run,

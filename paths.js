@@ -23,13 +23,13 @@ export default {
         return `${baseDirectory}/media/${media.file_path}/${media.file_name}`
     },
 
-    getThumbnailsPath: () => {
-        return `${baseDirectory}/thumbs`
+    getPreviewsPath: () => {
+        return `${baseDirectory}/previews`
     },
 
-    getFullThumbnailPath: (media) => {
+    getFullPreviewPath: (media) => {
         const mediaFilenameNoExtension = media.file_name.replace(/\.[^/.]+$/, "")
-        return `${baseDirectory}/thumbs/${media.file_path}/${mediaFilenameNoExtension}.jpg`
+        return `${baseDirectory}/previews/${media.file_path}/${mediaFilenameNoExtension}.jpg`
     }
 
 }
