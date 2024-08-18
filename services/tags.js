@@ -25,6 +25,8 @@ exports.tags = {
         var tag = await data.getTagWithName(tagName)
         if (!tag) tag = await data.addTagWithName(tagName)
         media.addTag(tag)
+        tag.count = tag.count + 1
+        await tag.save()
         res.status(201).json({
             message: "success"
         })
@@ -45,6 +47,8 @@ exports.tags = {
             return
         }
         media.removeTag(tag)
+        tag.count = tag.count - 1
+        tag.save()
         res.status(201).json({
             message: "success"
         })       

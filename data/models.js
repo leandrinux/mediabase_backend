@@ -55,13 +55,14 @@ const Tag = sequelize.define('Tag', {
 Media.belongsToMany(Tag, { through: 'TagsPerMedia' })
 Tag.belongsToMany(Media, { through: 'TagsPerMedia' })
 
-async function initModels() {
-    console.log(`[ ] Initializing database at ${sequelize.rawOptions.storage}`);
-    await sequelize.sync()
-}
+exports.Models = {
 
-exports.models = {
-    init: initModels,
+    init: async () => {
+        console.log(`[ ] Initializing database at ${sequelize.rawOptions.storage}`);
+        await sequelize.sync()
+    },
+
     Media: Media,
+
     Tag: Tag
 }

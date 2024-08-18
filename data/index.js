@@ -1,19 +1,19 @@
 const { Sequelize } = require("sequelize")
-const { models } = require("./models.js")
+const { Models } = require("./models.js")
 const { paths } = require('../paths.js')
 
 exports.data = {
-    models: models,
+    models: Models,
 
     addMedia: async (mediaFilename) => {
-        return await models.Media.create({
+        return await Models.Media.create({
             file_name: mediaFilename,
             file_path: paths.getTemporaryPath()
         })
     },
 
     addExifData: async (mediaId, data) => {
-        await models.Media.update({
+        await Models.Media.update({
             file_path: data.filePath,
             mime_type: data.mimeType,
             width: data.width,
@@ -27,7 +27,7 @@ exports.data = {
     },
 
     addOCRText: async (mediaId, OCR) => {
-        await models.Media.update({ 
+        await Models.Media.update({ 
             OCR: OCR
         },{ 
             where: { id: mediaId }
@@ -36,7 +36,7 @@ exports.data = {
 
     getAllMedia: async () => {
         try {
-            return await models.Media.findAll({
+            return await Models.Media.findAll({
                 attributes: ['id', 'latitude', 'longitude'],
                 order: [ ['date', 'DESC'] ]
             })
@@ -47,14 +47,14 @@ exports.data = {
 
     getMedia: async (mediaId) => {
         try {
-            return await models.Media.findByPk(mediaId)
+            return await Models.Media.findByPk(mediaId)
         } catch (error) {
         }
     },
 
     getTags: async () => {
         try {
-            return await models.Tag.findAll({
+            return await Models.Tag.findAll({
                 attributes: ['id', 'name', 'count'],
                 order: [ ['name', 'ASC'] ]
             })
@@ -65,14 +65,14 @@ exports.data = {
 
     getFileName: async (mediaId) => {
         try {
-            const media = await models.Media.findByPk(mediaId)
+            const media = await Models.Media.findByPk(mediaId)
             return media?.file_name
         } catch (error) {
         }
     },
 
     setFileName: async (mediaId, fileName) => {
-        await models.Media.update({ 
+        await Models.Media.update({ 
             file_name: fileName
         },{ 
             where: { id: mediaId }
@@ -81,7 +81,7 @@ exports.data = {
 
     getMimeType: async (mediaId) => {
         try {
-            const media = await models.Media.findByPk(mediaId)
+            const media = await Models.Media.findByPk(mediaId)
             return media?.mime_type
         } catch (error) {
         }
@@ -89,24 +89,24 @@ exports.data = {
 
     getFileFullPath: async (mediaId) => {
         try {
-            const media = await models.Media.findByPk(mediaId)
+            const media = await Models.Media.findByPk(mediaId)
             if (media) return paths.getFullMediaPath(media)
         } catch (error) {
         }
     },
 
     deleteMedia: async (mediaId) => {
-        await models.Media.destroy({
+        await Models.Media.destroy({
             where: { id: mediaId }
         })
     },
 
     getTagWithName: async (tagName) => {
-        return await models.Tag.findOne({ where: { name: tagName } })
+        return await Models.Tag.findOne({ where: { name: tagName } })
     },
 
     addTagWithName: async (tagName) => {
-        return await models.Tag.create({ name: tagName })
+        return await Models.Tag.create({ name: tagName })
     }
 
 }
