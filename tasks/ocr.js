@@ -1,8 +1,8 @@
-const { createWorker } = require('tesseract.js');
-const { data } = require('../data')
-const { paths } = require("../paths.js")
+import { createWorker } from 'tesseract.js'
+import data from '../data/index.js'
+import paths from '../paths.js'
 
-exports.ocr = {
+export default {
 
     run: async (media) => {
         const mimeType = media.mime_type

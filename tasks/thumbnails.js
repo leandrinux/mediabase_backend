@@ -1,8 +1,8 @@
-const im = require('imagemagick')
-const fs = require('fs')
-const path = require('path')
-const { paths } = require("../paths.js")
-const { data } = require('../data')
+import im from 'imagemagick'
+import fs from 'fs'
+import path from 'path'
+import paths from '../paths.js'
+import data from '../data/index.js'
 
 async function resizeImageAsync(srcPath, dstPath, width) {
     return new Promise((resolve, reject) => {
@@ -18,7 +18,7 @@ async function resizeImageAsync(srcPath, dstPath, width) {
     })
 }
 
-exports.thumbnails = {
+export default {
 
     /*
     Uses imagemagick to create a photo thumbnail from original photo

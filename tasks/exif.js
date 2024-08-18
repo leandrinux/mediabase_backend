@@ -1,8 +1,8 @@
-const exif = require('exiftool')
-const { create } = require('domain')
-const fs = require('fs').promises
-const { data } = require('../data')
-const { fileops } = require('./fileops.js')
+import exif from 'exiftool'
+import create from 'domain'
+import fs from 'node:fs/promises'
+import data from '../data/index.js'
+import fileops from './fileops.js'
 
 function parseCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
@@ -39,7 +39,7 @@ async function getMetadata(path) {
   })
 }
 
-exports.exif = {
+export default {
 
   saveMetadata: async (media, fullMediaPath) => {
     console.log(`[ ] Extracting metadata from ${fullMediaPath}`)

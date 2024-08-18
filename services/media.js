@@ -1,9 +1,9 @@
-const { data } = require('../data')
-const { tasks } = require('../tasks')
-const { paths } = require('../paths.js')
-const fs = require('fs')
+import data from '../data/index.js'
+import tasks from '../tasks/index.js'
+import paths from '../paths.js'
+import fs from 'fs'
 
-exports.media = {
+export default {
 
     getMedia: async (req, res) => {
         console.log('[ ] Service requested: getMedia')

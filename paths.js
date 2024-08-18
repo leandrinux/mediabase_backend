@@ -1,7 +1,7 @@
 
 const baseDirectory =  '/Users/leandrinux/Desktop/mediabase'
 
-exports.paths = {
+export default {
 
     getBasePath: () => { 
         return baseDirectory

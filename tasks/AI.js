@@ -1,13 +1,13 @@
-const tf = require("@tensorflow/tfjs-node")
-const coco_ssd = require("@tensorflow-models/coco-ssd")
-const fs = require('node:fs/promises');
-const { data } = require('../data');
-const { paths } = require("../paths.js")
+import tf from '@tensorflow/tfjs-node'
+import coco_ssd from '@tensorflow-models/coco-ssd'
+import fs from 'node:fs/promises'
+import data from '../data/index.js'
+import paths from '../paths.js'
 
 const modelName = "mobilenet_v2"
 var model = undefined
 
-exports.AI = {
+export default {
 
     generateTags: async (media) => {
         if (media.mime_type == 'image/heic') {

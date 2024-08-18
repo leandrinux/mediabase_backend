@@ -1,9 +1,9 @@
-const express = require('express')
-const multer = require('multer')
-const fs = require('fs')
-const { data } = require('./data')
-const services = require('./services')
-const { paths } = require('./paths.js')
+import express from 'express'
+import multer from 'multer'
+import fs from 'fs'
+import data from './data/index.js'
+import services from './services/index.js'
+import paths from './paths.js'
 
 class Server {
 

@@ -8,6 +8,7 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "type": "module",
   "dependencies": {
     "@sequelize/sqlite3": "^7.0.0-alpha.41",
     "@tensorflow-models/coco-ssd": "^2.2.3",

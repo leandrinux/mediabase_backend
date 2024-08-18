@@ -1,11 +1,11 @@
-const { data } = require('../data');
-const { exif } = require('./exif.js');
-const { thumbnails } = require('./thumbnails.js');
-const { ocr } = require('./ocr.js');
-const { fileops } = require('./fileops.js')
-const { AI } = require('./AI.js')
+import data from '../data/index.js'
+import exif from './exif.js'
+import thumbnails from './thumbnails.js'
+import ocr from './ocr.js'
+import fileops from './fileops.js'
+import AI from './AI.js'
 
-exports.tasks = {
+export default {
 
     // adds new media to the database by copying it to the temp
     // directory and creating the initial record in the media table

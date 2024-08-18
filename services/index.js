@@ -1,7 +1,7 @@
-const { media } = require('./media.js')
-const { tags } = require('./tags.js')
+import media from './media.js'
+import tags from './tags.js'
 
-module.exports = {
+export default {
     media: media,
     tags: tags
 }

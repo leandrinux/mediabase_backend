@@ -1,6 +1,6 @@
-const { data } = require('../data')
+import data from '../data/index.js'
 
-exports.tags = {
+export default {
 
     getTags: async (req, res) => {
         console.log('[ ] Service requested: getTags')

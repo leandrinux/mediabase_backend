@@ -1,6 +1,6 @@
-const fs = require('fs')
-const path = require('path')
-const { data } = require('../data')
+import fs from 'fs'
+import path from 'path'
+import data from '../data/index.js'
 
 /*
   Used to verify if a file exists in a certain path. If it does, then a new
@@ -22,7 +22,7 @@ function generateFilename(filename) {
   return generatedFilename
 }
   
-exports.fileops = {
+export default {
 
   /*
     Used to move media from the original temp directory to its final

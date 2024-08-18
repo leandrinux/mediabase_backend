@@ -1,6 +1,6 @@
-const { Sequelize, DataTypes, sql } = require('@sequelize/core')
-const { SqliteDialect } = require('@sequelize/sqlite3')
-const { paths } = require('../paths.js')
+import { Sequelize, DataTypes, sql } from '@sequelize/core'
+import { SqliteDialect } from '@sequelize/sqlite3'
+import paths from '../paths.js'
 
 const sequelize = new Sequelize({
     dialect: SqliteDialect,
@@ -56,7 +56,7 @@ const TagsPerMedia = sequelize.define('TagsPerMedia', {})
 Media.belongsToMany(Tag, { through: 'TagsPerMedia' })
 Tag.belongsToMany(Media, { through: 'TagsPerMedia' })
 
-exports.Models = {
+export default {
 
     init: async () => {
         console.log(`[ ] Initializing database at ${sequelize.rawOptions.storage}`);
