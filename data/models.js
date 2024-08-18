@@ -20,6 +20,9 @@ const Media = sequelize.define('Media', {
     mime_type: {
         type: DataTypes.STRING(30), allowNull: true
     },
+    media_type: {
+        type: DataTypes.STRING(10), allowNull: true
+    },
     width: {
         type: DataTypes.INTEGER, allowNull: true
     },

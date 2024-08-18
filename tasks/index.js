@@ -1,5 +1,5 @@
 import data from '../data/index.js'
-import exif from './exif.js'
+import saveMetadata from './exif.js'
 import previews from './previews.js'
 import ocr from './ocr.js'
 import fileops from './fileops.js'
@@ -15,7 +15,7 @@ export default {
     },
 
     // extracts and saves exif data for the specified media
-    saveMetadata: exif.saveMetadata,
+    saveMetadata: saveMetadata,
 
     // relocates media from the temp folder to its final place
     relocateMedia: fileops.relocateMedia,

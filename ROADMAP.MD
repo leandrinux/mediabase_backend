@@ -5,7 +5,6 @@
 * Add automatic year, month and day tags to media
 * Update routes to the form /media/id and /media/id/preview
 * When a tag count reaches zero it should be removed
-* Identify photos from videos or others with a new field for media
 * Support for video previews
 
 # Done
@@ -15,3 +14,4 @@
 * Migrate common.js to es6 modules
 * Get media by tag names
 * Rename thumbnails to previews
+* Identify photos from videos or others with a new field for media

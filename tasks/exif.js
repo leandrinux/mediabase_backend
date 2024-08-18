@@ -19,7 +19,6 @@ function parseCoordinate(coordinate) {
 }
 
 function parseDate(dateStr) {
-  console.log(`Parsing date ${dateStr}`)
   const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+(\.\d+)?(?<tz>(\-|\+)\d{2}:\d{2})?/gm
   var {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
   if (!tz) tz = ""
@@ -39,31 +38,39 @@ async function getMetadata(path) {
   })
 }
 
-export default {
+function getMediaTypeFromMimeType(mimeType) {
+  const supportedImageTypes = ['image/jpeg', 'image/webp', 'image/png', 'image/heic']
+  const supportedVideoTypes = ['video/quicktime']
+  if (mimeType in supportedImageTypes)
+    return 'image'
+  else if (mimeType in supportedVideoTypes)
+    return 'video'
+  else
+    return 'unknown'
+}
 
-  saveMetadata: async (media, fullMediaPath) => {
-    console.log(`[ ] Extracting metadata from ${fullMediaPath}`)
-    const metadata = await getMetadata(fullMediaPath)
-    
-    var mediaTreeLocation, createDate
-    if (metadata.createDate) {
-      [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
-    } else {
-      const today = new Date()
-      mediaTreeLocation = `${today.getFullYear()}/${today.getMonth()}/${today.getDay()}`
-      createDate = today.toISOString()
-    }
-
-    const values = {
-      createDate: createDate,
-      filePath: mediaTreeLocation,
-      mimeType: metadata.mimeType,
-      width: metadata.imageWidth,
-      height: metadata.imageHeight,
-      latitude: parseCoordinate(metadata.gpsLatitude),
-      longitude: parseCoordinate(metadata.gpsLongitude)
-    }  
-    await data.addExifData(media.id, values)
+export default async function saveMetadata(media, fullMediaPath) {
+  console.log(`[ ] Extracting metadata from ${fullMediaPath}`)
+  const metadata = await getMetadata(fullMediaPath)
+  
+  var mediaTreeLocation, createDate
+  if (metadata.createDate) {
+    [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
+  } else {
+    const today = new Date()
+    mediaTreeLocation = `${today.getFullYear()}/${today.getMonth()}/${today.getDay()}`
+    createDate = today.toISOString()
   }
 
+  const values = {
+    createDate: createDate,
+    filePath: mediaTreeLocation,
+    mimeType: metadata.mimeType,
+    mediaType: getMediaTypeFromMimeType(metadata.mimeType),
+    width: metadata.imageWidth,
+    height: metadata.imageHeight,
+    latitude: parseCoordinate(metadata.gpsLatitude),
+    longitude: parseCoordinate(metadata.gpsLongitude)
+  }  
+  await data.addExifData(media.id, values)
 }

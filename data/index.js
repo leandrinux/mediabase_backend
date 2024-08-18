@@ -22,6 +22,7 @@ export default {
         await models.Media.update({
             file_path: data.filePath,
             mime_type: data.mimeType,
+            media_type: data.mediaType,
             width: data.width,
             height: data.height,
             date: data.createDate,

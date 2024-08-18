@@ -26,6 +26,12 @@ export default {
     This won't work for other media like videos!
     */
     makePreview: async (media) => {
+
+        if (media.media_type != 'image') {
+            console.log('[ ] Cannot generate previews from videos yet')
+            return
+        }
+
         const fullMediaPath = paths.getFullMediaPath(media)
         const previewDirectory = `${paths.getPreviewsPath()}/${media.file_path}`
         console.log(`[ ] Making preview for ${fullMediaPath}`)

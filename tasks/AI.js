@@ -10,8 +10,14 @@ var model = undefined
 export default {
 
     generateTags: async (media) => {
-        if (media.mime_type == 'image/heic') {
-            console.log('[ ] HEIC images are not suitable for AI object recognition with tensorflow')
+        // Expected image (BMP, JPEG, PNG, or GIF), but got unsupported
+        if (media.media_type != 'image') {
+            console.log('[ ] Tensorflow AI object recognition is only supported in images')
+            return
+        }
+
+        if (media.mime_type in ['image/heic', 'image/webp']) {
+            console.log('[ ] HEIC and WEBP images are not suitable for AI object recognition with tensorflow')
             return
         }
         
