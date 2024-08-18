@@ -94,11 +94,28 @@ exports.media = {
             res.status(404).json({message: "not found"})
             return
         }
+
+        // decrement the tag counters
+        const tagsPerMedia = await data.models.TagsPerMedia.findAll({
+            where: { mediaId: media.id }
+        })
+        tagsPerMedia.forEach(async entry => {
+            const tag = await data.models.Tag.findOne({
+                where: { id: entry.tagId }
+            })
+            tag.count = tag.count - 1
+            tag.save()
+        })
+
+        // delete the files
         const fullMediaPath = paths.getFullMediaPath(media)
         const fullThumbnailPath = paths.getFullThumbnailPath(media)
+
+        // delete the media entry from the database
         await data.deleteMedia(req.query.id)
         fs.unlink(fullMediaPath, () => {} )
         fs.unlink(fullThumbnailPath, () => {} )
+
         res.status(201).json({
             id: media.id,
             message: "success"

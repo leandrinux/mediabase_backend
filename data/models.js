@@ -52,6 +52,7 @@ const Tag = sequelize.define('Tag', {
     }
 }, { })
 
+const TagsPerMedia = sequelize.define('TagsPerMedia', {})
 Media.belongsToMany(Tag, { through: 'TagsPerMedia' })
 Tag.belongsToMany(Media, { through: 'TagsPerMedia' })
 
@@ -63,6 +64,6 @@ exports.Models = {
     },
 
     Media: Media,
-
-    Tag: Tag
+    Tag: Tag,
+    TagsPerMedia: TagsPerMedia
 }
