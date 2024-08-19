@@ -87,11 +87,7 @@ export default {
 
     deleteMedia: async (req, res) => {
         console.log('[ ] Service requested: deleteMedia')
-        if (!req.query.id) {
-            res.status(400).json({message: "bad request"})
-            return
-        }
-        const media = await data.getMedia(req.query.id)
+        const media = await data.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
             return

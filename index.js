@@ -51,7 +51,7 @@ class Server {
         this.#app.post('/media', this.#upload.single('media'), services.media.addMedia)
         this.#app.post('/tag', services.tags.addTagToMedia)
         
-        this.#app.delete('/media', services.media.deleteMedia)
+        this.#app.delete('/media/:mediaId', services.media.deleteMedia)
         this.#app.delete('/tag', services.tags.removeTagFromMedia)
     }
 
