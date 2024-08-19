@@ -3,56 +3,40 @@ import tasks from '../tasks/index.js'
 import paths from '../paths.js'
 import fs from 'fs'
 
-async function getMediaById(req, res) {
-    console.log('[ ] Service requested: getMediaById')
-    const media = await data.getMedia(req.query.id)
-    if (!media) {
-        res.status(404).json({message: "not found"})
-    } else {
-        const tags = await media.getTags()
-        const plain = media.get({ plain: true })
-        plain.tags = tags.map(x => {return x.name}).sort()
-        res.status(200).json(plain)
-    }
-}
-
-async function getMediaByTags(req, res) {
-    console.log('[ ] Service requested: getMediaByTags')
-    const tagNames = req.query.tags.split(',')
-    const tags = await data.models.Tag.findAll({
-        attributes: [ 'id' ],
-        where: { name: tagNames }
-    })
-    const tagIds = tags.map(x => { return x.id })
-    const media = await data.models.TagsPerMedia.findAll({
-        attributes: [ 'mediaId' ],
-        where: { tagId: tagIds }
-    })
-    const mediaIds = media.map(x => { return x.mediaId })
-    res.status(200).json(mediaIds)
-}
-
 export default {
 
     getMedia: async (req, res) => {
         console.log('[ ] Service requested: getMedia')
-        if (req.query.id) {
-            await getMediaById(req, res)
-        } else if (req.query.tags) {
-            await getMediaByTags(req, res)
+        var media
+        if (req.query.tags) {
+            media = await data.getMediaByTags(req.query.tags)
         } else {
-            const media = await data.getAllMedia()
-            res.json(media);
+            media = await data.getAllMedia()
+        }
+        res.json(media);
+    },
+
+    getMediaById: async (req, res) => {
+        console.log('[ ] Service requested: getMediaById')
+        const media = await data.getMedia(req.params.mediaId)
+        if (!media) {
+            res.status(404).json({message: "not found"})
+        } else {
+            const tags = await media.getTags()
+            const plain = media.get({ plain: true })
+            plain.tags = tags.map(x => {return x.name}).sort()
+            res.status(200).json(plain)
         }
     },
 
+    getMediaByTags: async (req, res) => {
+        console.log('[ ] Service requested: getMediaByTags')
+        res.status(200).json(mediaIds)
+    },
+    
     getMediaFile: async (req, res) => {
         console.log('[ ] Service requested: getMediaFile')
-        if (!req.query.id) {
-            res.status(400).json({message: "bad request"})
-            return
-        }
-        const fullPath = await data.getFileFullPath(req.query.id)
+        const fullPath = await data.getFileFullPath(req.params.mediaId)
         if ((!fullPath) || (!fs.existsSync(fullPath)))
             res.status(404).json({message: "not found"})
         else
@@ -61,11 +45,7 @@ export default {
 
     getMediaPreview: async (req, res) => {
         console.log('[ ] Service requested: getMediaPreview')
-        if (!req.query.id) {
-            res.status(400).json({message: "bad request"})
-            return
-        }
-        const media = await data.getMedia(req.query.id)
+        const media = await data.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
             return            

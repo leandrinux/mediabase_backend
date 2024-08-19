@@ -2,12 +2,6 @@ import { Sequelize } from 'sequelize'
 import models from './models.js'
 import paths from '../paths.js'
 
-/*
-const { Sequelize } = require("sequelize")
-const { models } = require("./models.js")
-const { paths } = require('../paths.js')
-*/
-
 export default {
     models: models,
 
@@ -42,14 +36,11 @@ export default {
     },
 
     getAllMedia: async () => {
-        try {
-            return await models.Media.findAll({
-                attributes: ['id', 'latitude', 'longitude'],
-                order: [ ['date', 'DESC'] ]
-            })
-        } catch (error) {
-            return []
-        }
+        const media = await models.Media.findAll({
+            attributes: [ 'id' ],
+            order: [ ['date', 'DESC'] ]
+        })
+        return media.map(x => { return x.id })
     },
 
     getMedia: async (mediaId) => {
@@ -57,6 +48,21 @@ export default {
             return await models.Media.findByPk(mediaId)
         } catch (error) {
         }
+    },
+
+    getMediaByTags: async (tagNameString) => {
+        const tagNames = tagNameString.split(',')
+        const tags = await models.Tag.findAll({
+            attributes: [ 'id' ],
+            where: { name: tagNames }
+        })
+        const tagIds = tags.map(x => { return x.id })
+        const media = await models.TagsPerMedia.findAll({
+            attributes: [ 'mediaId' ],
+            where: { tagId: tagIds }
+        })
+        const mediaIds = media.map(x => { return x.mediaId })
+        return mediaIds
     },
 
     getTags: async () => {
