@@ -30,12 +30,12 @@ export default async function performOCR(media) {
     await preprocessImage(originalMediaPath, tempFilePath)
 
     console.log(`[ ] Running OCR on ${tempFilePath}`)
+
     const worker = await createWorker('eng')
     const ret = await worker.recognize(tempFilePath)
     await data.addOCRText(media.id, ret.data.text)
     await worker.terminate()
-    console.log(`[ ] Finished OCR on ${tempFilePath}`)
 
+    console.log(`[ ] Finished OCR on ${tempFilePath}, deleting temp file`)
     await fs.unlink(tempFilePath, () => {} )
-
 }
