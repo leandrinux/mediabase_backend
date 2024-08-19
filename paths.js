@@ -30,7 +30,7 @@ export default {
 
     getFullPreviewPath: (media, animated) => {
         const mediaFilenameNoExtension = media.file_name.replace(/\.[^/.]+$/, "")
-        const mediaFilename = mediaFilenameNoExtension.concat((animated) ? '.gif' : '.jpg') 
+        const mediaFilename = mediaFilenameNoExtension.concat((animated) ? '.mp4' : '.jpg') 
         return `${baseDirectory}/previews/${media.file_path}/${mediaFilename}`
     },
 

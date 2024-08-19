@@ -22,9 +22,11 @@ async function makeAnimatedPreview(input, output) {
     return new Promise((resolve, reject) => {
         ffmpeg()
         .input(input)
-        .outputOptions('-r 2')            // framerate of the output file (2 per sec)
-        .outputOptions('-t 5')            // output is 5 second max
-        .videoFilters('scale=300:-1')     // reduce to 300 in width and proportional in height
+        .outputOptions('-r 5')            // framerate of the output file (5 per sec)
+        .outputOptions('-t 3')            // output is 3 seconds max
+        .outputOptions('-an')             // remove audio
+        .outputOptions('-y')              // do not prompt for confirmation
+        .videoFilters('crop=trunc(iw/2)*2:trunc(ih/2)*2')   // crop to make even width and height (required)
         .saveToFile(output)
         .on('end', () => {
             console.log(`[ ] Completed animated preview`);
@@ -58,17 +60,16 @@ async function makeStaticPreview(input, output) {
 async function makeVideoPreview(media) {
     const fullMediaPath = paths.getFullMediaPath(media)
     const previewDirectory = `${paths.getPreviewsPath()}/${media.file_path}`
-    const basename_no_extension = path.basename(media.file_name).replace(/\.[^/.]+$/, "")
     if (!fs.existsSync(previewDirectory)) {
         fs.mkdirSync(previewDirectory, { recursive: true })
     }
     
     console.log(`[ ] Making static preview for ${fullMediaPath}`)
-    const staticPreviewPath = `${previewDirectory}/${basename_no_extension}.jpg`
+    const staticPreviewPath = paths.getFullPreviewPath(media)
     await makeStaticPreview(fullMediaPath, staticPreviewPath)    
 
     console.log(`[ ] Making animated video preview for ${fullMediaPath}`)
-    const animatedPreviewPath = `${previewDirectory}/${basename_no_extension}.gif`
+    const animatedPreviewPath = paths.getFullPreviewPath(media, true)
     await makeAnimatedPreview(fullMediaPath, animatedPreviewPath)    
 }
 
