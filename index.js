@@ -7,7 +7,7 @@ import paths from './paths.js'
 
 class Server {
 
-    #app
+    #express
     #upload
     
     constructor() {
@@ -24,16 +24,17 @@ class Server {
                 cb(null, file.originalname)
             }
         })
-        this.#app = express()
+        this.#express = express()
         this.#upload = multer({ 
             storage: storage,
             limits: { fieldSize: 25 * 1024 * 1024 }
         });
         this.#setRoutes()
+        this.#setContentTypes()
     }
 
     start(port) {
-        this.#app.listen(port, async () => {
+        this.#express.listen(port, async () => {
             console.log(`[ ] Server listening on port ${port}`)
             await data.models.init()
         });
@@ -41,18 +42,22 @@ class Server {
 
     #setRoutes() {
 
-        this.#app.get('/media', services.media.getMedia)
-        this.#app.get('/media/:mediaId', services.media.getMediaById)
-        this.#app.get('/media/:mediaId/file', services.media.getMediaFile)
-        this.#app.get('/media/:mediaId/preview', services.media.getMediaPreview)
-        this.#app.get('/tags',services.tags.getTags)
+        this.#express.get('/media', services.media.getMedia)
+        this.#express.get('/media/:mediaId', services.media.getMediaById)
+        this.#express.get('/media/:mediaId/file', services.media.getMediaFile)
+        this.#express.get('/media/:mediaId/preview', services.media.getMediaPreview)
+        this.#express.get('/tags',services.tags.getTags)
 
-        this.#app.post('/media', this.#upload.single('media'), services.media.addMedia)
-        this.#app.post('/tags', services.tags.addTagToMedia)
+        this.#express.post('/media', this.#upload.single('media'), services.media.addMedia)
+        this.#express.post('/tags', services.tags.addTagToMedia)
         
-        this.#app.delete('/media/:mediaId', services.media.deleteMedia)
-        this.#app.delete('/media/:mediaId/tags/:tagName', services.tags.removeTagFromMedia)
-        this.#app.delete('/tags/:tagName', services.tags.deleteTag)
+        this.#express.delete('/media/:mediaId', services.media.deleteMedia)
+        this.#express.delete('/media/:mediaId/tags/:tagName', services.tags.removeTagFromMedia)
+        this.#express.delete('/tags/:tagName', services.tags.deleteTag)
+    }
+
+    #setContentTypes() {
+        express.static.mime.define({'image/heic': ['heic']});
     }
 
 }
