@@ -1,26 +1,41 @@
 import { createWorker } from 'tesseract.js'
 import data from '../data/index.js'
 import paths from '../paths.js'
+import gm from 'gm'
+import fs from 'node:fs/promises'
 
-export default {
+export async function preprocessImage(srcPath, dstPath) {
+    return new Promise((resolve, reject) => {
+        gm(srcPath)
+        .autoOrient()
+        .antialias(false)
+        .type("Grayscale")
+        .sharpen(20)
+        .write(dstPath, (err) => {
+            if (err) reject(err) 
+            else resolve()
+        })
+    })
+}
 
-    run: async (media) => {
-        if (media.media_type != 'image') {
-            console.log('[ ] Optical character recognition with tesseract is only supported in images')
-            return
-        }
+export default async function performOCR(media) {
 
-        if (media.mime_type in ['image/heic', 'image/webp']) {
-            console.log('[ ] HEIC and WEBP images are not suitable for optical character recognition with tesseract')
-            return
-        }
-
-        const path = paths.getFullMediaPath(media)
-        console.log(`[ ] Running OCR on ${path}`)
-        const worker = await createWorker('eng')
-        const ret = await worker.recognize(path)
-        await data.addOCRText(media.id, ret.data.text)
-        await worker.terminate()
+    if (media.media_type != 'image') {
+        console.log('[ ] Optical character recognition with tesseract is only supported in images')
+        return
     }
+
+    const originalMediaPath = paths.getFullMediaPath(media)
+    const tempFilePath = `${paths.getRandomTempFilePath()}.jpg`
+    console.log(`[ ] Preprocessing ${originalMediaPath} for OCR`)
+    await preprocessImage(originalMediaPath, tempFilePath)
+
+    console.log(`[ ] Running OCR on ${tempFilePath}`)
+    const worker = await createWorker('eng')
+    const ret = await worker.recognize(tempFilePath)
+    await data.addOCRText(media.id, ret.data.text)
+    await worker.terminate()
+
+    await fs.unlink(tempFilePath, () => {} )
 
 }

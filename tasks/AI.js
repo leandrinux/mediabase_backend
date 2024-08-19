@@ -3,32 +3,33 @@ import coco_ssd from '@tensorflow-models/coco-ssd'
 import fs from 'node:fs/promises'
 import data from '../data/index.js'
 import paths from '../paths.js'
+import { resizeImageAsync } from './images.js'
 
 const modelName = "mobilenet_v2"
-var model = undefined
+
+var model
 
 export default {
 
     generateTags: async (media) => {
-        // Expected image (BMP, JPEG, PNG, or GIF), but got unsupported
+
         if (media.media_type != 'image') {
             console.log('[ ] Tensorflow AI object recognition is only supported in images')
             return
         }
 
-        if (media.mime_type in ['image/heic', 'image/webp']) {
-            console.log('[ ] HEIC and WEBP images are not suitable for AI object recognition with tensorflow')
-            return
-        }
-        
         if (!model) {
             console.log(`[ ] Loading tensorflow model ${modelName}`)
             model = await coco_ssd.load({ base: modelName })
         }
-        
-        const fullMediaPath = paths.getFullMediaPath(media)
-        console.log(`[ ] Running tensorflow on ${fullMediaPath}`)        
-        const image = await fs.readFile(fullMediaPath)
+
+        const originalMediaPath = paths.getFullMediaPath(media)
+        const tempFilePath = `${paths.getRandomTempFilePath()}.jpg`
+        console.log(`[ ] Converting image format to ${tempFilePath}`)
+        await resizeImageAsync(originalMediaPath, tempFilePath)
+
+        console.log(`[ ] Running tensorflow on ${tempFilePath}`)        
+        const image = await fs.readFile(tempFilePath)
         const imgTensor = tf.node.decodeImage(image, 3);
         const predictions = await model.detect(imgTensor, 3);
         
@@ -43,10 +44,12 @@ export default {
             tag.count = tag.count + 1
             await tag.save()
         })
-        if (uniqueTags) 
+        if (uniqueTags.length>0) 
             console.log(`[ ] Added tags: ${uniqueTags}`)
         else
             console.log(`[ ] No AI tags were found`)
+
+        await fs.unlink(tempFilePath, () => {} )
     }
 
 }

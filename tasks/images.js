@@ -1,15 +1,13 @@
-import im from 'imagemagick'
+import gm from 'gm'
 
-export async function resizeImageAsync(srcPath, dstPath, width) {
+export async function resizeImageAsync(srcPath, dstPath, side) {
     return new Promise((resolve, reject) => {
-        im.resize({
-            srcPath: srcPath,
-            dstFormat: 'jpg',
-            dstPath: dstPath,
-            width: width
-        }, (err, stdout, stderr) => {
-            if (err) reject(err)
-            else resolve()
-        })        
+        gm(srcPath)
+            .autoOrient()
+            .resize(side, side, '^')
+            .write(dstPath, (err) => {
+                if (err) reject(err) 
+                else resolve()
+            })
     })
 }

@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid'
 
 const baseDirectory =  '/Users/leandrinux/Desktop/mediabase'
 
@@ -30,6 +31,10 @@ export default {
     getFullPreviewPath: (media) => {
         const mediaFilenameNoExtension = media.file_name.replace(/\.[^/.]+$/, "")
         return `${baseDirectory}/previews/${media.file_path}/${mediaFilenameNoExtension}.jpg`
+    },
+
+    getRandomTempFilePath: () => {
+        return `${baseDirectory}/temp/${nanoid()}`
     }
 
 }
