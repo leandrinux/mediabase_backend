@@ -21,7 +21,7 @@ export default {
             height: data.height,
             date: data.createDate,
             latitude: data.latitude,
-            longitude: data.latitude
+            longitude: data.longitude
         },{ 
             where: { id: mediaId }
         })
