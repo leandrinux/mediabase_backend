@@ -1,7 +1,7 @@
 ## To do
 
-* Add automatic year, month and day tags to media
-* When a tag count reaches zero it should be removed
+* Animated previews as mp4 (3 seconds long max, 5 fps) instead of gif
+* Add automatic year and month tags to media
 * Support for authentication using Javascript web tokens (JWTs)
 
 # Done
@@ -18,3 +18,4 @@
 * Update routes to the form /media/id and /media/id/preview
 * Get animated preview for media
 * Delete tag
+* When a tag count reaches zero it should be removed

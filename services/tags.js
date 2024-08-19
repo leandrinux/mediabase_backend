@@ -67,8 +67,12 @@ export default {
             return
         }
         media.removeTag(tag)
-        tag.count = tag.count - 1
-        tag.save()
+        if (tag.count > 1) {
+            tag.count = tag.count - 1
+            tag.save()
+        } else {
+            tag.destroy()
+        }
         res.status(201).json({ message: "success" })       
     }
 

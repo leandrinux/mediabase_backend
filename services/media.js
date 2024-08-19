@@ -101,8 +101,12 @@ export default {
             const tag = await data.models.Tag.findOne({
                 where: { id: entry.tagId }
             })
-            tag.count = tag.count - 1
-            tag.save()
+            if (tag.count > 1) { 
+                tag.count = tag.count - 1
+                tag.save()
+            } else {
+                tag.destroy()
+            }
         })
 
         // delete the files
