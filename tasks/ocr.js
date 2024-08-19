@@ -10,7 +10,6 @@ export async function preprocessImage(srcPath, dstPath) {
         .autoOrient()
         .antialias(false)
         .type("Grayscale")
-        .sharpen(20)
         .write(dstPath, (err) => {
             if (err) reject(err) 
             else resolve()
@@ -35,6 +34,7 @@ export default async function performOCR(media) {
     const ret = await worker.recognize(tempFilePath)
     await data.addOCRText(media.id, ret.data.text)
     await worker.terminate()
+    console.log(`[ ] Finished OCR on ${tempFilePath}`)
 
     await fs.unlink(tempFilePath, () => {} )
 

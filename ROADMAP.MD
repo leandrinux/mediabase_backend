@@ -1,7 +1,5 @@
 ## To do
 
-* HEIC photo support
-* WEBP photo support
 * Add automatic year, month and day tags to media
 * Update routes to the form /media/id and /media/id/preview
 * When a tag count reaches zero it should be removed
@@ -16,3 +14,5 @@
 * Rename thumbnails to previews
 * Identify photos from videos or others with a new field for media
 * Support for video previews
+* HEIC photo support
+* WEBP photo support
