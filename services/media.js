@@ -50,7 +50,7 @@ export default {
             res.status(404).json({message: "not found"})
             return            
         }
-        const previewPath = paths.getFullPreviewPath(media)
+        const previewPath = paths.getFullPreviewPath(media, req.query.animated != undefined)
         if (!fs.existsSync(previewPath)) {
             res.status(404).json({message: "not found"})
             return

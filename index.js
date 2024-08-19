@@ -43,10 +43,9 @@ class Server {
 
         this.#app.get('/media', services.media.getMedia)
         this.#app.get('/media/:mediaId', services.media.getMediaById)
-
-        this.#app.get('/tags',services.tags.getTags)
         this.#app.get('/media/:mediaId/file', services.media.getMediaFile)
         this.#app.get('/media/:mediaId/preview', services.media.getMediaPreview)
+        this.#app.get('/tags',services.tags.getTags)
 
         this.#app.post('/media', this.#upload.single('media'), services.media.addMedia)
         this.#app.post('/tags', services.tags.addTagToMedia)

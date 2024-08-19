@@ -28,9 +28,10 @@ export default {
         return `${baseDirectory}/previews`
     },
 
-    getFullPreviewPath: (media) => {
+    getFullPreviewPath: (media, animated) => {
         const mediaFilenameNoExtension = media.file_name.replace(/\.[^/.]+$/, "")
-        return `${baseDirectory}/previews/${media.file_path}/${mediaFilenameNoExtension}.jpg`
+        const mediaFilename = mediaFilenameNoExtension.concat((animated) ? '.gif' : '.jpg') 
+        return `${baseDirectory}/previews/${media.file_path}/${mediaFilename}`
     },
 
     getRandomTempFilePath: () => {
