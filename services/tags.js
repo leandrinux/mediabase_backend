@@ -34,8 +34,8 @@ export default {
     
     removeTagFromMedia: async (req, res) => {
         console.log('[ ] Service requested: removeTagFromMedia')
-        const mediaId = req.query.mediaId
-        const tagName = req.query.tagName
+        const mediaId = req.params.mediaId
+        const tagName = req.params.tagName
         if (!mediaId || !tagName) {
             res.status(400).json({message: "bad request"})
             return

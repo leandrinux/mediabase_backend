@@ -49,10 +49,10 @@ class Server {
         this.#app.get('/media/:mediaId/preview', services.media.getMediaPreview)
 
         this.#app.post('/media', this.#upload.single('media'), services.media.addMedia)
-        this.#app.post('/tag', services.tags.addTagToMedia)
+        this.#app.post('/tags', services.tags.addTagToMedia)
         
         this.#app.delete('/media/:mediaId', services.media.deleteMedia)
-        this.#app.delete('/tag', services.tags.removeTagFromMedia)
+        this.#app.delete('/media/:mediaId/tags/:tagName', services.tags.removeTagFromMedia)
     }
 
 }
