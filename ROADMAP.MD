@@ -1,7 +1,6 @@
 ## To do
 
 * Add automatic year, month and day tags to media
-* Update routes to the form /media/id and /media/id/preview
 * When a tag count reaches zero it should be removed
 * Support for authentication using Javascript web tokens (JWTs)
 
@@ -16,3 +15,4 @@
 * Support for video previews
 * HEIC photo support
 * WEBP photo support
+* Update routes to the form /media/id and /media/id/preview
