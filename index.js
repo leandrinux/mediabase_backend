@@ -52,6 +52,7 @@ class Server {
         
         this.#app.delete('/media/:mediaId', services.media.deleteMedia)
         this.#app.delete('/media/:mediaId/tags/:tagName', services.tags.removeTagFromMedia)
+        this.#app.delete('/tags/:tagName', services.tags.deleteTag)
     }
 
 }

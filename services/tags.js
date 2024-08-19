@@ -8,6 +8,19 @@ export default {
         res.status(200).json(tags)
     },
     
+    deleteTag: async (req, res) => {
+        console.log('[ ] Service requested: deleteTag')
+        const tagName = req.params.tagName
+        const tag = await data.models.Tag.findOne({
+            where: { name: tagName }
+        })
+        if (!tag) {
+            res.status(404).json({message: "not found"})
+            return
+        }
+        tag.destroy()
+        res.status(201).json({ message: "success" })
+    },
     
     addTagToMedia: async (req, res) => {
         console.log('[ ] Service requested: addTagToMedia')
