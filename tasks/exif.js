@@ -1,8 +1,6 @@
 import exif from 'exiftool'
-import create from 'domain'
 import fs from 'node:fs/promises'
 import data from '../data/index.js'
-import fileops from './fileops.js'
 import msg from '../log.js'
 
 function parseCoordinate(coordinate) {
@@ -61,7 +59,10 @@ export default async function saveMetadata(media, fullMediaPath) {
     [ mediaTreeLocation, createDate ] = parseDate(metadata.createDate)
   } else {
     const today = new Date()
-    mediaTreeLocation = `${today.getFullYear()}/${today.getMonth()}/${today.getDay()}`
+    const year = today.getFullYear()
+    const month = today.getMonth() + 1
+    const day = today.getDate()
+    mediaTreeLocation = `${year}/${month}/${day}`
     createDate = today.toISOString()
   }
 
