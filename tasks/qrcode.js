@@ -1,6 +1,4 @@
 import fs from 'node:fs/promises'
-import paths from '../paths.js'
-import { resizeImageAsync } from './images.js'
 import jsQR from 'jsqr'
 import Jimp from 'jimp'
 import data from '../data/index.js'
@@ -29,18 +27,14 @@ async function scan(filePath) {
     return results
 }
 
-export default async function scanQR(media) {
+export default async function scanQR(media, tempImagePath) {
 
     if (media.media_type != 'image') {
         console.log('[ ] QR code scanning is only supported in images')
         return
     }
-    const originalMediaPath = paths.getFullMediaPath(media)
-    const tempFilePath = `${paths.getRandomTempFilePath()}.jpg`
-    console.log(`[ ] Converting image format to ${tempFilePath}`)
-    await resizeImageAsync(originalMediaPath, tempFilePath)
-    console.log(`[ ] Scanning for QR codes on ${tempFilePath}`)
-    const codes = await scan(tempFilePath)
+    console.log(`[ ] Scanning for QR codes on ${tempImagePath}`)
+    const codes = await scan(tempImagePath)
     console.log(`[ ] Found ${codes.length} QR codes`)
     codes.forEach(async code => {
         const codeModel = data.models.QR.build({ 
@@ -49,5 +43,4 @@ export default async function scanQR(media) {
         })
         await codeModel.save()
     })
-    await fs.unlink(tempFilePath, () => {} )
 }

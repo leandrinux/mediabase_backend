@@ -2,6 +2,7 @@ import data from '../data/index.js'
 import tasks from '../tasks/index.js'
 import paths from '../paths.js'
 import fs from 'fs'
+import { resizeImageAsync } from '../tasks/images.js'
 
 export default {
 
@@ -75,12 +76,22 @@ export default {
         const finalMediaPath = await tasks.relocateMedia(media, tempMediaPath)
         media = await data.getMedia(media.id)
         await tasks.makePreview(media)
-        console.log(`[ ] Media added successfully - other tasks may still be running`)
+        console.log(`[ ] Media added successfully`)
 
-        // we do not wait for these other tasks to be completed
-        tasks.runOCR(media)
-        tasks.scanQR(media)
-        tasks.generateAITags(media)
+        if (media.media_type = 'image') {
+            tasks.runOCR(media)
+
+            const originalMediaPath = paths.getFullMediaPath(media)
+            const tempImagePath = `${paths.getRandomTempFilePath()}.jpg`
+            console.log(`[ ] Creating temp image ${tempImagePath}`)
+            await resizeImageAsync(originalMediaPath, tempImagePath)   
+
+            await tasks.scanQR(media, tempImagePath)
+            await tasks.generateAITags(media, tempImagePath)
+
+            console.log(`[ ] Deleting temp image ${tempImagePath}`)
+            fs.unlink(tempImagePath, () => {} )
+        }
 
         res.status(201).json({
             id: media.id,
