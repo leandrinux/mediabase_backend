@@ -20,3 +20,4 @@
 * When a tag count reaches zero it should be removed
 * Animated previews as mp4 (3 seconds long max, 5 fps) instead of gif
 * Uses proper mimetype with HEIC images
+* QR code detection support

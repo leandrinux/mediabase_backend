@@ -74,11 +74,14 @@ export default {
         await tasks.saveMetadata(media, tempMediaPath)
         const finalMediaPath = await tasks.relocateMedia(media, tempMediaPath)
         media = await data.getMedia(media.id)
-
         await tasks.makePreview(media)
-        tasks.runOCR(media)
-        tasks.generateAITags(media)
         console.log(`[ ] Media added successfully - other tasks may still be running`)
+
+        // we do not wait for these other tasks to be completed
+        tasks.runOCR(media)
+        tasks.scanQR(media)
+        tasks.generateAITags(media)
+
         res.status(201).json({
             id: media.id,
             message: "success"

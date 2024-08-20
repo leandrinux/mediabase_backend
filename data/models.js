@@ -59,6 +59,19 @@ const TagsPerMedia = sequelize.define('TagsPerMedia', {})
 Media.belongsToMany(Tag, { through: 'TagsPerMedia' })
 Tag.belongsToMany(Media, { through: 'TagsPerMedia' })
 
+const QR = sequelize.define('QR', {
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
+    },
+    mediaId: {
+        type: DataTypes.UUID, allowNull: false
+    },
+    value: {
+        type: DataTypes.STRING, allowNull: false
+    }
+}, { })
+QR.belongsTo(Media)
+
 export default {
 
     init: async () => {
@@ -68,5 +81,6 @@ export default {
 
     Media: Media,
     Tag: Tag,
-    TagsPerMedia: TagsPerMedia
+    TagsPerMedia: TagsPerMedia,
+    QR: QR
 }
