@@ -1,6 +1,6 @@
 ## To do
 
-* Add automatic year and month tags to media
+* Improve exiftool library to correctly extract the info in it.
 * Support for authentication using Javascript web tokens (JWTs)
 
 # Done
@@ -21,3 +21,4 @@
 * Animated previews as mp4 (3 seconds long max, 5 fps) instead of gif
 * Uses proper mimetype with HEIC images
 * QR code detection support
+* Add automatic year and month tags to media

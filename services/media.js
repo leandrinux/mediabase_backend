@@ -77,6 +77,7 @@ export default {
         const finalMediaPath = await tasks.relocateMedia(media, tempMediaPath)
         media = await data.getMedia(media.id)
         await tasks.makePreview(media)
+        await tasks.autoTag(media)
         msg.log(`Media added successfully`)
 
         if (media.media_type = 'image') {

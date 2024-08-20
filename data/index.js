@@ -120,6 +120,14 @@ export default {
 
     addTagWithName: async (tagName) => {
         return await models.Tag.create({ name: tagName })
+    },
+
+    addTagToMedia: async (tagName, media) => {
+        var tag = await models.Tag.findOne({ where: { name: tagName } })
+        if (!tag) tag = await models.Tag.create({ name: tagName })
+        media.addTag(tag)
+        tag.count = tag.count + 1
+        await tag.save()
     }
 
 }

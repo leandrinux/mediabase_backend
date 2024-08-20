@@ -36,11 +36,7 @@ export default {
             res.status(404).json({message: "not found"})
             return
         }
-        var tag = await data.getTagWithName(tagName)
-        if (!tag) tag = await data.addTagWithName(tagName)
-        media.addTag(tag)
-        tag.count = tag.count + 1
-        await tag.save()
+        data.addTagToMedia(tagName, media)
         res.status(201).json({
             message: "success"
         })
