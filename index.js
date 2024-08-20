@@ -4,6 +4,7 @@ import fs from 'fs'
 import data from './data/index.js'
 import services from './services/index.js'
 import paths from './paths.js'
+import msg from './log.js'
 
 class Server {
 
@@ -16,7 +17,7 @@ class Server {
             destination: (req, file, cb) => {
                 let uploadDirectory = paths.getTemporaryPath()
                 if (!fs.existsSync(uploadDirectory)) fs.mkdirSync(uploadDirectory)
-                console.log(`[ ] Uploading media to temp dir at ${uploadDirectory}`)
+                msg.dbg(`Uploading media to temp dir at ${uploadDirectory}`)
                 cb(null, uploadDirectory)
             },
 
@@ -35,7 +36,7 @@ class Server {
 
     start(port) {
         this.#express.listen(port, async () => {
-            console.log(`[ ] Server listening on port ${port}`)
+            msg.log(`Server listening on port ${port}`)
             await data.models.init()
         });
     }

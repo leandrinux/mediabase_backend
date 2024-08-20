@@ -1,15 +1,16 @@
 import data from '../data/index.js'
+import msg from '../log.js'
 
 export default {
 
     getTags: async (req, res) => {
-        console.log('[ ] Service requested: getTags')
+        msg.dbg('Service requested: getTags')
         const tags = await data.getTags()
         res.status(200).json(tags)
     },
     
     deleteTag: async (req, res) => {
-        console.log('[ ] Service requested: deleteTag')
+        msg.dbg('Service requested: deleteTag')
         const tagName = req.params.tagName
         const tag = await data.models.Tag.findOne({
             where: { name: tagName }
@@ -23,7 +24,7 @@ export default {
     },
     
     addTagToMedia: async (req, res) => {
-        console.log('[ ] Service requested: addTagToMedia')
+        msg.dbg('Service requested: addTagToMedia')
         const mediaId = req.query.mediaId
         const tagName = req.query.tagName
         if (!mediaId || !tagName) {
@@ -46,7 +47,7 @@ export default {
     },
     
     removeTagFromMedia: async (req, res) => {
-        console.log('[ ] Service requested: removeTagFromMedia')
+        msg.dbg('Service requested: removeTagFromMedia')
         const mediaId = req.params.mediaId
         const tagName = req.params.tagName
         if (!mediaId || !tagName) {

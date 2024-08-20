@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, sql } from '@sequelize/core'
 import { SqliteDialect } from '@sequelize/sqlite3'
 import paths from '../paths.js'
+import msg from '../log.js'
 
 const sequelize = new Sequelize({
     dialect: SqliteDialect,
@@ -75,7 +76,7 @@ QR.belongsTo(Media)
 export default {
 
     init: async () => {
-        console.log(`[ ] Initializing database at ${sequelize.rawOptions.storage}`);
+        msg.dbg(`Initializing database at ${sequelize.rawOptions.storage}`);
         await sequelize.sync()
     },
 

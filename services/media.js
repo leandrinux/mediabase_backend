@@ -3,11 +3,12 @@ import tasks from '../tasks/index.js'
 import paths from '../paths.js'
 import fs from 'fs'
 import { resizeImageAsync } from '../tasks/images.js'
+import msg from '../log.js'
 
 export default {
 
     getMedia: async (req, res) => {
-        console.log('[ ] Service requested: getMedia')
+        msg.dbg('Service requested: getMedia')
         var media
         if (req.query.tags) {
             media = await data.getMediaByTags(req.query.tags)
@@ -18,7 +19,7 @@ export default {
     },
 
     getMediaById: async (req, res) => {
-        console.log('[ ] Service requested: getMediaById')
+        msg.dbg('Service requested: getMediaById')
         const media = await data.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
@@ -31,12 +32,12 @@ export default {
     },
 
     getMediaByTags: async (req, res) => {
-        console.log('[ ] Service requested: getMediaByTags')
+        msg.dbg('Service requested: getMediaByTags')
         res.status(200).json(mediaIds)
     },
     
     getMediaFile: async (req, res) => {
-        console.log('[ ] Service requested: getMediaFile')
+        msg.dbg('Service requested: getMediaFile')
         const fullPath = await data.getFileFullPath(req.params.mediaId)
         if ((!fullPath) || (!fs.existsSync(fullPath)))
             res.status(404).json({message: "not found"})
@@ -45,7 +46,7 @@ export default {
     },
 
     getMediaPreview: async (req, res) => {
-        console.log('[ ] Service requested: getMediaPreview')
+        msg.dbg('Service requested: getMediaPreview')
         const media = await data.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
@@ -60,7 +61,7 @@ export default {
     },
 
     addMedia: async (req, res) => {
-        console.log('[ ] Service requested: addMedia')
+        msg.dbg('Service requested: addMedia')
         if (!req.file) {
             res.status(400).json({message: "bad request"})
             return
@@ -76,20 +77,20 @@ export default {
         const finalMediaPath = await tasks.relocateMedia(media, tempMediaPath)
         media = await data.getMedia(media.id)
         await tasks.makePreview(media)
-        console.log(`[ ] Media added successfully`)
+        msg.log(`Media added successfully`)
 
         if (media.media_type = 'image') {
             tasks.runOCR(media)
 
             const originalMediaPath = paths.getFullMediaPath(media)
             const tempImagePath = `${paths.getRandomTempFilePath()}.jpg`
-            console.log(`[ ] Creating temp image ${tempImagePath}`)
+            msg.dbg(`Creating temp image ${tempImagePath}`)
             await resizeImageAsync(originalMediaPath, tempImagePath)   
 
             await tasks.scanQR(media, tempImagePath)
             await tasks.generateAITags(media, tempImagePath)
 
-            console.log(`[ ] Deleting temp image ${tempImagePath}`)
+            msg.dbg(`Deleting temp image ${tempImagePath}`)
             fs.unlink(tempImagePath, () => {} )
         }
 
@@ -100,7 +101,7 @@ export default {
     },
 
     deleteMedia: async (req, res) => {
-        console.log('[ ] Service requested: deleteMedia')
+        msg.dbg('Service requested: deleteMedia')
         const media = await data.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})

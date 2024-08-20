@@ -2,6 +2,7 @@ import tf from '@tensorflow/tfjs-node'
 import coco_ssd from '@tensorflow-models/coco-ssd'
 import fs from 'node:fs/promises'
 import data from '../data/index.js'
+import msg from '../log.js'
 
 const modelName = "mobilenet_v2"
 
@@ -12,16 +13,16 @@ export default {
     generateTags: async (media, tempImagePath) => {
 
         if (media.media_type != 'image') {
-            console.log('[ ] Tensorflow AI object recognition is only supported in images')
+            msg.dbg('Tensorflow AI object recognition is only supported in images')
             return
         }
 
         if (!model) {
-            console.log(`[ ] Loading tensorflow model ${modelName}`)
+            msg.dbg(`Loading tensorflow model ${modelName}`)
             model = await coco_ssd.load({ base: modelName })
         }
 
-        console.log(`[ ] Running tensorflow on ${tempImagePath}`)        
+        msg.dbg(`Running tensorflow on ${tempImagePath}`)        
         const image = await fs.readFile(tempImagePath)
         const imgTensor = tf.node.decodeImage(image, 3);
         const predictions = await model.detect(imgTensor, 3);
@@ -38,9 +39,9 @@ export default {
             await tag.save()
         })
         if (uniqueTags.length>0) 
-            console.log(`[ ] Added tags: ${uniqueTags}`)
+            msg.dbg(`Added tags: ${uniqueTags}`)
         else
-            console.log(`[ ] No AI tags were found`)
+            msg.dbg(`No AI tags were found`)
 
     }
 

@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import jsQR from 'jsqr'
 import Jimp from 'jimp'
 import data from '../data/index.js'
+import msg from '../log.js'
 
 async function scan(filePath) {
     const imageData = await fs.readFile(filePath)
@@ -30,12 +31,12 @@ async function scan(filePath) {
 export default async function scanQR(media, tempImagePath) {
 
     if (media.media_type != 'image') {
-        console.log('[ ] QR code scanning is only supported in images')
+        msg.warn('QR code scanning is only supported in images')
         return
     }
-    console.log(`[ ] Scanning for QR codes on ${tempImagePath}`)
+    msg.dbg(`Scanning for QR codes on ${tempImagePath}`)
     const codes = await scan(tempImagePath)
-    console.log(`[ ] Found ${codes.length} QR codes`)
+    msg.dbg(`Found ${codes.length} QR codes`)
     codes.forEach(async code => {
         const codeModel = data.models.QR.build({ 
             mediaId: media.id,
@@ -43,4 +44,5 @@ export default async function scanQR(media, tempImagePath) {
         })
         await codeModel.save()
     })
+    msg.log(`QR scan completed successfully`)
 }

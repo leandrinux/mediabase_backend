@@ -5,13 +5,14 @@ import scanQR from './qrcode.js'
 import previews from './previews.js'
 import fileops from './fileops.js'
 import AI from './AI.js'
+import msg from '../log.js'
 
 export default {
 
     // adds new media to the database by copying it to the temp
     // directory and creating the initial record in the media table
     addMedia: async (mediaFilename) => {
-        console.log(`[ ] Adding media ${mediaFilename}`)
+        msg.log(`Adding media ${mediaFilename}`)
         return await data.addMedia(mediaFilename)
     },
 

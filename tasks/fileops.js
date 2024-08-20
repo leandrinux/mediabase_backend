@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import data from '../data/index.js'
+import msg from '../log.js'
 
 /*
   Used to verify if a file exists in a certain path. If it does, then a new
@@ -35,7 +36,7 @@ export default {
       if (!fs.existsSync(mediaPath)) {
         fs.mkdirSync(mediaPath, { recursive: true })
       } 
-      console.log(`[ ] Moving ${tempMediaPath} to ${finalMediaPath}`)
+      msg.dbg(`Moving ${tempMediaPath} to ${finalMediaPath}`)
       await fs.promises.rename(tempMediaPath, finalMediaPath)
       if (tempMediaPath != finalMediaPath) {
         await data.setFileName(media.id, path.basename(finalMediaPath))

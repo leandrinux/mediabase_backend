@@ -3,6 +3,7 @@ import create from 'domain'
 import fs from 'node:fs/promises'
 import data from '../data/index.js'
 import fileops from './fileops.js'
+import msg from '../log.js'
 
 function parseCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
@@ -46,13 +47,13 @@ function getMediaTypeFromMimeType(mimeType) {
   else if (supportedVideoTypes.has(mimeType))
     return 'video'
   else {
-    console.log(`[ ] mimeType ${mimeType} not recognized as valid media type`)
+    msg.warn(`mimeType ${mimeType} not recognized as valid media type`)
     return 'unknown'
   }
 }
 
 export default async function saveMetadata(media, fullMediaPath) {
-  console.log(`[ ] Extracting metadata from ${fullMediaPath}`)
+  msg.dbg(`Extracting metadata from ${fullMediaPath}`)
   const metadata = await getMetadata(fullMediaPath)
   
   var mediaTreeLocation, createDate
@@ -75,4 +76,5 @@ export default async function saveMetadata(media, fullMediaPath) {
     longitude: parseCoordinate(metadata.gpsLongitude)
   }  
   await data.addExifData(media.id, values)
+  msg.log('Metadata saved successfully')
 }
