@@ -62,6 +62,6 @@ export default async function saveMetadata(media, fullMediaPath) {
     latitude: parseCoordinate(metadata.gpsLatitude),
     longitude: parseCoordinate(metadata.gpsLongitude)
   }  
-  await data.addExifData(media.id, values)
+  await data.media.addExifData(media.id, values)
   msg.log('Metadata saved successfully')
 }

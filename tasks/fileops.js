@@ -30,7 +30,7 @@ export default {
     destination in the media tree
   */
   relocateMedia: async (media, tempMediaPath) => {
-      const fullPath = await data.getFileFullPath(media.id)
+      const fullPath = await data.media.getFileFullPath(media.id)
       const finalMediaPath = generateFilename(fullPath)
       const mediaPath = path.dirname(finalMediaPath)
       if (!fs.existsSync(mediaPath)) {
@@ -39,7 +39,7 @@ export default {
       msg.dbg(`Moving ${tempMediaPath} to ${finalMediaPath}`)
       await fs.promises.rename(tempMediaPath, finalMediaPath)
       if (tempMediaPath != finalMediaPath) {
-        await data.setFileName(media.id, path.basename(finalMediaPath))
+        await data.media.setFileName(media.id, path.basename(finalMediaPath))
       }
       return finalMediaPath
     }

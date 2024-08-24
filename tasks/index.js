@@ -14,7 +14,7 @@ export default {
     // directory and creating the initial record in the media table
     addMedia: async (mediaFilename) => {
         msg.log(`Adding media ${mediaFilename}`)
-        return await data.addMedia(mediaFilename)
+        return await data.media.addMedia(mediaFilename)
     },
 
     // extracts and saves exif data for the specified media

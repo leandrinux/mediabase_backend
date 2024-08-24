@@ -11,16 +11,16 @@ export default {
         msg.dbg('Service requested: getMedia')
         var media
         if (req.query.tags) {
-            media = await data.getMediaByTags(req.query.tags)
+            media = await data.media.getMediaByTags(req.query.tags)
         } else {
-            media = await data.getAllMedia()
+            media = await data.media.getAllMedia()
         }
         res.json(media);
     },
 
     getMediaById: async (req, res) => {
         msg.dbg('Service requested: getMediaById')
-        const media = await data.getMedia(req.params.mediaId)
+        const media = await data.media.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
         } else {
@@ -33,7 +33,7 @@ export default {
     
     getMediaFile: async (req, res) => {
         msg.dbg('Service requested: getMediaFile')
-        const fullPath = await data.getFileFullPath(req.params.mediaId)
+        const fullPath = await data.media.getFileFullPath(req.params.mediaId)
         if ((!fullPath) || (!fs.existsSync(fullPath)))
             res.status(404).json({message: "not found"})
         else
@@ -42,7 +42,7 @@ export default {
 
     getMediaPreview: async (req, res) => {
         msg.dbg('Service requested: getMediaPreview')
-        const media = await data.getMedia(req.params.mediaId)
+        const media = await data.media.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
             return            
@@ -70,7 +70,7 @@ export default {
         // extract and save metadata from media
         await tasks.saveMetadata(media, tempMediaPath)
         const finalMediaPath = await tasks.relocateMedia(media, tempMediaPath)
-        media = await data.getMedia(media.id)
+        media = await data.media.getMedia(media.id)
         await tasks.makePreview(media)
         await tasks.autoTag(media)
         msg.log(`Media added successfully`)
@@ -97,17 +97,19 @@ export default {
     },
 
     deleteMedia: async (req, res) => {
+        const mediaId = req.params.mediaId
         msg.dbg('Service requested: deleteMedia')
-        const media = await data.getMedia(req.params.mediaId)
+        const media = await data.media.getMedia(mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
             return
         }
 
         // decrement the tag counters
-        const tagsPerMedia = await data.getTagsByMedia(media.id)
+        const tagsPerMedia = await data.tags.getTagsByMedia(media.id)
+
         tagsPerMedia.forEach(async entry => {
-            const tag = await data.getTagById(entry.tagId)
+            const tag = await data.tags.getTagById(entry.tagId)
             if (tag.count > 1) { 
                 tag.count = tag.count - 1
                 tag.save()
@@ -116,12 +118,12 @@ export default {
             }
         })
 
+        // delete the media entry from the database
+        await data.media.deleteMedia(mediaId)
+
         // delete the files
         const fullMediaPath = paths.getFullMediaPath(media)
         const fullPreviewPath = paths.getFullPreviewPath(media)
-
-        // delete the media entry from the database
-        await data.deleteMedia(req.query.id)
         fs.unlink(fullMediaPath, () => {} )
         fs.unlink(fullPreviewPath, () => {} )
 
@@ -132,4 +134,3 @@ export default {
     },
 
 }
-

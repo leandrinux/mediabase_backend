@@ -30,7 +30,7 @@ export default {
         const allTags = predictions.map(x => x.class)
         const uniqueTags = Array.from(new Set(allTags))
         uniqueTags.forEach(async tagName => { 
-            data.addTagToMedia(tagName, media)
+            data.tags.addTagToMedia(tagName, media)
         })
         if (uniqueTags.length>0) 
             msg.dbg(`Added tags: ${uniqueTags}`)

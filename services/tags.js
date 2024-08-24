@@ -5,14 +5,14 @@ export default {
 
     getTags: async (req, res) => {
         msg.dbg('Service requested: getTags')
-        const tags = await data.getTags()
+        const tags = await data.tags.getTags()
         res.status(200).json(tags)
     },
     
     deleteTag: async (req, res) => {
         msg.dbg('Service requested: deleteTag')
         const tagName = req.params.tagName
-        const tag = await data.getTagByName(tagName)
+        const tag = await data.tags.getTagByName(tagName)
         if (!tag) {
             res.status(404).json({message: "not found"})
             return
@@ -29,12 +29,12 @@ export default {
             res.status(400).json({message: "bad request"})
             return
         }
-        const media = await data.getMedia(mediaId)
+        const media = await data.media.getMedia(mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
             return
         }
-        data.addTagToMedia(tagName, media)
+        data.tags.addTagToMedia(tagName, media)
         res.status(201).json({
             message: "success"
         })
@@ -48,13 +48,13 @@ export default {
             res.status(400).json({message: "bad request"})
             return
         }
-        const media = await data.getMedia(mediaId)
-        const tag = await data.getTagByName(tagName)
+        const media = await data.media.getMedia(mediaId)
+        const tag = await data.tags.getTagByName(tagName)
         if (!media || !tag) {
             res.status(404).json({message: "not found"})
             return
         }
-        const tagPerMedia = await data.getTagPerMedia(tag.id, media.id)
+        const tagPerMedia = await data.tags.getTagPerMedia(tag.id, media.id)
         if (!tagPerMedia) {
             res.status(404).json({message: "media does not have that tag"})
             return

@@ -4,10 +4,10 @@ import data from '../data/index.js'
 export default async function autoTag(media) {
     
     const year = media.date.getFullYear().toString()
-    data.addTagToMedia(year, media)
+    data.tags.addTagToMedia(year, media)
 
     const monthName = media.date.toLocaleString('default', { month: 'long' });
-    data.addTagToMedia(monthName.toLowerCase(), media)
+    data.tags.addTagToMedia(monthName.toLowerCase(), media)
 
     msg.log('Autotagged successfully')
 }

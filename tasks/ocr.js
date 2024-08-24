@@ -34,7 +34,7 @@ export default async function performOCR(media) {
 
     const worker = await createWorker('eng')
     const ret = await worker.recognize(tempFilePath)
-    await data.addOCRText(media.id, ret.data.text)
+    await data.media.addOCRText(media.id, ret.data.text)
     await worker.terminate()
 
     msg.dbg(`Finished OCR on ${tempFilePath}, deleting temp file`)
