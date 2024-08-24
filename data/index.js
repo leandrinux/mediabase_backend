@@ -3,7 +3,10 @@ import models from './models.js'
 import paths from '../paths.js'
 
 export default {
-    models: models,
+
+    init: async () => {
+        await models.init()
+    },
 
     addMedia: async (mediaFilename) => {
         return await models.Media.create({
@@ -69,6 +72,12 @@ export default {
         return media
     },
 
+    getTagsByMedia: async (mediaId) => {
+        return await models.TagsPerMedia.findAll({
+            where: { mediaId: mediaId }
+        })
+    },
+
     getTags: async () => {
         try {
             return await models.Tag.findAll({
@@ -78,6 +87,22 @@ export default {
         } catch (error) {
             return []
         }
+    },
+
+    getTagById: async (tagId) => {
+        return await models.Tag.findOne({
+            where: { id: tagId }
+        })
+    },
+
+    getTagByName: async (tagName) => {
+        return await models.Tag.findOne({ where: { name: tagName } })
+    },
+
+    getTagPerMedia: async (tagId, mediaId) => {
+        return await models.TagsPerMedia.findOne({
+            where : { tagId: tagId, mediaId: mediaId }
+        })
     },
 
     getFileName: async (mediaId) => {
@@ -118,12 +143,15 @@ export default {
         })
     },
 
-    getTagWithName: async (tagName) => {
-        return await models.Tag.findOne({ where: { name: tagName } })
-    },
-
     addTagWithName: async (tagName) => {
         return await models.Tag.create({ name: tagName })
+    },
+
+    addQRWithData: async (id, data) => {
+        return await models.QR.create({ 
+            mediaId: id,
+            value: data
+        })
     },
 
     addTagToMedia: async (tagName, media) => {

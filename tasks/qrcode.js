@@ -38,10 +38,7 @@ export default async function scanQR(media, tempImagePath) {
     const codes = await scan(tempImagePath)
     msg.dbg(`Found ${codes.length} QR codes`)
     codes.forEach(async code => {
-        const codeModel = await data.models.QR.create({ 
-            mediaId: media.id,
-            value: code.data
-        })
+        await data.addQRWithData(media.id, code.data)
     })
     msg.log(`QR scan completed successfully`)
 }

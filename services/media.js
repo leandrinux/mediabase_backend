@@ -105,13 +105,9 @@ export default {
         }
 
         // decrement the tag counters
-        const tagsPerMedia = await data.models.TagsPerMedia.findAll({
-            where: { mediaId: media.id }
-        })
+        const tagsPerMedia = await data.getTagsByMedia(media.id)
         tagsPerMedia.forEach(async entry => {
-            const tag = await data.models.Tag.findOne({
-                where: { id: entry.tagId }
-            })
+            const tag = await data.getTagById(entry.tagId)
             if (tag.count > 1) { 
                 tag.count = tag.count - 1
                 tag.save()

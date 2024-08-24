@@ -37,7 +37,7 @@ class Server {
     start(port) {
         this.#express.listen(port, async () => {
             msg.log(`Server listening on port ${port}`)
-            await data.models.init()
+            await data.init()
         });
     }
 

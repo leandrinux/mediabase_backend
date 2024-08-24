@@ -12,9 +12,7 @@ export default {
     deleteTag: async (req, res) => {
         msg.dbg('Service requested: deleteTag')
         const tagName = req.params.tagName
-        const tag = await data.models.Tag.findOne({
-            where: { name: tagName }
-        })
+        const tag = await data.getTagByName(tagName)
         if (!tag) {
             res.status(404).json({message: "not found"})
             return
@@ -51,14 +49,12 @@ export default {
             return
         }
         const media = await data.getMedia(mediaId)
-        const tag = await data.getTagWithName(tagName)
+        const tag = await data.getTagByName(tagName)
         if (!media || !tag) {
             res.status(404).json({message: "not found"})
             return
         }
-        const tagPerMedia = await data.models.TagsPerMedia.findOne({
-            where : { tagId: tag.id, mediaId: media.id }
-        })
+        const tagPerMedia = await data.getTagPerMedia(tag.id, media.id)
         if (!tagPerMedia) {
             res.status(404).json({message: "media does not have that tag"})
             return
