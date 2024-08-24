@@ -30,11 +30,6 @@ export default {
             res.status(200).json(plain)
         }
     },
-
-    getMediaByTags: async (req, res) => {
-        msg.dbg('Service requested: getMediaByTags')
-        res.status(200).json(mediaIds)
-    },
     
     getMediaFile: async (req, res) => {
         msg.dbg('Service requested: getMediaFile')
