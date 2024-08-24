@@ -7,7 +7,7 @@ export default async function autoTag(media) {
     data.addTagToMedia(year, media)
 
     const monthName = media.date.toLocaleString('default', { month: 'long' });
-    data.addTagToMedia(monthName, media)
+    data.addTagToMedia(monthName.toLowerCase(), media)
 
     msg.log('Autotagged successfully')
 }
