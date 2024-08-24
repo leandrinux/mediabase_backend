@@ -37,10 +37,10 @@ export default {
 
     getAllMedia: async () => {
         const media = await models.Media.findAll({
-            attributes: [ 'id' ],
+            attributes: [ 'id', 'media_type' ],
             order: [ ['date', 'DESC'] ]
         })
-        return media.map(x => { return x.id })
+        return media
     },
 
     getMedia: async (mediaId) => {
@@ -57,12 +57,16 @@ export default {
             where: { name: tagNames }
         })
         const tagIds = tags.map(x => { return x.id })
-        const media = await models.TagsPerMedia.findAll({
+        const mediaIds = await models.TagsPerMedia.findAll({
             attributes: [ 'mediaId' ],
             where: { tagId: tagIds }
         })
-        const mediaIds = media.map(x => { return x.mediaId })
-        return mediaIds
+        const mediaIdsList = mediaIds.map(x => { return x.mediaId })
+        const media = await models.Media.findAll({
+            attributes: [ 'id', 'media_type' ],
+            where: { id: mediaIdsList }
+        })
+        return media
     },
 
     getTags: async () => {
