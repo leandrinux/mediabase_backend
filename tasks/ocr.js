@@ -32,12 +32,22 @@ export default async function performOCR(media) {
 
     msg.dbg(`Running OCR on ${tempFilePath}`)
 
+    // run tesseract
     const worker = await createWorker('eng')
     const ret = await worker.recognize(tempFilePath)
-    await data.media.addOCRText(media.id, ret.data.text)
     await worker.terminate()
+
+    // take 4 char or longer words or numbers from the output
+    const textOutput = ret.data.text
+    const regex = /(?<word>[0-9a-zA-Z]{4,})/gm
+    const matches = [...textOutput.matchAll(regex)]
+    const results = matches.map(x => x.groups.word).join(',')
+
+    // save the clean results
+    await data.media.addOCRText(media.id, results)
 
     msg.dbg(`Finished OCR on ${tempFilePath}, deleting temp file`)
     await fs.unlink(tempFilePath, () => {} )
+
     msg.log(`Optical character recognition completed successfully`)
 }
