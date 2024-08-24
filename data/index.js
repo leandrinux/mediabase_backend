@@ -1,12 +1,9 @@
-import { Sequelize } from 'sequelize'
 import models from './models.js'
 import paths from '../paths.js'
 
 export default {
 
-    init: async () => {
-        await models.init()
-    },
+    init: models.init,
 
     addMedia: async (mediaFilename) => {
         return await models.Media.create({
