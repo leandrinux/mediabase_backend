@@ -81,14 +81,6 @@ export default {
         })
     },
 
-    addOCRText: async (mediaId, OCR) => {
-        await models.Media.update({ 
-            OCR: OCR
-        },{ 
-            where: { id: mediaId }
-        })
-    },
-
     getFileName: async (mediaId) => {
         try {
             const media = await models.Media.findByPk(mediaId)

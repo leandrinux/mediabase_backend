@@ -38,9 +38,6 @@ const Media = sequelize.define('Media', {
     },
     date: {
         type: DataTypes.DATE, allowNull: true
-    },
-    OCR: {
-        type: DataTypes.STRING, allowNull: true
     }
 }, { })
 
@@ -73,6 +70,19 @@ const QR = sequelize.define('QR', {
 }, { })
 QR.belongsTo(Media)
 
+const OCR = sequelize.define('OCR', {
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
+    },
+    mediaId: {
+        type: DataTypes.UUID, allowNull: false
+    },
+    words: {
+        type: DataTypes.STRING, allowNull: false
+    }
+}, { })
+OCR.belongsTo(Media)
+
 export default {
 
     init: async () => {
@@ -83,5 +93,6 @@ export default {
     Media: Media,
     Tag: Tag,
     TagsPerMedia: TagsPerMedia,
-    QR: QR
+    QR: QR,
+    OCR: OCR
 }
