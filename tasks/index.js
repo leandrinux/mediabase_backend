@@ -6,7 +6,7 @@ import previews from './previews.js'
 import fileops from './fileops.js'
 import AI from './AI.js'
 import msg from '../log.js'
-import saveMetadata from './exif.js'
+import { saveMetadata } from './exif.js'
 
 export default {
 

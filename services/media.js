@@ -5,11 +5,7 @@ import fs from 'fs'
 import { resizeImageAsync } from '../tasks/images.js'
 import msg from '../log.js'
 import exif from '../exiftool.js'
-
-const acceptedMimeTypes = new Set([
-    "image/jpeg", "image/png", "image/heic", "image/webp",
-    "video/mp4", "video/quicktime"
-])
+import { supportedTypes } from '../tasks/exif.js'
 
 export default {
 
@@ -33,7 +29,7 @@ export default {
             return
         }
 
-        if (!acceptedMimeTypes.has(metadata.mimeType)) {
+        if (!supportedTypes.has(metadata.mimeType)) {
             msg.log(`Got unsupported mimetype ${metadata.mimeType}`)
             res.status(404).json({message: "unsupported mime type"})
             return

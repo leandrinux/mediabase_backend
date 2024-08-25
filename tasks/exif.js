@@ -1,6 +1,19 @@
 import data from '../data/index.js'
 import msg from '../log.js'
 
+const supportedImageTypes = new Set([
+  'image/jpeg', 'image/webp', 'image/png', 'image/heic'
+])
+
+const supportedVideoTypes = new Set([
+  'video/quicktime'
+])
+
+export const supportedTypes = new Set([
+  "image/jpeg", "image/png", "image/heic", "image/webp",
+  "video/mp4", "video/quicktime"
+])
+
 function parseCoordinate(coordinate) {
   if (coordinate === undefined) return undefined
   try {
@@ -16,8 +29,6 @@ function parseCoordinate(coordinate) {
 }
 
 function getMediaTypeFromMimeType(mimeType) {
-  const supportedImageTypes = new Set(['image/jpeg', 'image/webp', 'image/png', 'image/heic'])
-  const supportedVideoTypes = new Set(['video/quicktime'])
   if (supportedImageTypes.has(mimeType))
     return 'image'
   else if (supportedVideoTypes.has(mimeType))
@@ -28,7 +39,7 @@ function getMediaTypeFromMimeType(mimeType) {
   }
 }
 
-export default async function saveMetadata(media, metadata) {
+export async function saveMetadata(media, metadata) {
   msg.dbg(`Saving metadata`)
   const date = metadata.createDate ?? new Date()
   const year = date.getFullYear()
