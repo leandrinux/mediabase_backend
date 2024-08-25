@@ -43,7 +43,6 @@ function convert(str) {
 export default {
 
     run: async (filePath) => {
-
         const { stdout, stderr } = await execute(`exiftool ${filePath}`)
         const lines = stdout.split('\n')
         var result = {}

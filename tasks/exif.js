@@ -1,5 +1,3 @@
-import exif from '../exiftool.js'
-import fs from 'node:fs/promises'
 import data from '../data/index.js'
 import msg from '../log.js'
 
@@ -17,16 +15,6 @@ function parseCoordinate(coordinate) {
   }
 }
 
-function parseDate(dateStr) {
-  const regex = /^(?<year>\d+):(?<month>\d+):(?<day>\d+) (?<hour>\d+):(?<minutes>\d+):\d+(\.\d+)?(?<tz>(\-|\+)\d{2}:\d{2})?/gm
-  var {year, month, day, hour, minutes, tz} = regex.exec(dateStr).groups
-  if (!tz) tz = ""
-  return [
-    `${year}/${month}/${day}`,
-    `${year}-${month}-${day}T${hour}:${minutes}${tz}`
-  ]
-}
-
 function getMediaTypeFromMimeType(mimeType) {
   const supportedImageTypes = new Set(['image/jpeg', 'image/webp', 'image/png', 'image/heic'])
   const supportedVideoTypes = new Set(['video/quicktime'])
@@ -40,18 +28,14 @@ function getMediaTypeFromMimeType(mimeType) {
   }
 }
 
-export default async function saveMetadata(media, fullMediaPath) {
-  msg.dbg(`Extracting metadata from ${fullMediaPath}`)
-
-  const metadata = await exif.run(fullMediaPath)
-  
+export default async function saveMetadata(media, metadata) {
+  msg.dbg(`Saving metadata`)
   const date = metadata.createDate ?? new Date()
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
   const mediaTreeLocation = `${year}/${month}/${day}`
   const createDate = date.toISOString()
-
   const values = {
     createDate: createDate,
     filePath: mediaTreeLocation,
@@ -64,4 +48,5 @@ export default async function saveMetadata(media, fullMediaPath) {
   }  
   await data.media.addExifData(media.id, values)
   msg.log('Metadata saved successfully')
+  
 }
