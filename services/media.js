@@ -68,6 +68,7 @@ export default {
         }
 
         // perform the remaining tasks
+        await tasks.sha256(media)
         await tasks.autoTag(media)
         msg.success(`${media.file_name} added`)
 

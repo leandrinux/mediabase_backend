@@ -7,6 +7,7 @@ import fileops from './fileops.js'
 import AI from './AI.js'
 import msg from '../log.js'
 import { saveMetadata } from './exif.js'
+import sha256 from './sha256.js'
 
 export default {
 
@@ -36,5 +37,8 @@ export default {
     autoTag: autoTag,
 
     // scans for QR codes in the image
-    scanQR: scanQR
+    scanQR: scanQR,
+
+    // calculates the sha256 checksum of the media file
+    sha256: sha256
 }
