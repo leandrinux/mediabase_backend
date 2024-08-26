@@ -10,8 +10,7 @@ const supportedVideoTypes = new Set([
 ])
 
 export const supportedTypes = new Set([
-  "image/jpeg", "image/png", "image/heic", "image/webp",
-  "video/mp4", "video/quicktime"
+  ...supportedImageTypes, ...supportedVideoTypes
 ])
 
 function parseCoordinate(coordinate) {
