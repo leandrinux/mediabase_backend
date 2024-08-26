@@ -24,16 +24,13 @@ export default {
         } catch (error) {
         }
 
-        if (!metadata) {
-            res.status(404).json({message: "invalid file"})
-            fs.unlink(tempMediaPath, () => {} )
-            return
-        }
+        const fileIsInvalid = metadata == undefined
+        const mimeTypeIsUnsupported = !supportedTypes.has(metadata.mimeType)
 
-        if (!supportedTypes.has(metadata.mimeType)) {
-            msg.warn(`${originalFilename} has unsupported mimetype ${metadata.mimeType}`)
+        if (fileIsInvalid || mimeTypeIsUnsupported) {
+            msg.err(`${originalFilename} is invalid or unsupported, skipped`)
+            res.status(400).json({message: "file is invalid or unsupported"})
             fs.unlink(tempMediaPath, () => {} )
-            res.status(404).json({message: "unsupported mime type"})
             return
         }
 
@@ -49,8 +46,24 @@ export default {
         // refresh the media object
         media = await data.media.getMedia(media.id)
 
+        // Generate the preview. Opening the file for this purpose
+        // can generate an exception if the file is corrupted, so it is
+        // handled.
+        var passesPreviewGeneration = false
+        try {
+            await tasks.makePreview(media)
+            passesPreviewGeneration = true
+        } catch (error) {
+        }
+        if (!passesPreviewGeneration) {
+            msg.err(`${originalFilename} preview could not be generated - is file corrupted? Removed`)
+            res.status(400).json({message: "file is invalid or unsupported"})
+            fs.unlink(finalMediaPath, () => {} )
+            media.destroy()
+            return
+        }
+
         // perform the remaining tasks
-        await tasks.makePreview(media)
         await tasks.autoTag(media)
         msg.success(`${media.file_name} added`)
 
