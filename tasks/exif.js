@@ -2,7 +2,7 @@ import data from '../data/index.js'
 import msg from '../log.js'
 
 const supportedImageTypes = new Set([
-  'image/jpeg', 'image/webp', 'image/png', 'image/heic'
+  'image/jpeg', 'image/webp', 'image/png', 'image/heic', 'image/tiff', 'image/gif'
 ])
 
 const supportedVideoTypes = new Set([
@@ -23,7 +23,7 @@ function parseCoordinate(coordinate) {
     if ((dir=='W') || (dir=='S')) value = -value
     return value
   } catch (err) {
-    throw new Error(`Coordinate format error (${err})`)
+    return undefined
   }
 }
 
