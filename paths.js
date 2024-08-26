@@ -1,7 +1,21 @@
 import { nanoid } from 'nanoid'
+import { homedir } from 'os'
+import msg from './log.js'
 
-var args = process.argv.slice(2)
-const baseDirectory = (args.length == 1) ? args[0] : '~/Desktop/mediabase'
+var baseDirectory
+
+export function initPaths() {
+    var args = process.argv.slice(2)
+    if (args.length == 1) {
+        // use the specified directory
+        baseDirectory = args[0]
+    } else {
+        // get the home directory, then set it on a desktop folder
+        const home = homedir()
+        baseDirectory =  `${home}/Desktop/mediabase`
+    }
+    msg.success(`Base directory set to ${baseDirectory}`)
+}
 
 export default {
 
