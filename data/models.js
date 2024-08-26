@@ -30,12 +30,6 @@ const Media = sequelize.define('Media', {
     height: {
         type: DataTypes.INTEGER, allowNull: true
     },
-    latitude: {
-        type: DataTypes.DOUBLE, allowNull: true
-    },
-    longitude: {
-        type: DataTypes.DOUBLE, allowNull: true
-    },
     date: {
         type: DataTypes.DATE, allowNull: true
     }
@@ -83,6 +77,22 @@ const OCR = sequelize.define('OCR', {
 }, { })
 OCR.belongsTo(Media)
 
+const Location = sequelize.define('Location', {
+    id: {
+        type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false
+    },
+    mediaId: {
+        type: DataTypes.UUID, allowNull: false
+    },
+    latitude: {
+        type: DataTypes.DOUBLE, allowNull: true
+    },
+    longitude: {
+        type: DataTypes.DOUBLE, allowNull: true
+    }
+}, { })
+Location.belongsTo(Media)
+
 export default {
 
     init: async () => {
@@ -94,5 +104,6 @@ export default {
     Tag: Tag,
     TagsPerMedia: TagsPerMedia,
     QR: QR,
-    OCR: OCR
+    OCR: OCR,
+    Location: Location
 }

@@ -67,18 +67,25 @@ export default {
     },
 
     addExifData: async (mediaId, exif) => {
+
         await models.Media.update({
             file_path: exif.filePath,
             mime_type: exif.mimeType,
             media_type: exif.mediaType,
             width: exif.width,
             height: exif.height,
-            date: exif.createDate,
-            latitude: exif.latitude,
-            longitude: exif.longitude
+            date: exif.createDate
         },{ 
             where: { id: mediaId }
         })
+
+        if ((exif.latitude) && (exif.longitude)) {
+            await models.Location.create({
+                mediaId: mediaId,
+                latitude: exif.latitude,
+                longitude: exif.longitude
+            })    
+        }
     },
 
     getFileName: async (mediaId) => {
