@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid'
 
-const baseDirectory =  '/Users/leandrinux/Desktop/mediabase'
+var args = process.argv.slice(2)
+const baseDirectory = (args.length == 1) ? args[0] : '~/Desktop/mediabase'
 
 export default {
 
