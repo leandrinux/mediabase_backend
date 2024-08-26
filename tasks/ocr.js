@@ -43,12 +43,14 @@ export default async function performOCR(media) {
 
     // take 4 char or longer words or numbers from the output
     const textOutput = ret.data.text
-    const regex = /(?<word>[0-9a-zA-Z]{4,})/gm
+    const regex = /(?<word>[0-9a-zA-Z]{4,15})/gm
     const matches = [...textOutput.matchAll(regex)]
-    const words = matches.map(x => x.groups.word.toLowerCase()).join(',')
-
+    
     // save the clean results
-    await data.ocr.addOCRText(media.id, words)
+    if (matches.length>0) {
+        const words = matches.map(x => x.groups.word.toLowerCase()).join(',')
+        await data.ocr.addOCRText(media.id, words)
+    }
 
     msg.dbg(`Finished OCR on ${tempFilePath}, deleting temp file`)
     await fs.unlink(tempFilePath, () => {} )
