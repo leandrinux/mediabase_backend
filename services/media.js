@@ -25,7 +25,7 @@ export default {
         }
 
         const fileIsInvalid = metadata == undefined
-        const mimeTypeIsUnsupported = !supportedTypes.has(metadata.mimeType)
+        const mimeTypeIsUnsupported = (metadata) ? !supportedTypes.has(metadata.mimeType) : true
 
         if (fileIsInvalid || mimeTypeIsUnsupported) {
             msg.err(`${originalFilename} is invalid or unsupported, skipped`)
