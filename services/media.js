@@ -26,11 +26,13 @@ export default {
 
         if (!metadata) {
             res.status(404).json({message: "invalid file"})
+            fs.unlink(tempMediaPath, () => {} )
             return
         }
 
         if (!supportedTypes.has(metadata.mimeType)) {
             msg.log(`Got unsupported mimetype ${metadata.mimeType}`)
+            fs.unlink(tempMediaPath, () => {} )
             res.status(404).json({message: "unsupported mime type"})
             return
         }
