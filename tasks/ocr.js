@@ -5,6 +5,8 @@ import gm from 'gm'
 import fs from 'node:fs/promises'
 import msg from '../log.js'
 
+var pendingWork = 0
+
 export async function preprocessImage(srcPath, dstPath) {
     return new Promise((resolve, reject) => {
         gm(srcPath)
@@ -33,9 +35,11 @@ export default async function performOCR(media) {
     msg.dbg(`Running OCR on ${tempFilePath}`)
 
     // run tesseract
+    pendingWork += 1
     const worker = await createWorker('eng')
     const ret = await worker.recognize(tempFilePath)
     await worker.terminate()
+    pendingWork -= 1
 
     // take 4 char or longer words or numbers from the output
     const textOutput = ret.data.text
@@ -49,5 +53,10 @@ export default async function performOCR(media) {
     msg.dbg(`Finished OCR on ${tempFilePath}, deleting temp file`)
     await fs.unlink(tempFilePath, () => {} )
 
-    msg.log(`Optical character recognition completed successfully`)
+    if (pendingWork>0) {
+        msg.success(`${media.file_name} OCR completed (${pendingWork} remaining)`)
+    } else {
+        msg.success(`${media.file_name} OCR completed (queue is empty)`)
+    }
+
 }

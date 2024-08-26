@@ -31,7 +31,7 @@ export default {
         }
 
         if (!supportedTypes.has(metadata.mimeType)) {
-            msg.log(`Got unsupported mimetype ${metadata.mimeType}`)
+            msg.warn(`${originalFilename} has unsupported mimetype ${metadata.mimeType}`)
             fs.unlink(tempMediaPath, () => {} )
             res.status(404).json({message: "unsupported mime type"})
             return
@@ -52,7 +52,7 @@ export default {
         // perform the remaining tasks
         await tasks.makePreview(media)
         await tasks.autoTag(media)
-        msg.log(`Media added successfully`)
+        msg.success(`${media.file_name} added`)
 
         // if it's an image there are a few more things to do
         if (media.media_type = 'image') {

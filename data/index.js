@@ -4,8 +4,11 @@ import tags from './tags.js'
 import qr from './qr.js'
 import ocr from './ocr.js'
 
+export async function initData() {
+    await models.init()
+}
+
 export default {
-    init: models.init,
     media: media,
     tags: tags,
     qr: qr,

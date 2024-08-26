@@ -86,8 +86,8 @@ OCR.belongsTo(Media)
 export default {
 
     init: async () => {
-        msg.dbg(`Initializing database at ${sequelize.rawOptions.storage}`);
         await sequelize.sync()
+        msg.success(`Database initialized at ${sequelize.rawOptions.storage}`);
     },
 
     Media: Media,

@@ -15,7 +15,7 @@ async function makeImagePreview(media) {
         fs.mkdirSync(previewDirectory, { recursive: true })
     }
     await resizeImageAsync(fullMediaPath, previewPath, 350)
-    msg.log(`Image preview made successfully`)
+    msg.success(`${media.file_name} preview made`)
 }
 
 async function makeAnimatedPreview(input, output) { 
@@ -30,7 +30,7 @@ async function makeAnimatedPreview(input, output) {
         .videoFilters('crop=trunc(iw/2)*2:trunc(ih/2)*2')   // crop to make even width and height (required)
         .saveToFile(output)
         .on('end', () => {
-            msg.log(`Animated preview made successfully`);
+            msg.success(`${media.file_name} animated preview made`);
             resolve()
         }) 
         .on('error', (error) => {

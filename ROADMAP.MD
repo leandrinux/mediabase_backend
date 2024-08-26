@@ -1,7 +1,6 @@
 ## To do
 
 ### Bugs 
-* Delete uploaded files that happened to be invalid
 * Photo DSC00074.JPG is dated 2008-5-28 but it should be March, not May
 
 ### Features
@@ -19,6 +18,8 @@
 
 # Done
 
+* Much improved messages and initialization
+* Delete uploaded files that happened to be invalid
 * Improve exiftool library to correctly extract the info in it.
 * Add automatic year and month tags to media
 * QR code detection support

@@ -3,19 +3,23 @@ const enableDebug = false
 export default {
 
     log: (text) => {
-        console.log(`[ ] ${text}`)
+        console.log(`💭 ${text}`)
     },
 
     dbg: (text) => {
-        if (enableDebug) console.log(`[.] ${text}`)
+        if (enableDebug) console.log(`🔍 ${text}`)
+    },
+
+    success: (text) => {
+        console.log(`✅ ${text}`)
     },
 
     warn: (text) => {
-        console.log(`[!] Warning: ${text}`)
+        console.log(`❗️ ${text}`)
     },
 
     err: (text) => {
-        console.log(`[X] Error: ${text}`)
+        console.log(`❌ ${text}`)
     }
 
 }

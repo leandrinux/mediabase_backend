@@ -7,6 +7,10 @@ import msg from '../log.js'
 const modelName = "mobilenet_v2"
 
 var model
+export async function initAI() {
+    model = await coco_ssd.load({ base: modelName })
+    msg.success(`Tensorflow model loaded`)
+}
 
 export default {
 
@@ -15,11 +19,6 @@ export default {
         if (media.media_type != 'image') {
             msg.dbg('Tensorflow AI object recognition is only supported in images')
             return
-        }
-
-        if (!model) {
-            msg.dbg(`Loading tensorflow model ${modelName}`)
-            model = await coco_ssd.load({ base: modelName })
         }
 
         msg.dbg(`Running tensorflow on ${tempImagePath}`)        
