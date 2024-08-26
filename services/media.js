@@ -22,13 +22,17 @@ export default {
         try {
             metadata = await exif.run(tempMediaPath)
         } catch (error) {
+            msg.warn(`${originalFilename} caused exiftool exception ${error}`)
         }
 
         const fileIsInvalid = metadata == undefined
         const mimeTypeIsUnsupported = (metadata) ? !supportedTypes.has(metadata.mimeType) : true
 
         if (fileIsInvalid || mimeTypeIsUnsupported) {
-            msg.err(`${originalFilename} is invalid or unsupported, skipped`)
+            if (fileIsInvalid) 
+                msg.err(`${originalFilename} is invalid because metadata could not be extracted`)
+            else if (mimeTypeIsUnsupported) 
+                msg.err(`${originalFilename} mimeType '${metadata.mimeType}' is not supported`)
             res.status(400).json({message: "file is invalid or unsupported"})
             fs.unlink(tempMediaPath, () => {} )
             return
