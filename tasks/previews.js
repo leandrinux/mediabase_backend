@@ -18,7 +18,7 @@ async function makeImagePreview(media) {
     msg.success(`${media.file_name} preview made`)
 }
 
-async function makeAnimatedPreview(input, output) { 
+async function makeAnimatedPreview(media, input, output) { 
     msg.dbg(`Started making animated preview from ${input} to ${output}`);
     return new Promise((resolve, reject) => {
         ffmpeg()
@@ -40,7 +40,7 @@ async function makeAnimatedPreview(input, output) {
     })
 }
 
-async function makeStaticPreview(input, output) { 
+async function makeStaticPreview(media, input, output) { 
     msg.log(`Started making static preview from ${input} to ${output}`);
     return new Promise((resolve, reject) => {
         ffmpeg()
@@ -48,7 +48,7 @@ async function makeStaticPreview(input, output) {
         .outputOptions('-vframes 1')      // take only one frame
         .saveToFile(output)
         .on('end', () => {
-            msg.log(`Completed static preview`);
+            msg.success(`${media.file_name} static preview made`);
             resolve()
         }) 
         .on('error', (error) => {
@@ -66,10 +66,10 @@ async function makeVideoPreview(media) {
     }
     
     const staticPreviewPath = paths.getFullPreviewPath(media)
-    await makeStaticPreview(fullMediaPath, staticPreviewPath)    
+    await makeStaticPreview(media, fullMediaPath, staticPreviewPath)    
 
     const animatedPreviewPath = paths.getFullPreviewPath(media, true)
-    await makeAnimatedPreview(fullMediaPath, animatedPreviewPath)    
+    await makeAnimatedPreview(media, fullMediaPath, animatedPreviewPath)    
 }
 
 export default {

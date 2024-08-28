@@ -73,7 +73,7 @@ export default {
         msg.success(`${media.file_name} added`)
 
         // if it's an image there are a few more things to do
-        if (media.media_type = 'image') {
+        if (media.media_type == 'image') {
             tasks.runOCR(media)
 
             const originalMediaPath = paths.getFullMediaPath(media)

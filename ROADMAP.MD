@@ -18,6 +18,7 @@
 
 # Done
 
+* 3GPP video format support
 * Much improved messages and initialization
 * Delete uploaded files that happened to be invalid
 * Improve exiftool library to correctly extract the info in it.

@@ -6,7 +6,7 @@ const supportedImageTypes = new Set([
 ])
 
 const supportedVideoTypes = new Set([
-  'video/quicktime'
+  'video/quicktime', 'video/3gpp'
 ])
 
 export const supportedTypes = new Set([
@@ -46,17 +46,19 @@ export async function saveMetadata(media, metadata) {
   const day = date.getDate()
   const mediaTreeLocation = `${year}/${month}/${day}`
   const createDate = date.toISOString()
+  const mediaType = getMediaTypeFromMimeType(metadata.mimeType)
   const values = {
     createDate: createDate,
     filePath: mediaTreeLocation,
     mimeType: metadata.mimeType,
-    mediaType: getMediaTypeFromMimeType(metadata.mimeType),
+    mediaType: mediaType,
     width: metadata.imageWidth,
     height: metadata.imageHeight,
     latitude: parseCoordinate(metadata.gpsLatitude),
     longitude: parseCoordinate(metadata.gpsLongitude)
   }  
   await data.media.addExifData(media.id, values)
+
   msg.success(`${media.file_name} metadata saved`)
   
 }
