@@ -18,6 +18,7 @@
 
 # Done
 
+* AVI video format support
 * 3GPP video format support
 * Much improved messages and initialization
 * Delete uploaded files that happened to be invalid

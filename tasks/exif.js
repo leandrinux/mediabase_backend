@@ -6,7 +6,7 @@ const supportedImageTypes = new Set([
 ])
 
 const supportedVideoTypes = new Set([
-  'video/quicktime', 'video/3gpp'
+  'video/quicktime', 'video/3gpp', 'video/x-msvideo'
 ])
 
 export const supportedTypes = new Set([
