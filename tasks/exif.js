@@ -59,6 +59,6 @@ export async function saveMetadata(media, metadata) {
   }  
   await data.media.addExifData(media.id, values)
 
-  msg.success(`${media.file_name} metadata saved`)
+  msg.log(`${media.file_name} metadata saved`)
   
 }

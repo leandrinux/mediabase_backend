@@ -40,5 +40,5 @@ export default async function scanQR(media, tempImagePath) {
     codes.forEach(async code => {
         if (code.data.length > 0) await data.qr.addQRWithData(media.id, code.data)
     })
-    msg.success(`${media.file_name} QR scan completed`)
+    msg.log(`${media.file_name} QR scan completed`)
 }

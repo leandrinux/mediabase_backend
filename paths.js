@@ -14,7 +14,7 @@ export function initPaths() {
         const home = homedir()
         baseDirectory =  `${home}/Desktop/mediabase`
     }
-    msg.success(`Base directory set to ${baseDirectory}`)
+    msg.log(`Base directory set to ${baseDirectory}`)
 }
 
 export default {

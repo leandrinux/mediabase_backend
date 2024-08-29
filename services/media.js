@@ -10,7 +10,7 @@ import { supportedTypes } from '../tasks/exif.js'
 export default {
 
     addMedia: async (req, res) => {
-        msg.dbg('Service requested: addMedia')
+        msg.dbg('Requested to add new media')
         if (!req.file) {
             res.status(400).json({message: "bad request"})
             return
@@ -70,7 +70,7 @@ export default {
         // perform the remaining tasks
         await tasks.sha256(media)
         await tasks.autoTag(media)
-        msg.success(`${media.file_name} added`)
+        msg.success(`Addew new media ${media.file_name}`)
 
         // if it's an image there are a few more things to do
         if (media.media_type == 'image') {
@@ -95,18 +95,19 @@ export default {
     },
 
     getMedia: async (req, res) => {
-        msg.dbg('Service requested: getMedia')
         var media
         if (req.query.tags) {
+            msg.dbg(`Requested list of media with tag ${req.query.tags}`)
             media = await data.media.getMediaByTags(req.query.tags)
         } else {
+            msg.dbg('Requested list of all media')
             media = await data.media.getAllMedia()
         }
         res.json(media);
     },
 
     getMediaById: async (req, res) => {
-        msg.dbg('Service requested: getMediaById')
+        msg.dbg(`Requested media data for ${req.params.mediaId}`)
         const media = await data.media.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})
@@ -119,7 +120,7 @@ export default {
     },
     
     getMediaFile: async (req, res) => {
-        msg.dbg('Service requested: getMediaFile')
+        msg.dbg(`Requested media file for ${req.params.mediaId}`)
         const fullPath = await data.media.getFileFullPath(req.params.mediaId)
         if ((!fullPath) || (!fs.existsSync(fullPath)))
             res.status(404).json({message: "not found"})
@@ -128,7 +129,7 @@ export default {
     },
 
     getMediaPreview: async (req, res) => {
-        msg.dbg('Service requested: getMediaPreview')
+        msg.dbg(`Requested media preview for ${req.params.mediaId}`)
         const media = await data.media.getMedia(req.params.mediaId)
         if (!media) {
             res.status(404).json({message: "not found"})

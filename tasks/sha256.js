@@ -21,7 +21,7 @@ async function calculate(path) {
 export default async function sha256(media) {
     const originalMediaPath = paths.getFullMediaPath(media)
     const result = await calculate(originalMediaPath)
-    msg.success(`${media.file_name} sha256 is ${result}`)
+    msg.dbg(`${media.file_name} sha256 is ${result}`)
     media.sha256 = result
     await media.save()
 }

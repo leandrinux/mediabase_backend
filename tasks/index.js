@@ -14,7 +14,7 @@ export default {
     // adds new media to the database by copying it to the temp
     // directory and creating the initial record in the media table
     addMedia: async (mediaFilename) => {
-        msg.log(`Adding media ${mediaFilename}`)
+        msg.success(`Adding media ${mediaFilename}`)
         return await data.media.addMedia(mediaFilename)
     },
 

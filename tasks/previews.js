@@ -15,7 +15,7 @@ async function makeImagePreview(media) {
         fs.mkdirSync(previewDirectory, { recursive: true })
     }
     await resizeImageAsync(fullMediaPath, previewPath, 350)
-    msg.success(`${media.file_name} preview made`)
+    msg.log(`${media.file_name} preview made`)
 }
 
 async function makeAnimatedPreview(media, input, output) { 
@@ -30,7 +30,7 @@ async function makeAnimatedPreview(media, input, output) {
         .videoFilters('crop=trunc(iw/2)*2:trunc(ih/2)*2')   // crop to make even width and height (required)
         .saveToFile(output)
         .on('end', () => {
-            msg.success(`${media.file_name} animated preview made`);
+            msg.log(`${media.file_name} animated preview made`);
             resolve()
         }) 
         .on('error', (error) => {
@@ -48,7 +48,7 @@ async function makeStaticPreview(media, input, output) {
         .outputOptions('-vframes 1')      // take only one frame
         .saveToFile(output)
         .on('end', () => {
-            msg.success(`${media.file_name} static preview made`);
+            msg.log(`${media.file_name} static preview made`);
             resolve()
         }) 
         .on('error', (error) => {

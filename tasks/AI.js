@@ -9,7 +9,7 @@ const modelName = "mobilenet_v2"
 var model
 export async function initAI() {
     model = await coco_ssd.load({ base: modelName })
-    msg.success(`Tensorflow model loaded`)
+    msg.log(`Tensorflow model loaded`)
 }
 
 export default {
@@ -32,9 +32,9 @@ export default {
             data.tags.addTagToMedia(tagName, media)
         })
         if (uniqueTags.length>0) 
-            msg.dbg(`Added tags: ${uniqueTags}`)
+            msg.log(`Added tags: ${uniqueTags}`)
         else
-            msg.dbg(`No AI tags were found`)
+            msg.log(`No AI tags were found`)
 
     }
 

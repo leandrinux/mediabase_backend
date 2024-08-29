@@ -59,5 +59,5 @@ export async function initModels() {
     models.Location.belongsTo(models.Media)
 
     await sequelize.sync()
-    msg.success(`Database initialized at ${sequelize.rawOptions.storage}`);
+    msg.log(`Database initialized at ${sequelize.rawOptions.storage}`);
 }
