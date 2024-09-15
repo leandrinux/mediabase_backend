@@ -7,6 +7,14 @@ export default {
             mediaId: id,
             value: data
         })
+    },
+
+    getQRMedia: async () => {
+        const qrs = await models.QR.findAll({
+            attributes: [ 'mediaId', 'value' ]
+        })
+
+        return qrs
     }
 
 }

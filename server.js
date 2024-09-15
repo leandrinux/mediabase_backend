@@ -47,6 +47,7 @@ export class Server {
         this.#express.get('/media/:mediaId/file', services.media.getMediaFile)
         this.#express.get('/media/:mediaId/preview', services.media.getMediaPreview)
         this.#express.get('/tags',services.tags.getTags)
+        this.#express.get('/qr/media',services.qr.getMedia)
 
         this.#express.post('/media', this.#upload.single('media'), services.media.addMedia)
         this.#express.post('/tags', services.tags.addTagToMedia)
