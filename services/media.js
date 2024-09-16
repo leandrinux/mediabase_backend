@@ -112,9 +112,23 @@ export default {
         if (!media) {
             res.status(404).json({message: "not found"})
         } else {
-            const tags = await media.getTags()
             const plain = media.get({ plain: true })
+
+            const tags = await media.getTags()
             plain.tags = tags.map(x => {return x.name}).sort()
+
+            const QRs = await media.getQRs()
+            plain.qrs = QRs.map(x => {return x.value})
+
+            let ocr = await media.getOCR()
+            plain.ocr = ocr.words
+
+            plain.location = {}
+            const location = await media.getLocation()
+            if (location) {
+                plain.location.latitude = location.latitude
+                plain.location.longitude = location.longitude
+            }
             res.status(200).json(plain)
         }
     },

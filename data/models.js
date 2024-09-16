@@ -42,6 +42,7 @@ export async function initModels() {
         value: { type: DataTypes.STRING, allowNull: false }
     }, { })
     models.QR.belongsTo(models.Media)
+    models.Media.hasMany(models.QR)
 
     models.OCR = sequelize.define('OCR', {
         id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false },
@@ -49,6 +50,7 @@ export async function initModels() {
         words: { type: DataTypes.STRING, allowNull: false }
     }, { })
     models.OCR.belongsTo(models.Media)
+    models.Media.hasOne(models.OCR)
 
     models.Location = sequelize.define('Location', {
         id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false },
@@ -57,6 +59,7 @@ export async function initModels() {
         longitude: { type: DataTypes.DOUBLE, allowNull: true }
     }, { })
     models.Location.belongsTo(models.Media)
+    models.Media.hasOne(models.Location)
 
     await sequelize.sync()
     msg.log(`Database initialized at ${sequelize.rawOptions.storage}`);
