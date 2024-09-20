@@ -26,6 +26,8 @@ export class Server {
             }
         })
         this.#express = express()
+        this.#express.use(express.json())
+
         this.#upload = multer({ 
             storage: storage,
             limits: { fieldSize: 25 * 1024 * 1024 }
@@ -51,6 +53,7 @@ export class Server {
 
         this.#express.post('/media', this.#upload.single('media'), services.media.addMedia)
         this.#express.post('/tags', services.tags.addTagToMedia)
+        this.#express.post('/user', services.jwt.createUser)
         
         this.#express.delete('/media/:mediaId', services.media.deleteMedia)
         this.#express.delete('/media/:mediaId/tags/:tagName', services.tags.removeTagFromMedia)
