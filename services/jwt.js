@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import msg from '../log.js'
+import data from '../data/index.js'
 
 function generateAccessToken(username) {
     return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
@@ -14,10 +15,19 @@ export default {
             res.status(400).json({message: "bad request"})
             return
         }
-        const token = generateAccessToken({ username: req.body.username});
-        res.json({
-            "token": token
-        });        
+
+        const username = req.body.username
+        const user = await data.user.getUser(username)
+        
+        if (user) {
+            res.status(400).json({message: "user already exists"})
+            return
+        }
+
+        const token = generateAccessToken({ username: username });
+        await data.user.addUser(username)
+
+        res.json({ "token": token })
     }
 
 }

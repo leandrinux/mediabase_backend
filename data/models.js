@@ -14,6 +14,10 @@ export async function initModels() {
         storage: `${paths.getDatabasePath()}/mediabase.sqlite`
     })
 
+    models.User = sequelize.define('User', {
+        id: { type: DataTypes.STRING, primaryKey: true, allowNull: false }
+    }, { })
+
     models.Media = sequelize.define('Media', {
         id: { type: DataTypes.UUID, primaryKey: true, defaultValue: sql.uuidV4, allowNull: false },
         file_name: { type: DataTypes.STRING, allowNull: false },
