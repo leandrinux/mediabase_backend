@@ -12,8 +12,14 @@ console.log('\n\
  |_|  |_|___|___/___/_/ \\_\\___/_/ \\_\\___/___|\n\
 \n\
 ')
-msg.log('Preparing components before starting server')
-initPaths()
-await initData()
-await initAI()
-new Server().start(3000)
+
+const port = process.env.PORT
+if (!port) {
+  msg.err('You must set an environment variable file')
+} else {
+  msg.log('Preparing components before starting server')
+  initPaths()
+  await initData()
+  await initAI()
+  new Server().start(port)
+}
